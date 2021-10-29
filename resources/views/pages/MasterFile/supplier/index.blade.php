@@ -9,7 +9,7 @@
         <!--begin::Card title-->
         <div class="card-title">
             <!--begin::Search-->
-            <h4>User Roles</h4>
+            <h4>Suppliers</h4>
         </div>
         <!--begin::Card title-->
         <!--begin::Card toolbar-->
@@ -17,7 +17,7 @@
             <!--begin::Toolbar-->
             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                 <!--begin::Add new-->
-                <a href="{{url('user-role/create')}}"><button type="button" class="btn btn-primary" >Add User Role</button></a>
+                <a href="{{url('/suppliers/create')}}"><button type="button" class="btn btn-primary" >Add Supplier</button></a>
                 <!--end::Add new-->
             </div>
             <!--end::Toolbar-->
@@ -34,9 +34,9 @@
                 <!--begin::Table row-->
                 <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                     <th class="min-w-40px">ID</th>
-                    <th class="min-w-125px">Role Code</th>
-                    <th class="min-w-125px">Role Name</th>
-                    <th class="min-w-125px">Status</th>
+                    <th class="min-w-125px">Supplier Name</th>
+                    <th class="min-w-125px">Email</th>
+                    <th class="min-w-125px">Phone No</th>
                     <th class="min-w-70px">Actions</th>
                 </tr>
                 <!--end::Table row-->
@@ -44,7 +44,7 @@
             <!--end::Table head-->
             <!--begin::Table body-->
             <tbody class=" text-gray-600">
-                
+
             </tbody>
             <!--end::Table body-->
         </table>
@@ -55,7 +55,6 @@
 
 @endsection
 @section('opyional_js')
-<script src="{{ url('js/form/user_role.js')}}"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 @endsection

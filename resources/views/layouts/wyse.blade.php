@@ -78,6 +78,9 @@
 		<script src="{{url('assets/js/custom/apps/chat/chat.js')}}"></script>
 		<script src="{{url('assets/js/custom/modals/create-app.js')}}"></script>
 		<script src="{{url('assets/js/custom/modals/upgrade-plan.js')}}"></script>
+        <script>
+			const APP_URL = "{{env('APP_URL')}}";
+		</script>
 		<!--end::Page Custom Javascript-->
 		<!--end::Javascript-->
         @yield('opyional_js')
