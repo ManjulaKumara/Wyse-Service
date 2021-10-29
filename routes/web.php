@@ -18,6 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('users',[ UserController::class, 'users_index' ]);
+Route::get('/sales/create',function(){return view('pages.sales.sales');});
+Route::get('/suppliers/all',function(){return view('pages.supplier.index');});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
