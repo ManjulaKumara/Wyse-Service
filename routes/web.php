@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/sales/create',function(){return view('pages.sales.sales');});
+Route::get('/grns/create',function(){return view('pages.grn.grn');});
+Route::get('/stock-issues/create',function(){return view('pages.stock-issues.issue');});
+Route::get('/supplier-vouchers/create',function(){return view('pages.supplier-voucher.supplier-voucher');});
+Route::get('/customer-receipts/create',function(){return view('pages.customer-receipt.customer-receipts');});
+
 Route::get('/suppliers/all',function(){return view('pages.supplier.index');});
 
 Route::get('/dashboard', function () {
