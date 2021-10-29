@@ -39,6 +39,13 @@ Route::get('/customers/all',[ CustomerController::class, 'customers_index' ]);
 Route::get('/customers/create',[ CustomerController::class, 'customers_create' ]);
 Route::post('/customers/store',[ CustomerController::class, 'customers_store' ]);
 
+Route::get('/grns/create',function(){return view('pages.grn.grn');});
+Route::get('/stock-issues/create',function(){return view('pages.stock-issues.issue');});
+Route::get('/supplier-vouchers/create',function(){return view('pages.supplier-voucher.supplier-voucher');});
+Route::get('/customer-receipts/create',function(){return view('pages.customer-receipt.customer-receipts');});
+
+Route::get('/suppliers/all',function(){return view('pages.supplier.index');});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
