@@ -36,6 +36,9 @@ Route::get('/user-role/all',[ UserRoleController::class, 'user_role_index' ]);
 Route::get('/user-role/get-all',[ UserRoleController::class, 'user_role_getAll' ]);
 Route::get('/user-role/create',[ UserRoleController::class, 'user_role_create' ]);
 Route::post('/user-role/store',[ UserRoleController::class, 'user_role_store' ]);
+Route::get('/user-role/view/{id}',[ UserRoleController::class, 'user_role_view' ]);
+Route::get('/user-role/edit/{id}',[ UserRoleController::class, 'user_role_edit' ]);
+Route::post('/user-role/update/{id}',[ UserRoleController::class, 'user_role_update' ]);
 
 Route::get('/customers/all',[ CustomerController::class, 'customers_index' ]);
 Route::get('/customers/create',[ CustomerController::class, 'customers_create' ]);

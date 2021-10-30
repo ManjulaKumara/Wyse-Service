@@ -49,7 +49,6 @@
                 <div class="col-lg-6">
                     <label class="required">User Role</label>
                     <select class="form-control js-example-basic-single compulsory" id="user_role" name="user_role" required>
-                        <option value="">Select User Role</option>
                         @foreach($user_roles as $user_role)
                             <option value="{{$user_role->id}}">{{$user_role->role_name}}</option>
                         @endforeach

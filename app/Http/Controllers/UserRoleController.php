@@ -58,11 +58,11 @@ class UserRoleController extends Controller
                     $role['id'] = $item->id;
                     $role['role_code'] = $item->role_code;
                     $role['role_name'] = $item->role_name;
-                    $role['is_active'] = $item->is_active;
+                    $role['is_active'] = ($item->is_active==1)?'Active':'Inactive';
                     $role['action'] = '<div class="btn-group">
-                    <a href="#" class="btn btn-xs  btn-success " title="View"><i class="fa fa-eye"></i>
+                    <a href="/user-role/view/'.$item->id.'" class="btn btn-xs  btn-success " title="View"><i class="fa fa-eye"></i>
                     </a>
-                    <a href="#" class="btn btn-xs  btn-warning " title="Update">
+                    <a href="/user-role/edit/'.$item->id.'" class="btn btn-xs  btn-warning " title="Update">
                             <i class="fa fa-edit"></i>
                     </a>
                     </div>';
@@ -95,6 +95,37 @@ class UserRoleController extends Controller
 
             $notification = array(
                 'message' => 'Successfully Created!',
+                'alert-type' => 'success'
+            );
+
+            return redirect('user-role/all')->with($notification);
+        } catch (Exception $e) {
+            return back()->withInput()->withErrors('Error..!');
+        }
+    }
+
+    public function user_role_view($id){
+        $user_role = UserRole::find($id);
+        view()->share('user_role',$user_role);
+        return view('pages.MasterFile.user_role._form');
+    }
+
+    public function user_role_edit($id){
+        $user_role = UserRole::find($id);
+        view()->share('user_role',$user_role);
+        return view('pages.MasterFile.user_role._form');
+    }
+
+    public function user_role_update(Request $request, $id){
+        try {
+            $user_role = UserRole::find($id);
+            $user_role->role_code = $request->get('role_code');
+            $user_role->role_name = $request->get('role_name');
+            $user_role->is_active = $request->get('is_active');
+            $user_role->save();
+
+            $notification = array(
+                'message' => 'Successfully Updated!',
                 'alert-type' => 'success'
             );
 

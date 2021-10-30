@@ -28,7 +28,7 @@
     <!--begin::Card body-->
     <div class="card-body pt-0">
         <!--begin::Table-->
-        <table class="table align-middle table-row-dashed fs-6 gy-5" id="table">
+        <table class="table align-middle table-row-dashed fs-6 gy-5" id="table" data-order='[[ 1, "asc" ]]' data-page-length='25'>
             <!--begin::Table head-->
             <thead>
                 <!--begin::Table row-->
@@ -44,7 +44,7 @@
             <!--end::Table head-->
             <!--begin::Table body-->
             <tbody class=" text-gray-600">
-                
+
             </tbody>
             <!--end::Table body-->
         </table>

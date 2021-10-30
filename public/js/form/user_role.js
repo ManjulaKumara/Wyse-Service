@@ -3,7 +3,7 @@ $(document).ready(function () {
         "processing": true,
         "serverSide": true,
         "ajax":{
-            "url": APP_URL+'/user-role/get-all',
+            "url": APP_URL+'user-role/get-all',
             "dataType": "json",
             "type": "get",
         },
