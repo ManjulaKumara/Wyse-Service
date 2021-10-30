@@ -25,8 +25,12 @@ Route::get('/', function () {
 Route::get('/sales/create',function(){return view('pages.sales.sales');});
 
 Route::get('/suppliers/all',[ SupplierController::class, 'supplier_index' ]);
+Route::get('/suppliers/get-all',[ SupplierController::class, 'supplier_get_all' ]);
 Route::get('/suppliers/create',[ SupplierController::class, 'supplier_create' ]);
 Route::post('/suppliers/store',[ SupplierController::class, 'supplier_store' ]);
+Route::get('/suppliers/view/{id}',[ SupplierController::class, 'supplier_view' ]);
+Route::get('/suppliers/edit/{id}',[ SupplierController::class, 'supplier_edit' ]);
+Route::post('/suppliers/update/{id}',[ SupplierController::class, 'supplier_update' ]);
 
 Route::get('/users/all',[ UserController::class, 'users_index' ]);
 Route::get('/users/get-all',[ UserController::class, 'users_get_all' ]);
@@ -60,8 +64,6 @@ Route::get('/grns/create',function(){return view('pages.grn.grn');});
 Route::get('/stock-issues/create',function(){return view('pages.stock-issues.issue');});
 Route::get('/supplier-vouchers/create',function(){return view('pages.supplier-voucher.supplier-voucher');});
 Route::get('/customer-receipts/create',function(){return view('pages.customer-receipt.customer-receipts');});
-
-Route::get('/suppliers/all',function(){return view('pages.supplier.index');});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
