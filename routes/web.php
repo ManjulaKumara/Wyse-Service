@@ -29,8 +29,12 @@ Route::get('/suppliers/create',[ SupplierController::class, 'supplier_create' ])
 Route::post('/suppliers/store',[ SupplierController::class, 'supplier_store' ]);
 
 Route::get('/users/all',[ UserController::class, 'users_index' ]);
+Route::get('/users/get-all',[ UserController::class, 'users_get_all' ]);
 Route::get('/user/create',[ UserController::class, 'user_create' ]);
 Route::post('/user/store',[ UserController::class, 'user_store' ]);
+Route::get('/user/view/{id}',[ UserController::class, 'user_view' ]);
+Route::get('/user/edit/{id}',[ UserController::class, 'user_edit' ]);
+Route::post('/user/update/{id}',[ UserController::class, 'user_update' ]);
 
 Route::get('/user-role/all',[ UserRoleController::class, 'user_role_index' ]);
 Route::get('/user-role/get-all',[ UserRoleController::class, 'user_role_getAll' ]);

@@ -100,7 +100,7 @@ class UserRoleController extends Controller
 
             return redirect('user-role/all')->with($notification);
         } catch (Exception $e) {
-            return back()->withInput()->withErrors('Error..!');
+            return back()->withInput()->withErrors('Something went wrong!');
         }
     }
 
@@ -131,7 +131,7 @@ class UserRoleController extends Controller
 
             return redirect('user-role/all')->with($notification);
         } catch (Exception $e) {
-            return back()->withInput()->withErrors('Error..!');
+            return back()->withInput()->withErrors('Something went wrong!');
         }
     }
 }
