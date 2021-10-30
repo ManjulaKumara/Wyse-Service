@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ItemCategoryController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -38,6 +40,14 @@ Route::post('/user-role/store',[ UserRoleController::class, 'user_role_store' ])
 Route::get('/customers/all',[ CustomerController::class, 'customers_index' ]);
 Route::get('/customers/create',[ CustomerController::class, 'customers_create' ]);
 Route::post('/customers/store',[ CustomerController::class, 'customers_store' ]);
+
+Route::get('/items/all',[ ItemController::class, 'item_index' ]);
+Route::get('/items/create',[ ItemController::class, 'item_create' ]);
+Route::post('/items/store',[ ItemController::class, 'item_store' ]);
+
+Route::get('/item-category/all',[ ItemCategoryController::class, 'item_category_index' ]);
+Route::get('/item-category/create',[ ItemCategoryController::class, 'item_category_create' ]);
+Route::post('/item-category/store',[ ItemCategoryController::class, 'item_category_store' ]);
 
 Route::get('/grns/create',function(){return view('pages.grn.grn');});
 Route::get('/stock-issues/create',function(){return view('pages.stock-issues.issue');});
