@@ -49,8 +49,12 @@ Route::get('/user-role/edit/{id}',[ UserRoleController::class, 'user_role_edit' 
 Route::post('/user-role/update/{id}',[ UserRoleController::class, 'user_role_update' ]);
 
 Route::get('/customers/all',[ CustomerController::class, 'customers_index' ]);
+Route::get('/customers/get-all',[ CustomerController::class, 'customers_get_all' ]);
 Route::get('/customers/create',[ CustomerController::class, 'customers_create' ]);
 Route::post('/customers/store',[ CustomerController::class, 'customers_store' ]);
+Route::get('/customers/view/{id}',[ CustomerController::class, 'customers_view' ]);
+Route::get('/customers/edit/{id}',[ CustomerController::class, 'customers_edit' ]);
+Route::post('/customers/update/{id}',[ CustomerController::class, 'customers_update' ]);
 
 Route::get('/items/all',[ ItemController::class, 'item_index' ]);
 Route::get('/items/create',[ ItemController::class, 'item_create' ]);

@@ -43,11 +43,11 @@
             <div class="form-group row">
                 <div class="col-lg-6">
                     <label class="required">Telephone</label>
-                    <input type="tel"  id="telephone" name="telephone" class="form-control" required @if (Request::segment(2)=='view') value="{{$supplier->telephone}}" readonly @elseif (Request::segment(2)=='edit') value="{{$supplier->telephone}}" @else value="" @endif/>
+                    <input type="tel"  id="telephone" name="telephone" class="form-control" pattern="0[1,2,3,4,5,6,7,8,9][0,1,2,5,6,7,8][0-9]{7}"  maxlength="10" required @if (Request::segment(2)=='view') value="{{$supplier->telephone}}" readonly @elseif (Request::segment(2)=='edit') value="{{$supplier->telephone}}" @else value="" @endif/>
                 </div>
                 <div class="col-lg-6">
                     <label>Mobile</label>
-                    <input type="tel" id="mobile" name="mobile" class="form-control" @if (Request::segment(2)=='view') value="{{$supplier->mobile}}" readonly @elseif (Request::segment(2)=='edit') value="{{$supplier->mobile}}" @else value="" @endif/>
+                    <input type="tel" id="mobile" name="mobile" class="form-control" pattern="0[1,2,3,4,5,6,7,8,9][0,1,2,5,6,7,8][0-9]{7}"  maxlength="10" @if (Request::segment(2)=='view') value="{{$supplier->mobile}}" readonly @elseif (Request::segment(2)=='edit') value="{{$supplier->mobile}}" @else value="" @endif/>
                     {{-- <input type="hidden" id="cust_id" name="id" class="cus_lead_id form-control"/> --}}
                 </div>
             </div><br>
