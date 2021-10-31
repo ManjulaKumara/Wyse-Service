@@ -28,7 +28,7 @@
     <!--begin::Card body-->
     <div class="card-body pt-0">
         <!--begin::Table-->
-        <table class="table align-middle table-row-dashed fs-6 gy-5" id="table">
+        <table class="table align-middle table-row-dashed fs-6 gy-5" id="table" data-order='[[ 1, "asc" ]]' data-page-length='25'>
             <!--begin::Table head-->
             <thead>
                 <!--begin::Table row-->
@@ -55,6 +55,7 @@
 
 @endsection
 @section('opyional_js')
+<script src="{{ url('js/form/item_category.js')}}"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 @endsection

@@ -135,7 +135,7 @@ class CustomerController extends Controller
             $customer->save();
 
             $notification = array(
-                'message' => 'Successfully Created!',
+                'message' => 'Successfully Updated!',
                 'alert-type' => 'success'
             );
             return redirect('/customers/all')->with($notification);

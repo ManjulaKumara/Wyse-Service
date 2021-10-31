@@ -65,8 +65,12 @@ Route::get('/items/edit/{id}',[ ItemController::class, 'item_edit' ]);
 Route::post('/items/update/{id}',[ ItemController::class, 'item_update' ]);
 
 Route::get('/item-category/all',[ ItemCategoryController::class, 'item_category_index' ]);
+Route::get('/item-category/get-all',[ ItemCategoryController::class, 'item_category_get_all' ]);
 Route::get('/item-category/create',[ ItemCategoryController::class, 'item_category_create' ]);
 Route::post('/item-category/store',[ ItemCategoryController::class, 'item_category_store' ]);
+Route::get('/item-category/view/{id}',[ ItemCategoryController::class, 'item_category_view' ]);
+Route::get('/item-category/edit/{id}',[ ItemCategoryController::class, 'item_category_edit' ]);
+Route::post('/item-category/update/{id}',[ ItemCategoryController::class, 'item_category_update' ]);
 
 Route::get('/grns/create',function(){return view('pages.grn.grn');});
 Route::get('/stock-issues/create',function(){return view('pages.stock-issues.issue');});
