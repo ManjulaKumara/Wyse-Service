@@ -57,8 +57,12 @@ Route::get('/customers/edit/{id}',[ CustomerController::class, 'customers_edit' 
 Route::post('/customers/update/{id}',[ CustomerController::class, 'customers_update' ]);
 
 Route::get('/items/all',[ ItemController::class, 'item_index' ]);
+Route::get('/items/get-all',[ ItemController::class, 'item_get_all' ]);
 Route::get('/items/create',[ ItemController::class, 'item_create' ]);
 Route::post('/items/store',[ ItemController::class, 'item_store' ]);
+Route::get('/items/view/{id}',[ ItemController::class, 'item_view' ]);
+Route::get('/items/edit/{id}',[ ItemController::class, 'item_edit' ]);
+Route::post('/items/update/{id}',[ ItemController::class, 'item_update' ]);
 
 Route::get('/item-category/all',[ ItemCategoryController::class, 'item_category_index' ]);
 Route::get('/item-category/create',[ ItemCategoryController::class, 'item_category_create' ]);
