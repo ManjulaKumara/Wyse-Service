@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -71,6 +72,14 @@ Route::post('/item-category/store',[ ItemCategoryController::class, 'item_catego
 Route::get('/item-category/view/{id}',[ ItemCategoryController::class, 'item_category_view' ]);
 Route::get('/item-category/edit/{id}',[ ItemCategoryController::class, 'item_category_edit' ]);
 Route::post('/item-category/update/{id}',[ ItemCategoryController::class, 'item_category_update' ]);
+
+Route::get('/sevices/all',[ ServiceController::class, 'service_index' ]);
+Route::get('/sevices/get-all',[ ServiceController::class, 'service_get_all' ]);
+Route::get('/sevices/create',[ ServiceController::class, 'service_crete' ]);
+Route::post('/sevices/store',[ ServiceController::class, 'service_store' ]);
+Route::get('/sevices/view/{id}',[ ServiceController::class, 'service_view' ]);
+Route::get('/sevices/edit/{id}',[ ServiceController::class, 'service_edit' ]);
+Route::post('/sevices/update/{id}',[ ServiceController::class, 'service_update' ]);
 
 Route::get('/grns/create',function(){return view('pages.grn.grn');});
 Route::get('/stock-issues/create',function(){return view('pages.stock-issues.issue');});
