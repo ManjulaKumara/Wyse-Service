@@ -191,6 +191,7 @@ class SalesController extends Controller
             $header_data=[
                 'invoice_number'=>$this->code_Create(),
                 'vehicle_number'=>$request->vehicle_no,
+                'vehicle_type'=>$request->vehicle_type,
                 'customer'=>$request->customer,
                 'invoice_type'=>$request->inv_type,
                 'cashier'=>Auth::user()->id,

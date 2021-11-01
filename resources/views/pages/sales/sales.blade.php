@@ -351,7 +351,7 @@
                         $.each(data, function ( key, entry ) {
                             itemsInTable.push(entry.stock_no+" "+entry.id);
                             let markup=`
-                                <tr class="border-bottom border-bottom-dashed item-row" id="tr${count}" data-kt-element="item">
+                                <tr class="border-bottom border-bottom-dashed item-row" id="tr${count}" data-item-id="${entry.id}" data-kt-element="item">
                                     <td class="pe-7">
                                         <p>${entry.name}</p>
                                         <input type="hidden" name="details[${count}][item]" value="${entry.id}" />
@@ -473,7 +473,7 @@
             }else{
                 itemsInTable.push(stock_no+" "+item_id);
                 let markup=`
-                    <tr class="border-bottom border-bottom-dashed item-row" id="tr${count}" data-kt-element="item">
+                    <tr class="border-bottom border-bottom-dashed item-row" id="tr${count}" data-item-id="${item_id}" data-stock-no="${stock_no}" data-kt-element="item">
                         <td class="pe-7">
                             <p>${item_name}</p>
                             <input type="hidden" name="details[${count}][item]" value="${item_id}" />
@@ -557,6 +557,21 @@
             }
         }
     });
+    function deleteItem(index){
+        let item_id=$('#tr'+index).data('item-id');
+        let stock_number=$('#tr'+index).data('stock-no');
+        $('#tr'+index).remove();
+        console.log(itemsInTable);
+        let search=""+stock_number+" "+item_id;
+        let i = itemsInTable.indexOf(search+"");
+        console.log(i);
+        if ( i >= 0 ) itemsInTable.splice( i , 1 );
+        if(itemsInTable.length>0){
+            $('#btnSubmit').prop('disabled',false);
+        }else{
+            $('#btnSubmit').prop('disabled',true);
+        }
+    }
 
     function validateOnSubmit(){
         if($('#inv_type').val()=="" || $('#inv_type').val()==null){
