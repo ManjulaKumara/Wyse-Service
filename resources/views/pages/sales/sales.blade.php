@@ -27,9 +27,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <label for="vehicle_no" class="required form-label">Vehicle No:</label>
-                                        <input type="text" class="form-control" name="vehicle_no" id="vehicle_no" autofocus/>
+                                        <input type="text" class="form-control" required name="vehicle_no" id="vehicle_no" autofocus/>
                                     </div>
                                     <!--begin::Input group-->
                                     <div class="col-md-6">
@@ -42,16 +42,23 @@
 
                                         </select>
                                     </div>
+                                </div>
+                                <br>
+                                <div class="row">
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <label for="inv_type" class="required form-label">Invoice Type:</label>
-                                        <select class="form-control" name="inv_type" id="inv_type">
+                                        <select required class="form-control" name="inv_type" id="inv_type">
                                             <option value="">Please select invoice type</option>
                                             <option value="1">Items and Services</option>
                                             <option value="2">Items Only</option>
                                             <option value="3">Services/Repairs Only</option>
                                         </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="vehicle_type" class="required form-label">Vehicle Type:</label>
+                                        <input type="text" class="form-control" required name="vehicle_type" id="vehicle_type" autofocus/>
                                     </div>
                                     <!--end::Input group-->
 
@@ -119,19 +126,19 @@
                 <!--begin::Input group-->
                 <div class="row mb-3">
                     <label for="total" class="required form-label">Total:</label>
-                    <input type="text" readonly class="form-control" name="total" id="total"/>
+                    <input type="text" readonly required class="form-control" name="total" id="total"/>
                 </div>
                 <div class="row mb-3">
                     <label for="bill_discount" class="required form-label">Bill Discount:</label>
-                    <input type="text"  class="form-control" name="bill_discount" id="bill_discount"/>
+                    <input type="text" required  class="form-control" name="bill_discount" id="bill_discount"/>
                 </div>
                 <div class="row mb-3">
                     <label for="final_total" class="required form-label">Net Total:</label>
-                    <input type="text" readonly class="form-control" name="final_total" id="final_total"/>
+                    <input type="text" readonly required class="form-control" name="final_total" id="final_total"/>
                 </div>
                 <div class="row mb-3">
                     <label for="pay_method" class="required form-label">Pay Method:</label>
-                    <select name="pay_method" id="pay_method" class="form-control">
+                    <select name="pay_method" required id="pay_method" class="form-control">
                         <option value="">Select Payment Method</option>
                         <option value="cash">CASH</option>
                         <option value="cheque">CHEQUE</option>

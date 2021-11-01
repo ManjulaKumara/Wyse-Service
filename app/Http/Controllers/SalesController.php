@@ -409,6 +409,11 @@ class SalesController extends Controller
         $header=InvoiceHeader::find($id);
         $invoice_items=InvoiceItem::where('invoice',$header->id)->get();
         $invoice_services=InvoiceService::where('invoice',$header->id)->get();
+        $customer=null;
+        if(isset($header->customer)){
+            $customer=Customer::find($header->customer);
+        }
+        view()->share('customer',$customer);
         view()->share('header',$header);
         view()->share('items',$invoice_items);
         view()->share('services',$invoice_services);

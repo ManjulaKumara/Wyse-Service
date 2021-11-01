@@ -24,97 +24,154 @@
   }
   @page
     {
-        size: 110mm 140mm; /* landscape */
+        size: 148mm 210mm;
+        /* landscape */
         /* you can also specify margins here: */
-
         /* for compatibility with both A4 and Letter */
     }
 
 }
         </style>
-<div class="w-50 m-auto">
+<div class="m-auto" style="width: 60%;">
     <!-- email template -->
-    <table id="section-to-print" class="body-wrap" style="font-family: Arial; font-size: 14px; background-color: #fff; margin: 0;">
+    <table id="section-to-print" width="40%" style="font-family: Arial; font-size: 14px; background-color: #fff; margin: 0;width:100%;">
         <tr>
-            <td valign="top"></td>
-            <td class="container"
 
-                valign="top">
-                <div class="content" >
+            <td class="container" valign="top" >
+                <div class="content">
+                    <h2 style="font-family: Copperplate, Fantasy;color:black; font-size: 45px;margin-left:15px;">
+                        <b>DIAMOND SERVICE STATION (PVT) LIMITED.</b>
+                    </h2>
+                    <p style="font-size: 20px;margin-left:160px;"><b>No. 22, Colombo Road, Embiligama, Pilimathalawa. </b><br><span><b style="margin-left: 85px;">TEL: 081-2 575 509 / 077-7 436 279 </b></span></p>
                     <table class="main" cellpadding="0" cellspacing="0" width="100%">
-                        <tr width="100%">
+                        <tr>
                             <td class="content-wrap aligncenter" style=" background-color: #fff;"
-                                align="center" valign="top">
-                                <table width="100%" cellpadding="0" cellspacing="0">
+                                align="left" valign="top">
+                                <table width="85%" cellpadding="0" cellspacing="0">
                                     <tr>
-                                        <td style="padding-bottom: 20px; " align="center" colspan="2"><h2 style="font-family: Arial;color:black; font-size: 25px;"><b>Diamond Service Center</b></h2>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="content-block aligncenter"
-                                            align="center" valign="top" colspan="2">
-                                            <table class="invoice" style="width: 100%;">
+                                        <td class="content-block aligncenter" align="center" valign="top" colspan="2">
+                                            <table class="invoice" style="width: 95%;">
                                                 <tr>
-                                                    <td style="font-family: Arial; font-size: 15px; color:black; word-wrap: break-word;"
-                                                        valign="top"><b>Reg Number </b>
+                                                    <td width="60%" style="font-family: Arial; font-size: 15px; color:black; word-wrap: break-word;"
+                                                        valign="top">
+                                                        <p style="font-size: 17px;"><b>Vehicle No: {{$header->vehicle_number}} </b><br><b>Type: LORRY</b></p>
+                                                    </td>
+                                                    <td width="40%" style="font-family: Arial; font-size: 15px; color:black; word-wrap: break-word;"
+                                                        valign="top" align="right">
+                                                        <p style="font-size: 17px;"><b>Inv. Date: {{$header->created_at}}</b></p>
                                                     </td>
 
                                                 </tr>
                                                 <tr>
-                                                    <td style="font-family: Arial; font-size: 15px; color:black; word-wrap: break-word;"
-                                                        valign="top"><b>Customer,<br> Address </b>
+                                                    <td width="50%" style="font-family: Arial; font-size: 20px; color:black; vertical-align: top; border-top-width: 1px; border-top-color: rgb(58, 48, 48); border-top-style: solid;border-bottom-width: 1px; border-bottom-color: rgb(58, 48, 48); border-bottom-style: solid; margin: 0; padding: 10px 0;"
+                                                        valign="top">
+                                                        <p style="font-size: 17px;"><b>Customer: {{$header->customer}} </b></p>
                                                     </td>
-
+                                                    <td width="50%" class="alignright"
+                                                        style="font-family: Arial; font-size: 22px; color:black; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: rgb(58, 48, 48); border-top-style: solid;border-bottom-width: 1px; border-bottom-color: rgb(58, 48, 48); border-bottom-style: solid; margin: 0; padding: 10px 0;"
+                                                        align="right" valign="top"><b>{{$header->invoice_number}}</b>
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="padding: 5px 0;" valign="top">
-                                                        <table class="invoice-items" cellpadding="0"
-                                                               cellspacing="0" style="width: 100%;">
+                                                    <td style="padding: 5px 0;" valign="middle" colspan="2">
+                                                        <table cellpadding="8" cellspacing="0" style="width: 100%;">
+                                                            <tr>
+                                                                <th width="60%" style="border-bottom-width: 1px; border-bottom-color: rgb(58, 48, 48); border-bottom-style: solid;">
+                                                                   <p style="font-size:18px;">Item/Service</p>
+                                                                </th>
+                                                                <th width="15%" style="text-align:left;border-bottom-width: 1px; border-bottom-color: rgb(58, 48, 48); border-bottom-style: solid;">
+                                                                   <p style="font-size:18px;">Unit Price
+                                                                </th>
+                                                                <th width="10%" style="text-align:right;border-bottom-width: 1px; border-bottom-color: rgb(58, 48, 48); border-bottom-style: solid;">
+                                                                    <p style="font-size:18px;">Quantity</p>
+                                                                </th>
+                                                                <th width="15%" align="right" style="text-align:right;border-bottom-width: 1px; border-bottom-color: rgb(58, 48, 48); border-bottom-style: solid;">
+                                                                    <p style="font-size:18px;">Amount</p>
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td width="60%">
+                                                                    <br>
+                                                                </td>
+                                                                <td width="15%" style="text-align: right;border-right:1px dashed grey;">
+                                                                    <br>
+                                                                </td>
+                                                                <td width="10%" style="text-align: right;border-right:1px dashed grey;">
+                                                                    <br>
+                                                                </td>
+                                                                <td width="15%" style="text-align: right;">
+                                                                    <br>
+                                                                </td>
+                                                            </tr>
+                                                            @foreach($items as $item)
+                                                            <tr style="padding-bottom: 15px;">
+                                                                <td width="60%" valign="top" style="font-size: 17px;">
+                                                                    <b>XXXXXXXXXXXX</b>
+                                                                </td>
+                                                                <td width="15%" style="text-align: right;font-size: 15px;border-right:1px dashed grey;">
+                                                                    <b>450.00</b>
+                                                                </td>
+                                                                <td width="10%" style="text-align: right;font-size: 17px;border-right:1px dashed grey;">
+                                                                    <b>1</b>
+                                                                </td>
+                                                                <td width="15%" style="text-align: right;font-size: 17px;">
+                                                                    <b>450.00</b>
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                            @foreach($services as $service)
+                                                            <tr>
+                                                                <td width="60%" valign="top" style="font-size: 17px;">
+                                                                    <b>XXXXXXXXXXXX</b>
+                                                                </td>
+                                                                <td width="15%" style="text-align: right;font-size: 15px;border-right:1px dashed grey;">
+                                                                    <b>450.00</b>
+                                                                </td>
+                                                                <td width="10%" style="text-align: right;font-size: 17px;border-right:1px dashed grey;">
+                                                                    <b>1</b>
+                                                                </td>
+                                                                <td width="15%" style="text-align: right;font-size: 17px;">
+                                                                    <b>450.00</b>
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                            <tr>
+                                                                <td width="60%" style="border-bottom:1px solid grey;">
+                                                                    <br>
+                                                                </td>
+                                                                <td width="15%" style="text-align: right;border-right:1px dashed grey;border-bottom:1px solid grey;">
+                                                                    <br>
+                                                                </td>
+                                                                <td width="10%" style="text-align: right;border-right:1px dashed grey;border-bottom:1px solid grey;">
+                                                                    <br>
+                                                                </td>
+                                                                <td width="15%" style="text-align: right;border-bottom:1px solid grey;">
+                                                                    <br>
+                                                                </td>
+                                                            </tr>
 
-
                                                             <tr>
-                                                                <td style="font-family: Arial; font-size: 15px; color:black; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 10px 0;"
-                                                                    valign="top">Date: Payment Date
+                                                                <td width="85%" colspan="3" style="text-align: right;border-right:1px dashed grey;">
+                                                                    <p style="font-size:18px;"><b>Total</b></p>
                                                                 </td>
-                                                                <td class="alignright"
-                                                                    style="font-family: Arial; font-size: 14px; color:black; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 10px 0;"
-                                                                    align="right" valign="top"><b>Invoice</b>
+                                                                <td width="15%" style="text-align: right;">
+                                                                    <p style="font-size:18px;"><b>{{$header->total_amount}}</b></p>
                                                                 </td>
                                                             </tr>
                                                             <tr>
-
-                                                                <td class="alignright" colspan="2" width="100%"
-                                                                    style="font-family: Arial; font-size: 15px; color:black; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 10px 0;"
-                                                                    align="right" valign="top">Pay amount LKR
+                                                                <td width="85%" colspan="3" style="text-align: right;border-right:1px dashed grey;">
+                                                                    <p style="font-size:18px;"><b>Discount</b></p>
+                                                                </td>
+                                                                <td width="15%" style="text-align: right;">
+                                                                    <p style="font-size:18px;"><b>{{$header->discount_amount}}</b></p>
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="alignright" style="font-family: Arial; font-size: 15px; color:black; vertical-align: top; text-align: right; border-top-width: 0px; border-top-color: #50649c; border-top-style: solid; border-bottom-color: #50649c; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 10px 0;"
-                                                                align="right">Total
+                                                                <td width="85%" colspan="3" style="text-align: right;border-right:1px dashed grey;">
+                                                                    <p style="font-size:18px;"><b>Net Total</b></p>
                                                                 </td>
-                                                                <td class="alignright"
-                                                                    style="font-family: Arial; font-size: 15px; color:black; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 10px 0;"
-                                                                    align="right" valign="top">total LKR
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="alignright" style="font-family: Arial; font-size: 15px; color:black; vertical-align: top; text-align: right; border-top-width: 0px; border-top-color: #50649c; border-top-style: solid; border-bottom-color: #50649c; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 10px 0;"
-                                                                align="right">Paid
-                                                                </td>
-                                                                <td class="alignright"
-                                                                    style="font-family: Arial; font-size: 15px; color:black; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 10px 0;"
-                                                                    align="right" valign="top">paid LKR
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="alignright" width="80%"
-                                                                    style="font-family: Arial; font-size: 15px; color:black; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #50649c; border-top-style: solid; border-bottom-color: #50649c; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 10px 0;"
-                                                                    align="right" valign="top">Due Balance
-                                                                </td>
-                                                                <td class="alignright"
-                                                                    style="font-family: Arial; font-size: 15px; color:black; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #50649c; border-top-style: solid; border-bottom-color: #50649c; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 10px 0;"
-                                                                    align="right" valign="top">balance LKR
+                                                                <td width="15%" style="text-align: right;">
+                                                                    <p style="font-size:18px;"><b>{{$header->net_amount}}</b></p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -126,13 +183,8 @@
                                     <tr>
                                         <td class="content-block aligncenter" colspan="2"
                                             style="font-family: Arial; font-size: 14px; color:black; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;"
-                                            align="center" valign="top">Address & Contact
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="content-block aligncenter" colspan="2"
-                                            style="font-family: Arial; font-size: 14px; color:black; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;"
-                                            align="center" valign="top"><b>Please ask for a receipt for every payment you make. <br/> Advanced are not refundable.</b>
+                                            align="center" valign="top">
+                                            <b>Please ask for a receipt for every payment you make.</b>
                                         </td>
                                     </tr>
                                 </table>
@@ -151,11 +203,11 @@
 text-align: center;
 ">
     <td>
-        <button onclick="myFunction()" class="btn btn-success m-l-5">
+        <button onclick="myFunction()" class="btn btn-success">
             <i data-feather="printer" class="mr-2"></i> Print
         </button> </td>
     <td>
-        <a href="/students" class="btn btn-info m-l-5">
+        <a href="/students" class="btn btn-info">
             <i data-feather="home" class="mr-2"></i> Back to Sales
         </a>
     </td>
