@@ -13,6 +13,7 @@ class InvoiceHeader extends Model
         'invoice_number',
         'customer',
         'vehicle_number',
+        'vehicle_type',
         'remarks',
         'total_amount',
         'discount_amount',
