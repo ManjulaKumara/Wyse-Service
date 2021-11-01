@@ -26,6 +26,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/sales/create',[SalesController::class,'create']);
+Route::post('/sales/store',[SalesController::class,'store']);
+Route::get('/sales/invoice/{id}',[SalesController::class,'invoice']);
+
+Route::get('preview-bill',function(){return view('pages.sales.print');});
 
 Route::get('/suppliers/all',[ SupplierController::class, 'supplier_index' ]);
 Route::get('/suppliers/get-all',[ SupplierController::class, 'supplier_get_all' ]);

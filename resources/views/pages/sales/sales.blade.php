@@ -3,7 +3,8 @@
 <link href="{{url('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css"/>
 @endsection
 @section('content')
-<form>
+<form id="form-invoice" action="{{url('/sales/store')}}" method="POST">
+    @csrf
 <div class="d-flex flex-column flex-lg-row">
     <!--begin::Content-->
     <div class="flex-lg-row-fluid mb-10 mb-lg-0 me-lg-7 me-xl-10">
@@ -288,7 +289,7 @@
                     <!--begin::Actions-->
                     <div class="text-center pt-15">
                         <button type="button" data-bs-dismiss="modal" id="kt_modal_new_card_cancel" class="btn btn-light me-3">Discard</button>
-                        <button type="submit" id="kt_modal_new_card_submit" class="btn btn-primary">
+                        <button type="submit" id="kt_modal_new_card_submit" class="btn btn-primary" onsubmit="return validateOnSubmit()">
                             <span class="indicator-label">Submit</span>
                         </button>
                     </div>
@@ -532,7 +533,13 @@
         if($('#pay_method').val()=='cash' || $('#pay_method').val()=='credit'){
             $('#pay_amount').focus();
         }else if($('#pay_method').val()=='cheque'){
-            $('#cheque_modal').modal('show');
+            if($('#customer').val()=="" || $('#customer').val()==null){
+                alert('Please Select a Customer if you want to save invoice as credit.You may want to create a customer if the customer is not available in the system.');
+                $('#customer').focus();
+            }else{
+                $('#cheque_modal').modal('show');
+            }
+
         }
     });
     $('#pay_amount').focusout(function(){
@@ -545,7 +552,27 @@
     });
 
     function validateOnSubmit(){
-        
+        if($('#inv_type').val()=="" || $('#inv_type').val()==null){
+            alert('Please select a Invoice Type to continue');
+            $('#inv_type').focus();
+            return false;
+        }else if($('#pay_method').val()=="" || $('#pay_method').val()==null){
+            alert('Please select a payment method');
+            $('#pay_method').focus();
+            return false;
+        }else if($('#pay_method').val()=='credit' || $('#pay_amount').val()<$('#final_total').val()){
+            if($('#customer').val()=="" || $('#customer').val()==null){
+                alert('Please Select a Customer if you want to save invoice as credit.You may want to create a customer if the customer is not available in the system.');
+                $('#customer').focus();
+                return false;
+            }
+        }else if(itemsInTable.length<=0){
+            alert('Please select the items and services for the invoice');
+            $('#item').focus();
+            return false;
+        }else{
+            return true;
+        }
     }
 </script>
 @endsection

@@ -9,8 +9,14 @@ use App\Models\ItemStock;
 use App\Models\ItemCategorie;
 use App\Models\ServiceMaster;
 use App\Models\StockIssue;
+use App\Models\InvoiceHeader;
+use App\Models\InvoiceItem;
+use App\Models\InvoiceService;
+use App\Models\ItemTransaction;
+use App\Models\CashTransaction;
 use DB;
 use DateTime;
+use Illuminate\Support\Facades\Auth;
 
 class SalesController extends Controller
 {
@@ -181,12 +187,231 @@ class SalesController extends Controller
     public function store(Request $request){
         try {
             DB::beginTransaction();
-            
+            $paid_amount=($request->pay_amount>$request->final_total)?$request->final_total:$request->pay_amount;
+            $header_data=[
+                'invoice_number'=>$this->code_Create(),
+                'vehicle_number'=>$request->vehicle_no,
+                'customer'=>$request->customer,
+                'invoice_type'=>$request->inv_type,
+                'cashier'=>Auth::user()->id,
+                'remarks'=>$request->notes,
+                'total_amount'=>$request->total,
+                'discount_amount'=>$request->bill_discount,
+                'net_amount'=>$request->final_total,
+                'paid_amount'=>$paid_amount,
+                'payment_type'=>$request->pay_method,
+                'return_amount'=>0.00,
+                'balance'=>$request->final_total-$paid_amount,
+                'is_cancel'=>0,
+            ];
+            $header=new InvoiceHeader($header_data);
+            $header->save();
+            if(isset($request->details)){
+                foreach($request->details as $element){
+                    if($element['item_type']=='service'){
+                        $service_data=[
+                            'invoice'=>$header->id,
+                            'service'=>$element['item'],
+                            'qty'=>$element['qty'],
+                            'unit_price'=>$element['unit_price'],
+                            'discount'=>$element['discount'],
+                            'amount'=>$element['amount'],
+                        ];
+                        $service_record=new InvoiceService($service_data);
+                        $service_record->save();
+                    }
+                    if($element['item_type']=='service'){
+                        $stock_issue=StockIssue::where('vehicle_number',$request->vehicle_no)->where('item',$element['item'])->where('is_invoiced',0)->where('id',$element['stock_no'])->first();
+                        if($stock_issue){
+                            $stock_issue->is_invoiced=1;
+                            $stock_issue->save();
+                            $item_data=[
+                                'invoice'=>$header->id,
+                                'item'=>$element['item'],
+                                'qty'=>$element['qty'],
+                                'unit_price'=>$element['unit_price'],
+                                'discount'=>$element['discount'],
+                                'amount'=>$element['amount'],
+                                'stock_no'=>$element['stock_no'],
+                            ];
+                            $item_record=new InvoiceItem($item_data);
+                            $item_data->save();
+                        }else{
+                            $item_stock=null;
+                            $item_stock=ItemStock::where('item',$element['item'])->where('qty_in_hand','>=',$element['qty'])->orderBy('id')->first();
+                            if($item_stock){
+                                $issue_data=[
+                                    'vehicle_number'=>$element['vehicle_no'],
+                                    'item'=>$element['item'],
+                                    'qty'=>$element['qty'],
+                                    'stock_no'=>$item_stock->id,
+                                    'is_invoiced'=>1,
+                                ];
+                                $issue=new StockIssue($issue_data);
+                                $issue->save();
+                                $item_stock->qty_in_hand=$item_stock->qty_in_hand-$element['qty'];
+                                $item_stock->save();
+                                $transaction_data=[
+                                    'stock_id'=>$item_stock->id,
+                                    'item'=>$element['item'],
+                                    'transaction_type'=>'sales/stock-issue',
+                                    'tran_status'=>'complete',
+                                    'qih_before'=>$item_stock->qty_in_hand+$element['qty'],
+                                    'qih_after'=>$item_stock->qty_in_hand,
+                                    'transfer_qty'=>$element['qty'],
+                                    'reference_id'=>$issue->id,
+                                ];
+                                $transaction=new ItemTransaction($transaction_data);
+                                $transaction->save();
+                                $item_data=[
+                                    'invoice'=>$header->id,
+                                    'item'=>$element['item'],
+                                    'qty'=>$element['qty'],
+                                    'unit_price'=>$element['unit_price'],
+                                    'discount'=>$element['discount'],
+                                    'amount'=>$element['amount'],
+                                    'stock_no'=>$item_stock->id,
+                                ];
+                                $item_record=new InvoiceItem($item_data);
+                                $item_data->save();
+                            }else{
+                                $qty=0;
+                                while($qty<=$element['qty']){
+                                    $item_stock=ItemStock::where('item',$element['item'])->where('qty_in_hand','>',0)->orderBy('id')->first();
+                                    $issue_data=[
+                                        'vehicle_number'=>$element['vehicle_no'],
+                                        'item'=>$element['item'],
+                                        'qty'=>$item_stock->qty_in_hand,
+                                        'stock_no'=>$item_stock->id,
+                                        'is_invoiced'=>1,
+                                    ];
+                                    $issue=new StockIssue($issue_data);
+                                    $issue->save();
+                                    $before=$item_stock->qty_in_hand;
+                                    $qty=$qty+$item_stock->qty_in_hand;
+                                    $item_stock->qty_in_hand=$item_stock->qty_in_hand-$item_stock->qty_in_hand;
+                                    $item_stock->save();
+                                    $transaction_data=[
+                                        'stock_id'=>$item_stock->id,
+                                        'item'=>$element['item'],
+                                        'transaction_type'=>'sales/stock-issue',
+                                        'tran_status'=>'complete',
+                                        'qih_before'=>$before,
+                                        'qih_after'=>$item_stock->qty_in_hand,
+                                        'transfer_qty'=>$before,
+                                        'reference_id'=>$issue->id,
+                                    ];
+                                    $transaction=new ItemTransaction($transaction_data);
+                                    $transaction->save();
+                                    $item_data=[
+                                        'invoice'=>$header->id,
+                                        'item'=>$element['item'],
+                                        'qty'=>$element['qty'],
+                                        'unit_price'=>$element['unit_price'],
+                                        'discount'=>$element['discount'],
+                                        'amount'=>$element['amount'],
+                                        'stock_no'=>$item_stock->id,
+                                    ];
+                                    $item_record=new InvoiceItem($item_data);
+                                    $item_data->save();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if($request->pay_method=='cheque'){
+                $receipt_header=[
+                    'recept_no'=>$this->receipt_code_create(),
+                    'customer'=>$request->customer,
+                    'recept_amount'=>$request->final_total,
+                    'payment_type'=>'cheque',
+                    'cashier'=>Auth::user()->id,
+                ];
+                $receipt=new CustomerRecept($receipt_header);
+                $receipt->save();
+                $receipt_data=[
+                    'invoice'=>$header->id,
+                    'balance_before'=>$request->final_total,
+                    'pay_amount'=>$request->final_total,
+                    'balance_after'=>0.00,
+                    'recept_id'=>$receipt->id,
+                ];
+                $detail=new CustomerReceptDetail($receipt_data);
+                $detail->save();
+                $cheque_data=[
+                    'receipt_id'=>$receipt->id,
+                    'customer'=>$receipt->customer,
+                    'cheque_number'=>$request->cheque_number,
+                    'bank_name'=>$request->bank_name,
+                    'banked_date'=>$request->cheque_date,
+                    'cheque_amount'=>$detail->pay_amount,
+                    'is_returned'=>0,
+                    'cashier'=>Auth::user()->id,
+                ];
+                $cheque=new CustomerCheque($cheque_data);
+                $cheque->save();
+                $cash_data=[
+                    'transaction_type'=>'customer-cheque',
+                    'reference_id'=>$cheque->id,
+                    'debit_amount'=>$detail->pay_amount,
+                    'credit_amount'=>0,
+                ];
+                $cash=new CashTransaction($cash_data);
+                $cash->save();
+            }else{
+                if($paid_amount<$request->final_total){
+                    $customer=Customer::find($request->customer);
+                    $customer->current_balance=$customer->current_balance+($request->final_total-$paid_amount);
+                    $customer->save();
+                    $cash_data=[
+                        'transaction_type'=>'sales',
+                        'reference_id'=>$header->id,
+                        'debit_amount'=>0,
+                        'credit_amount'=>$request->final_total-$paid_amount,
+                    ];
+                    $cash=new CashTransaction($cash_data);
+                    $cash->save();
+                }
+                if($paid_amount>0){
+                    $cash_data=[
+                        'transaction_type'=>'sales',
+                        'reference_id'=>$header->id,
+                        'debit_amount'=>$paid_amount,
+                        'credit_amount'=>0,
+                    ];
+                    $cash=new CashTransaction($cash_data);
+                    $cash->save();
+                }
+            }
             DB::commit();
-            return redirect(url('/sales/create'))->with('success','Item Sales Stored Successfully!!!');
+            return redirect(url('/sales/invoice/'.$header->id))->with('success','Item Sales Stored Successfully!!!');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Something went wrong!!');;
         }
+    }
+
+    public function receipt_code_create() {
+        $max_code=DB::select("select recept_no  from customer_recepts  ORDER BY RIGHT(recept_no , 10) DESC");
+        $Regi=null;
+        if(sizeof($max_code)==0) {
+            $new_code=0;
+        } else {
+            $last_code_no=$max_code[0]->invoice_number;
+            list($Regi,$new_code) = explode('-', $last_code_no);
+        }
+        $new_code='RCPT'.'-'.sprintf('%010d', intval($new_code) + 1);
+        return $new_code;
+    }
+
+    public function invoice($id){
+        $header=InvoiceHeader::find($id);
+        $invoice_items=InvoiceItem::where('invoice',$header->id)->get();
+        $invoice_services=InvoiceService::where('invoice',$header->id)->get();
+        view()->share('header',$header);
+        view()->share('items',$invoice_items);
+        view()->share('services',$invoice_services);
+        return view('pages.sales.print');
     }
 }
