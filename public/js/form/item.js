@@ -3,14 +3,15 @@ $(document).ready(function () {
         "processing": true,
         "serverSide": true,
         "ajax":{
-            "url": APP_URL+'user-role/get-all',
+            "url": APP_URL+'items/get-all',
             "dataType": "json",
             "type": "get",
         },
         "columns": [
             { "data": "id" },
-            { "data": "role_code" },
-            { "data": "role_name" },
+            { "data": "item_code" },
+            { "data": "item_name" },
+            { "data": "item_type" },
             { "data": "is_active" },
             { "data": "action" }
         ]

@@ -9,7 +9,7 @@
         <!--begin::Card title-->
         <div class="card-title">
             <!--begin::Search-->
-            <h4>Suppliers</h4>
+            <h4>services</h4>
         </div>
         <!--begin::Card title-->
         <!--begin::Card toolbar-->
@@ -17,7 +17,7 @@
             <!--begin::Toolbar-->
             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                 <!--begin::Add new-->
-                <a href="{{url('/suppliers/create')}}"><button type="button" class="btn btn-primary" >Add Supplier</button></a>
+                <a href="{{url('/sevices/create')}}"><button type="button" class="btn btn-primary" >Add Service</button></a>
                 <!--end::Add new-->
             </div>
             <!--end::Toolbar-->
@@ -34,9 +34,9 @@
                 <!--begin::Table row-->
                 <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                     <th class="min-w-40px">ID</th>
-                    <th class="min-w-125px">Supplier Name</th>
-                    <th class="min-w-125px">Email</th>
-                    <th class="min-w-125px">Phone No</th>
+                    <th class="min-w-125px">Service Name</th>
+                    <th class="min-w-125px">Service Rate</th>
+                    <th class="min-w-125px">Discount Rate</th>
                     <th class="min-w-70px">Actions</th>
                 </tr>
                 <!--end::Table row-->
@@ -55,7 +55,7 @@
 
 @endsection
 @section('opyional_js')
-<script src="{{ url('js/form/suppliers.js')}}"></script>
+<script src="{{ url('js/form/service.js')}}"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 @endsection
