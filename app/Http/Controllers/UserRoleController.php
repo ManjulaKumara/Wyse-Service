@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\modules;
 use Illuminate\Http\Request;
 use App\Models\UserRole;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class UserRoleController extends Controller
 {
@@ -87,11 +89,57 @@ class UserRoleController extends Controller
 
     public function user_role_store(Request $request){
         try {
+            // dd($request->all());
             $user_role=new UserRole();
             $user_role->role_code = $request->get('role_code');
             $user_role->role_name = $request->get('role_name');
             $user_role->is_active = $request->get('is_active');
             $user_role->save();
+
+            foreach ($request->element as $key=>$value){
+                $module_code=0;
+                $md_group=0;
+                $is_enable=0;
+                $can_read=0;
+                $can_create=0;
+                $can_update=0;
+                $can_delete=0;
+                foreach($value as $index=>$element){
+                    if(!empty($value[0])){
+                        $module_code=$value[0][0];
+                    }
+                    if(!empty($value[1])){
+                        $md_group=$value[1][0];
+                    }
+                    if(!empty($value[2])){
+                        $is_enable=1;
+                    }
+                    if(!empty($value[3])){
+                        $can_read=1;
+                    }
+                    if(!empty($value[4])){
+                        $can_create=1;
+                    }
+                    if(!empty($value[5])){
+                        $can_update=1;
+                    }
+                    if(!empty($value[6])){
+                        $can_delete=1;
+                    }
+                }
+
+                    $data[] = [
+                        'role_id' =>$user_role->id,
+                        'md_code' =>$module_code,
+                        'md_group' =>$md_group,
+                        'is_enable' => $is_enable,
+                        'can_create' =>$can_create,
+                        'can_read' => $can_read,
+                        'can_update' =>$can_update,
+                        'can_delete' => $can_delete,
+                    ];
+            }
+            DB::table('user_role_permissions')->insert($data);
 
             $notification = array(
                 'message' => 'Successfully Created!',
@@ -123,6 +171,52 @@ class UserRoleController extends Controller
             $user_role->role_name = $request->get('role_name');
             $user_role->is_active = $request->get('is_active');
             $user_role->save();
+
+            DB::table('user_role_permissions')->where('role_id',$id)->where('md_code','<>','modules')->delete();
+            foreach ($request->element as $key=>$value){
+                $module_code=0;
+                $md_group=0;
+                $is_enable=0;
+                $can_read=0;
+                $can_create=0;
+                $can_update=0;
+                $can_delete=0;
+                foreach($value as $index=>$element){
+                    if(!empty($value[0])){
+                        $module_code=$value[0][0];
+                    }
+                    if(!empty($value[1])){
+                        $md_group=$value[1][0];
+                    }
+                    if(!empty($value[2])){
+                        $is_enable=1;
+                    }
+                    if(!empty($value[3])){
+                        $can_read=1;
+                    }
+                    if(!empty($value[4])){
+                        $can_create=1;
+                    }
+                    if(!empty($value[5])){
+                        $can_update=1;
+                    }
+                    if(!empty($value[6])){
+                        $can_delete=1;
+                    }
+                }
+
+                    $data[] = [
+                        'role_id' =>$user_role->id,
+                        'md_code' =>$module_code,
+                        'md_group' =>$md_group,
+                        'is_enable' => $is_enable,
+                        'can_create' =>$can_create,
+                        'can_read' => $can_read,
+                        'can_update' =>$can_update,
+                        'can_delete' => $can_delete,
+                    ];
+            }
+            DB::table('user_role_permissions')->insert($data);
 
             $notification = array(
                 'message' => 'Successfully Updated!',
