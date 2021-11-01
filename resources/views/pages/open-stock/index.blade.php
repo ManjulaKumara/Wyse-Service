@@ -9,7 +9,7 @@
         <!--begin::Card title-->
         <div class="card-title">
             <!--begin::Search-->
-            <h4>Items</h4>
+            <h4>Open stocks</h4>
         </div>
         <!--begin::Card title-->
         <!--begin::Card toolbar-->
@@ -17,7 +17,7 @@
             <!--begin::Toolbar-->
             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                 <!--begin::Add new-->
-                <a href="{{url('/items/create')}}"><button type="button" class="btn btn-primary" >Add Item</button></a>
+                <a href="{{url('/open-stock/create')}}"><button type="button" class="btn btn-primary" >Add Stock</button></a>
                 <!--end::Add new-->
             </div>
             <!--end::Toolbar-->
@@ -34,17 +34,17 @@
                 <!--begin::Table row-->
                 <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                     <th class="min-w-40px">ID</th>
-                    <th class="min-w-70px">Item Code</th>
-                    <th class="min-w-125px">Item Name</th>
-                    <th class="min-w-125px">Item Type</th>
-                    <th class="min-w-125px">Status</th>
+                    <th class="min-w-125px">Item</th>
+                    <th class="min-w-125px">Purchase QTY</th>
+                    <th class="min-w-125px">Cost Price</th>
+                    <th class="min-w-125px">Sales Price</th>
                     <th class="min-w-70px">Actions</th>
                 </tr>
                 <!--end::Table row-->
             </thead>
             <!--end::Table head-->
             <!--begin::Table body-->
-            <tbody class=" text-gray-600 text-uppercase">
+            <tbody class=" text-gray-600">
 
             </tbody>
             <!--end::Table body-->
@@ -56,7 +56,7 @@
 
 @endsection
 @section('opyional_js')
-<script src="{{ url('js/form/item.js')}}"></script>
+<script src="{{ url('js/form/open_stock.js')}}"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 @endsection
