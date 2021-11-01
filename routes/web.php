@@ -9,6 +9,8 @@ use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\SalesController;
+use App\Http\Controllers\StockIssueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +26,11 @@ use App\Http\Controllers\UserRoleController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/sales/create',function(){return view('pages.sales.sales');});
+Route::get('/sales/create',[SalesController::class,'create']);
+Route::post('/sales/store',[SalesController::class,'store']);
+Route::get('/sales/invoice/{id}',[SalesController::class,'invoice']);
+
+Route::get('preview-bill',function(){return view('pages.sales.print');});
 
 Route::get('/suppliers/all',[ SupplierController::class, 'supplier_index' ]);
 Route::get('/suppliers/get-all',[ SupplierController::class, 'supplier_get_all' ]);
@@ -83,7 +89,8 @@ Route::get('/sevices/edit/{id}',[ ServiceController::class, 'service_edit' ]);
 Route::post('/sevices/update/{id}',[ ServiceController::class, 'service_update' ]);
 
 Route::get('/grns/create',function(){return view('pages.grn.grn');});
-Route::get('/stock-issues/create',function(){return view('pages.stock-issues.issue');});
+Route::get('/stock-issues/create',[StockIssueController::class,'createIssues']);
+Route::post('/stock-issues/store',[StockIssueController::class,'store']);
 Route::get('/supplier-vouchers/create',function(){return view('pages.supplier-voucher.supplier-voucher');});
 Route::get('/customer-receipts/create',function(){return view('pages.customer-receipt.customer-receipts');});
 
@@ -91,6 +98,13 @@ Route::get('/open-stock/all',[ StockController::class, 'open_stock_index' ]);
 Route::get('/open-stock/get-all',[ StockController::class, 'open_stock_get_all' ]);
 Route::get('/open-stock/create',[ StockController::class, 'open_stock_create' ]);
 Route::post('/open-stock/store',[ StockController::class, 'open_stock_store' ]);
+
+Route::group(['prefix'=>'ajax'],function(){
+    Route::get('/stock-issues-by-vehicle/{vehicle}',[SalesController::class,'getStockIssuesForVehicle']);
+    Route::get('/items-n-services',[SalesController::class,'getItemsAndServices']);
+    Route::get('/items',[SalesController::class,'getItems']);
+    Route::get('/services',[SalesController::class,'getServices']);
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
