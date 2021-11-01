@@ -4,6 +4,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -92,6 +93,11 @@ Route::get('/stock-issues/create',[StockIssueController::class,'createIssues']);
 Route::post('/stock-issues/store',[StockIssueController::class,'store']);
 Route::get('/supplier-vouchers/create',function(){return view('pages.supplier-voucher.supplier-voucher');});
 Route::get('/customer-receipts/create',function(){return view('pages.customer-receipt.customer-receipts');});
+
+Route::get('/open-stock/all',[ StockController::class, 'open_stock_index' ]);
+Route::get('/open-stock/get-all',[ StockController::class, 'open_stock_get_all' ]);
+Route::get('/open-stock/create',[ StockController::class, 'open_stock_create' ]);
+Route::post('/open-stock/store',[ StockController::class, 'open_stock_store' ]);
 
 Route::group(['prefix'=>'ajax'],function(){
     Route::get('/stock-issues-by-vehicle/{vehicle}',[SalesController::class,'getStockIssuesForVehicle']);
