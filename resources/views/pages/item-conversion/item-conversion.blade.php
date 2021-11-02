@@ -3,7 +3,8 @@
 <link href="{{url('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css"/>
 @endsection
 @section('content')
-<form>
+<form action="{{url('/item-conversion/store')}}" method="POST">
+    @csrf
 <div class="d-flex flex-column flex-lg-row">
     <!--begin::Content-->
     <div class="flex-lg-row-fluid mb-10 mb-lg-0 me-lg-7 me-xl-10">
@@ -34,6 +35,9 @@
                                         <div class="mb-5">
                                             <select required class="form-select" name="from_item" id="from_item" data-control="select2" data-placeholder="Select an option">
                                                 <option value="">Select an Item</option>
+                                                @foreach ($parent_items as $item)
+                                                <option value="{{$item->id}}">{{$item->item_name || $item->item_code}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -41,7 +45,7 @@
                                         <label class="form-label fs-6 fw-bolder text-gray-700 mb-3">From Quantity</label>
                                         <!--begin::Input group-->
                                         <div class="mb-5">
-                                            <input type="number" id="quantity" name="quantity" required class="form-control" />
+                                            <input type="number" id="from_quantity" name="from_quantity" required class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -90,25 +94,36 @@
      $(document).on('select2:open', () => {
         document.querySelector('.select2-search__field').focus();
     });
-    $('#vehicle_no').focusout(function(){
-        let dropdown = $('#item');
-        dropdown.empty();
-        dropdown.append('<option selected="selected" value="">Choose Value</option>');
-        dropdown.select2();
-        // Populate dropdown with list of provinces
-        let _dop_url=APP_URL+'/ajax/stock-issues-by-vehicle/'+$('#vehicle_no').val();
-        $.getJSON( _dop_url, function ( data ) {
-            $.each(data, function ( key, entry ) {
-                dropdown.append($('<option></option>').attr('value', entry.id).attr('data-stock',entry.stock_no).attr('data-qty',entry.quantity).text(entry.name+' || '+entry.code+' || '+entry.barcode));
-            })
-        });
+    $('#from_item').change(function(){
+        if($('#from_item').val()!="" && $('#from_item').val!=null){
+            let dropdown = $('#to_item');
+            dropdown.empty();
+            dropdown.append('<option selected="selected" value="">Choose Value</option>');
+            dropdown.select2();
+            // Populate dropdown with list of provinces
+            let _dop_url=APP_URL+'/ajax/child-items/'+$('#from_item').val();
+            $.getJSON( _dop_url, function ( data ) {
+                $.each(data, function ( key, entry ) {
+                    dropdown.append($('<option></option>').attr('value', entry.id).attr('data-upp',entry.units_per_parent).text(entry.item_name+' || '+entry.item_code));
+                })
+            });
+        }
     });
-    $('#item').change(function(){
-        if($('#item').val()!="" && $('#item').val!=null){
-            let quantity=$('#item').find(":selected").data('qty');
-            let stock=$('#item').find(":selected").data('stock');
-            $('#quantity').val(quantity).attr('max',quantity).attr('min',quantity);
-            $('#stock_issue').val(stock);
+    $('#to_item').change(function(){
+        if($('#from_quantity').val()=="" || $('#from_quantity').val()==null){
+            alert('Please provide parent item quantity that you want to convert into child items.');
+            $('#from_quantity').focus();
+        }else{
+            let upp=$('#to_item').find(':selected').data('upp');
+            let coverted_quantity=$('#from_quantity').val()*upp;
+            $('#to_quantity').val(converted_quantity);
+        }
+    });
+    $('#from_quantity').keyup(function(){
+        if($('#to_item').val()!="" && $('#to_item').val()!=null){
+            let upp=$('#to_item').find(':selected').data('upp');
+            let coverted_quantity=$('#from_quantity').val()*upp;
+            $('#to_quantity').val(converted_quantity);
         }
     });
 </script>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\StockIssue;
 use App\Models\ItemStock;
 use DateTime;
+use Illuminate\Support\Facades\Auth;
 
 class StockReturnController extends Controller
 {

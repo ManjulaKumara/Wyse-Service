@@ -10,6 +10,7 @@ use App\Models\SupplierVoucherDetail;
 use App\Models\SupplierCheque;
 use DateTime;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class SupplierVoucherController extends Controller
 {
@@ -98,7 +99,7 @@ class SupplierVoucherController extends Controller
         if(sizeof($max_code)==0) {
             $new_code=0;
         } else {
-            $last_code_no=$max_code[0]->invoice_number;
+            $last_code_no=$max_code[0]->voucher_number;
             list($Regi,$new_code) = explode('-', $last_code_no);
         }
         $new_code='SUP-V'.'-'.sprintf('%010d', intval($new_code) + 1);

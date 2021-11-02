@@ -10,6 +10,7 @@ use App\Models\StockIssue;
 use App\Models\ItemTransaction;
 use DB;
 use DateTime;
+use Illuminate\Support\Facades\Auth;
 
 class StockIssueController extends Controller
 {

@@ -16,6 +16,7 @@ use App\Http\Controllers\SupplierVoucherController;
 use App\Http\Controllers\CustomerReceiptController;
 use App\Http\Controllers\StockReturnController;
 use App\Http\Controllers\ItemRelationshipController;
+use App\Http\Controllers\ItemConversionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,13 +96,24 @@ Route::post('/sevices/update/{id}',[ ServiceController::class, 'service_update' 
 
 Route::get('/grns/create',[GrnController::class,'create']);
 Route::post('/grns/store',[GrnController::class,'store']);
+
 Route::get('/stock-issues/create',[StockIssueController::class,'createIssues']);
 Route::post('/stock-issues/store',[StockIssueController::class,'store']);
+
 Route::get('/stock-returns/create',[StockReturnController::class,'create']);
+Route::post('/stock-returns/store',[StockReturnController::class,'store']);
+
 Route::get('/supplier-vouchers/create',[SupplierVoucherController::class,'create']);
+Route::post('/supplier-vouchers/store',[SupplierVoucherController::class,'store']);
+
 Route::get('/customer-receipts/create',[CustomerReceiptController::class,'create']);
+Route::post('/customer-receipts/store',[CustomerReceiptController::class,'store']);
+
 Route::get('/item-relationship/create',[ItemRelationshipController::class,'create']);
-Route::get('/item-conversion/create',function(){return view('pages.item-conversion.item-conversion');});
+Route::post('/item-relationship/store',[ItemRelationshipController::class,'store']);
+
+Route::get('/item-conversion/create',[ItemConversionController::class,'create']);
+Route::post('/item-conversion/store',[ItemConversionController::class,'store']);
 
 Route::get('/open-stock/all',[ StockController::class, 'open_stock_index' ]);
 Route::get('/open-stock/get-all',[ StockController::class, 'open_stock_get_all' ]);
@@ -123,6 +135,7 @@ Route::group(['prefix'=>'ajax'],function(){
     Route::get('/services',[SalesController::class,'getServices']);
     Route::get('/unpaid-grns/{supplier}',[SupplierVoucherController::class,'get_pending_grns']);
     Route::get('/unpaid-invoices/{customer}',[CustomerReceiptController::class,'get_pending_invoices']);
+    Route::get('/child-items/{parent}',[ItemConversionController::class,'get_child_items']);
 });
 
 Route::get('/dashboard', function () {
