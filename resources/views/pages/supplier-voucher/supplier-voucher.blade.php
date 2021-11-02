@@ -4,6 +4,7 @@
 @endsection
 @section('content')
 <form id="supplier-voucher-form" action="{{url('/supplier-vouchers/store')}}" method="POST">
+    @csrf
 <div class="d-flex flex-column flex-lg-row">
     <!--begin::Content-->
     <div class="flex-lg-row-fluid mb-10 mb-lg-0 me-lg-7 me-xl-10">

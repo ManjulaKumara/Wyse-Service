@@ -3,7 +3,8 @@
 <link href="{{url('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css"/>
 @endsection
 @section('content')
-<form>
+<form action="{{url('/item-relationship/store')}}" method="POST">
+    @csrf
     <div class="container">
         <div class="row">
             <div class="col-md-6">

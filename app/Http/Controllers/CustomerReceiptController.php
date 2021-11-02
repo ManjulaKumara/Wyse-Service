@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\InvoiceHeader;
 use DB;
 use DateTime;
+use Illuminate\Support\Facades\Auth;
 
 
 class CustomerReceiptController extends Controller
@@ -27,7 +28,7 @@ class CustomerReceiptController extends Controller
         if(sizeof($max_code)==0) {
             $new_code=0;
         } else {
-            $last_code_no=$max_code[0]->invoice_number;
+            $last_code_no=$max_code[0]->recept_no;
             list($Regi,$new_code) = explode('-', $last_code_no);
         }
         $new_code='CUST-R'.'-'.sprintf('%010d', intval($new_code) + 1);
