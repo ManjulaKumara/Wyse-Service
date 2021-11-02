@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
@@ -99,6 +100,14 @@ Route::get('/open-stock/all',[ StockController::class, 'open_stock_index' ]);
 Route::get('/open-stock/get-all',[ StockController::class, 'open_stock_get_all' ]);
 Route::get('/open-stock/create',[ StockController::class, 'open_stock_create' ]);
 Route::post('/open-stock/store',[ StockController::class, 'open_stock_store' ]);
+
+Route::get('/module/all',[ ModuleController::class, 'module_index' ]);
+Route::get('/module/get-all',[ ModuleController::class, 'module_get_all' ]);
+Route::get('/module/create',[ ModuleController::class, 'module_create' ]);
+Route::post('/module/store',[ ModuleController::class, 'module_store' ]);
+Route::get('/module/view/{id}',[ ModuleController::class, 'module_view' ]);
+Route::get('/module/edit/{id}',[ ModuleController::class, 'module_edit' ]);
+Route::post('/module/update/{id}',[ ModuleController::class, 'module_update' ]);
 
 Route::group(['prefix'=>'ajax'],function(){
     Route::get('/stock-issues-by-vehicle/{vehicle}',[SalesController::class,'getStockIssuesForVehicle']);
