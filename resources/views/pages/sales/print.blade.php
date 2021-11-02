@@ -128,18 +128,21 @@
                                                             </tr>
                                                             @endforeach
                                                             @foreach($services as $service)
+                                                            @php
+                                                                $element=App\Models\Service::find($service->service);
+                                                            @endphp
                                                             <tr>
                                                                 <td width="60%" valign="top" style="font-size: 17px;">
-                                                                    <b>XXXXXXXXXXXX</b>
+                                                                    <b>{{$element->service_name}}</b>
                                                                 </td>
                                                                 <td width="15%" style="text-align: right;font-size: 15px;border-right:1px dashed grey;">
-                                                                    <b>450.00</b>
+                                                                    <b>{{number_format($service->unit_price,2,'.','')}}</b>
                                                                 </td>
                                                                 <td width="10%" style="text-align: right;font-size: 17px;border-right:1px dashed grey;">
-                                                                    <b>1</b>
+                                                                    <b>{{$service->qty}}</b>
                                                                 </td>
                                                                 <td width="15%" style="text-align: right;font-size: 17px;">
-                                                                    <b>450.00</b>
+                                                                    <b>{{number_format($service->amount,2,'.','')}}</b>
                                                                 </td>
                                                             </tr>
                                                             @endforeach
@@ -163,7 +166,7 @@
                                                                     <p style="font-size:18px;"><b>Total</b></p>
                                                                 </td>
                                                                 <td width="15%" style="text-align: right;">
-                                                                    <p style="font-size:18px;"><b>{{$header->total_amount}}</b></p>
+                                                                    <p style="font-size:18px;"><b>{{number_format($header->total_amount,2,'.','')}}</b></p>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -171,7 +174,7 @@
                                                                     <p style="font-size:18px;"><b>Discount</b></p>
                                                                 </td>
                                                                 <td width="15%" style="text-align: right;">
-                                                                    <p style="font-size:18px;"><b>{{$header->discount_amount}}</b></p>
+                                                                    <p style="font-size:18px;"><b>{{number_format($header->discount_amount,2,'.','')}}</b></p>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -179,7 +182,7 @@
                                                                     <p style="font-size:18px;"><b>Net Total</b></p>
                                                                 </td>
                                                                 <td width="15%" style="text-align: right;">
-                                                                    <p style="font-size:18px;"><b>{{$header->net_amount}}</b></p>
+                                                                    <p style="font-size:18px;"><b>{{number_format($header->net_amount,2,'.','')}}</b></p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -215,7 +218,7 @@ text-align: center;
             <i data-feather="printer" class="mr-2"></i> Print
         </button> </td>
     <td>
-        <a href="/students" class="btn btn-info">
+        <a href="/sales/create" class="btn btn-info">
             <i data-feather="home" class="mr-2"></i> Back to Sales
         </a>
     </td>

@@ -160,6 +160,8 @@ class SalesController extends Controller
             $data=[
                 'id'=>$item->id,
                 'stock_no'=>$item_Stock->id,
+                'code'=>$item->item_code,
+                'barcode'=>$item->barcode,
                 'name'=>$item->item_name,
                 'quantity'=>$issued->qty,
                 'unit_price'=>$item_Stock->sales_price,

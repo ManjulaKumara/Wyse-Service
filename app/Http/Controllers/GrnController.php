@@ -155,7 +155,6 @@ class GrnController extends Controller
                     }
                 }
             }
-
             DB::commit();
             return redirect()->back()->with('success','GRN Stored Successfully!!!');
         } catch (\Exception $e) {

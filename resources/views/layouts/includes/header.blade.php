@@ -95,17 +95,17 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/dashboards/compact.html">
+                                    <a class="menu-link py-3" href="{{url('/sales-returns/create')}}">
                                         <span class="menu-title">Sales Return</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('sales/all')}}">
                                         <span class="menu-title">Invoices Issued</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('/customer-receipts/create')}}">
                                         <span class="menu-title">Customer Receipt</span>
                                     </a>
                                 </div>
@@ -118,12 +118,12 @@
                             </a>
                             <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/index.html">
+                                    <a class="menu-link py-3" href="{{url('grns/create')}}">
                                         <span class="menu-title">Create GRN</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/dashboards/compact.html">
+                                    <a class="menu-link py-3" href=".{{url('/')}}">
                                         <span class="menu-title">Purchase Return</span>
                                     </a>
                                 </div>
@@ -133,7 +133,7 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('/supplier-vouchers/create')}}">
                                         <span class="menu-title">Supplier Vouchers</span>
                                     </a>
                                 </div>
@@ -146,32 +146,27 @@
                             </a>
                             <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/index.html">
+                                    <a class="menu-link py-3" href="{{url('stock-issues/create')}}">
                                         <span class="menu-title">Create Stock Issue</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/dashboards/compact.html">
+                                    <a class="menu-link py-3" href="{{url('stock-returns/create')}}">
                                         <span class="menu-title">Create Stock Return</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('stock-issues/create')}}">
                                         <span class="menu-title">Stock Issue List</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
-                                        <span class="menu-title">Stock Return List</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('item-relationship/create')}}">
                                         <span class="menu-title">Item Relationships</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('item-conversion/create')}}">
                                         <span class="menu-title">Item Conversion</span>
                                     </a>
                                 </div>

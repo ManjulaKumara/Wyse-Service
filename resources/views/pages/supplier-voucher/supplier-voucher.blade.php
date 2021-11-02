@@ -277,6 +277,12 @@
             let address=$('#supplier').find(":selected").data('address');
             let credit_limit=$('#supplier').find(":selected").data('credit');
             let current_balance=$('#supplier').find(":selected").data('current');
+            $('#email').val(email);
+            $('#telephone').val(telephone);
+            $('#address').val(address);
+            $('#credit_limit').val(credit_limit);
+            $('#current_balance').val(current_balance);
+
             let _url=APP_URL+'/ajax/unpaid-grns/'+$('#supplier').val();
             $.getJSON( _url, function ( data ) {
                 $.each(data, function ( key, entry ) {
