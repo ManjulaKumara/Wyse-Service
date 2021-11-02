@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StockIssueController;
+use App\Http\Controllers\GrnController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,7 +89,7 @@ Route::get('/sevices/view/{id}',[ ServiceController::class, 'service_view' ]);
 Route::get('/sevices/edit/{id}',[ ServiceController::class, 'service_edit' ]);
 Route::post('/sevices/update/{id}',[ ServiceController::class, 'service_update' ]);
 
-Route::get('/grns/create',function(){return view('pages.grn.grn');});
+Route::get('/grns/create',[GrnController::class,'create']);
 Route::get('/stock-issues/create',[StockIssueController::class,'createIssues']);
 Route::post('/stock-issues/store',[StockIssueController::class,'store']);
 Route::get('/supplier-vouchers/create',function(){return view('pages.supplier-voucher.supplier-voucher');});

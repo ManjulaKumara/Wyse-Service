@@ -3,7 +3,8 @@
 <link href="{{url('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css"/>
 @endsection
 @section('content')
-<form>
+<form id="frm-grn" action="{{url('/grns/store')}}" method="POST">
+    @csrf
 <div class="d-flex flex-column flex-lg-row">
     <!--begin::Content-->
     <div class="flex-lg-row-fluid mb-10 mb-lg-0 me-lg-7 me-xl-10">
@@ -12,10 +13,10 @@
             <div class="card-body p-12">
                 <div class="row">
                     <div class="col-md-6">
-                        <h3>Goods Recieved Note : GRN-00000001</h3>
+                        <h3>Goods Recieved Note : {{$grn_code}}</h3>
                     </div>
                     <div class="col-md-6">
-                        <h3 style="text-align: right">GRN Date : 30/10/2021</h3>
+                        <h3 style="text-align: right">GRN Date : {{$today}}</h3>
                     </div>
                 </div>
 
@@ -28,15 +29,17 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="supplier" class="required form-label">Supplier</label>
-                                        <select class="form-select" name="supplier" id="supplier" data-control="select2" data-placeholder="Select an option">
-                                            <option></option>
-                                            <option value="1">Option 1</option>
-                                            <option value="2">Option 2</option>
+                                        <select class="form-select" name="supplier" required id="supplier" data-control="select2" data-placeholder="Select an option">
+                                            <option value="">Please select a Supplier</option>
+                                            @foreach($suppliers as $supplier)
+                                                <option value="{{$supplier->id}}">{{$supplier->supplier_name}}</option>
+                                            @endforeach
+
                                         </select>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="receipt_no" class="required form-label">Receipt No:</label>
-                                        <input type="text" class="form-control" name="receipt_no" id="receipt_no" autofocus/>
+                                        <input type="text" class="form-control" required name="receipt_no" id="receipt_no" autofocus/>
                                     </div>
                                     <!--begin::Input group-->
 
@@ -44,7 +47,7 @@
                                     <!--begin::Input group-->
                                     <div class="col-md-3">
                                         <label for="grn_date" class="required form-label">Date:</label>
-                                        <input type="date" name="grn_date" id="grn_date" class="form-control">
+                                        <input type="date" name="grn_date" id="grn_date" required class="form-control">
                                     </div>
                                     <!--end::Input group-->
 
@@ -59,9 +62,10 @@
                                         <!--begin::Input group-->
                                         <div class="mb-5">
                                             <select class="form-select" name="item" id="item" data-control="select2" data-placeholder="Select an option">
-                                                <option></option>
-                                                <option value="1">Item Name 1 || Category 1 || Barcode 1 || Unit Price 1 || Discount 1</option>
-                                                <option value="2">Item Name 2 || Category 2 || Barcode 2 || Unit Price 2 || Discount 2</option>
+                                                <option value="">Please select an Item</option>
+                                                @foreach($items as $item)
+                                                <option data-name="{{$item->item_name}}" value="{{$item->id}}">{{$item->item_name}}  || {{$item->barcode}} || {{$item->item_code}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 
@@ -72,7 +76,7 @@
                                         <label class="form-label fs-6 fw-bolder text-gray-700 mb-3">Quantity</label>
                                         <!--begin::Input group-->
                                         <div class="mb-5">
-                                            <input type="text" class="form-control form-control-solid" />
+                                            <input type="number" min="1" id="quantity" class="form-control" />
                                         </div>
                                     </div>
                                     <!--end::Col-->
@@ -80,28 +84,20 @@
                                 <div class="row gx-10 mb-5">
                                     <div class="col-lg-3">
                                         <label for="label_price" class="required form-label">Label Price(LKR):</label>
-                                        <input type="text" class="form-control" disabled name="label_price" id="label_price"/>
+                                        <input type="text" class="form-control" readonly name="label_price" id="label_price"/>
                                     </div>
                                     <div class="col-lg-3">
                                         <label for="discount" class="required form-label">Discount(LKR):</label>
-                                        <input type="text" class="form-control"  name="discount" id="discount"/>
+                                        <input type="text" class="form-control" readonly  name="discount" id="discount"/>
                                     </div>
                                     <div class="col-lg-3">
                                         <label for="amount" class="required form-label">Total(LKR):</label>
-                                        <input type="text" class="form-control" disabled name="amount" id="amount"/>
+                                        <input type="text" disabled class="form-control" readonly name="amount" id="amount"/>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="form-check form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                        Have Free Issues?
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <button type="button" style="margin-top:25px;" class="btn btn-success">ADD</button>
+                                                <button type="button" style="margin-top:25px;" id="btn-add" class="btn btn-success">ADD</button>
                                             </div>
                                         </div>
 
@@ -125,16 +121,16 @@
             <div class="card-body p-10">
                 <!--begin::Input group-->
                 <div class="row mb-3">
-                    <label for="inv_no" class="required form-label">Total:</label>
-                    <input type="text" class="form-control" name="inv_no" id="inv_no"/>
+                    <label for="total" class="required form-label">Total:</label>
+                    <input type="text" required class="form-control" name="total" id="total"/>
                 </div>
                 <div class="row mb-3">
-                    <label for="inv_no" class="required form-label">Bill Discount:</label>
-                    <input type="text" class="form-control" name="inv_no" id="inv_no"/>
+                    <label for="total_discount" class="required form-label">Total Discount:</label>
+                    <input type="text" required class="form-control" name="total_discount" id="total_discount"/>
                 </div>
                 <div class="row mb-3">
-                    <label for="inv_no" class="required form-label">Net Total:</label>
-                    <input type="text" class="form-control" name="inv_no" id="inv_no"/>
+                    <label for="net_total" class="required form-label">Net Total:</label>
+                    <input type="text" required class="form-control" name="net_total" id="net_total"/>
                 </div>
                 <!--end::Input group-->
                 <!--begin::Separator-->
@@ -144,7 +140,7 @@
                 <div class="mb-0">
                     <!--begin::Row-->
                     <!--end::Row-->
-                    <button type="submit" href="#" class="btn btn-primary w-100" id="kt_invoice_submit_button">
+                    <button type="submit" class="btn btn-primary w-100" id="btn-submit">
                     <!--begin::Svg Icon | path: icons/duotune/general/gen016.svg-->
                     <span class="svg-icon svg-icon-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -167,7 +163,7 @@
             <div class="card-body">
                 <div class="table-responsive mb-10">
                     <!--begin::Table-->
-                    <table class="table g-5 gs-0 mb-0 fw-bolder text-gray-700" data-kt-element="items">
+                    <table class="table g-5 gs-0 mb-0 fw-bolder text-gray-700" id="tbl-items">
                         <!--begin::Table head-->
                         <thead>
                             <tr class="border-bottom fs-7 fw-bolder text-gray-700 text-uppercase">
@@ -182,37 +178,7 @@
                         <!--end::Table head-->
                         <!--begin::Table body-->
                         <tbody>
-                            <tr class="border-bottom border-bottom-dashed" data-kt-element="item">
-                                <td class="pe-7">
-                                    <p>Item Name Nmae Nme anr dfg dfgdfgfsdg sdfg sdfg sdfg</p>
-                                </td>
 
-                                <td>
-                                    <input type="text" class="form-control form-control-solid text-end" name="price[]" placeholder="0.00" value="0.00" data-kt-element="price" />
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control form-control-solid text-end" name="price[]" placeholder="0.00" value="0.00" data-kt-element="price" />
-                                </td>
-                                <td class="ps-0">
-                                    <input class="form-control form-control-solid" type="number" min="1" name="quantity[]" placeholder="1" value="1" data-kt-element="quantity" />
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control form-control-solid text-end" name="price[]" placeholder="0.00" value="0.00" data-kt-element="price" />
-                                </td>
-                                <td class="pt-5 text-end">
-                                    <button type="button" class="btn btn-sm btn-icon btn-active-color-primary" data-kt-element="remove-item">
-                                        <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
-                                        <span class="svg-icon svg-icon-3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black" />
-                                                <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black" />
-                                                <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </button>
-                                </td>
-                            </tr>
                         </tbody>
                         <!--end::Table body-->
                     </table>
@@ -230,9 +196,43 @@
         <div class="card">
             <div class="card-body">
                 <h3>Free Issues</h3>
+                <div class="row gx-10 mb-5">
+                    <!--begin::Col-->
+                    <div class="col-lg-6">
+                        <label class="form-label fs-6 fw-bolder text-gray-700 mb-3">Item</label>
+                        <!--begin::Input group-->
+                        <div class="mb-5">
+                            <select class="form-select" name="free_item" id="free_item" data-control="select2" data-placeholder="Select an option">
+                                <option value="">Please select an Item</option>
+                                @foreach($items as $item)
+                                <option data-name="{{$item->item_name}}" value="{{$item->id}}">{{$item->item_name}}  || {{$item->barcode}} || {{$item->item_code}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                    </div>
+                    <!--end::Col-->
+                    <!--begin::Col-->
+                    <div class="col-lg-3">
+                        <label class="form-label fs-6 fw-bolder text-gray-700 mb-3">Quantity</label>
+                        <!--begin::Input group-->
+                        <div class="mb-5">
+                            <input type="number" min="1" id="free_quantity" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" style="margin-top:25px;" id="btn-add-free" class="btn btn-success">ADD</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--end::Col-->
+                </div>
                 <div class="table-responsive mb-10">
                     <!--begin::Table-->
-                    <table class="table g-5 gs-0 mb-0 fw-bolder text-gray-700" data-kt-element="items">
+                    <table class="table g-5 gs-0 mb-0 fw-bolder text-gray-700" id="tbl-free-items">
                         <!--begin::Table head-->
                         <thead>
                             <tr class="border-bottom fs-7 fw-bolder text-gray-700 text-uppercase">
@@ -244,27 +244,7 @@
                         <!--end::Table head-->
                         <!--begin::Table body-->
                         <tbody>
-                            <tr class="border-bottom border-bottom-dashed" data-kt-element="item">
-                                <td class="pe-7">
-                                    <p>Item Name Nmae Nme anr dfg dfgdfgfsdg sdfg sdfg sdfg</p>
-                                </td>
-                                <td class="ps-0">
-                                    <input class="form-control form-control-solid" type="number" min="1" name="quantity[]" placeholder="1" value="1" data-kt-element="quantity" />
-                                </td>
-                                <td class="pt-5 text-end">
-                                    <button type="button" class="btn btn-sm btn-icon btn-active-color-primary" data-kt-element="remove-item">
-                                        <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
-                                        <span class="svg-icon svg-icon-3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black" />
-                                                <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black" />
-                                                <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </button>
-                                </td>
-                            </tr>
+
                         </tbody>
                         <!--end::Table body-->
                     </table>
@@ -278,8 +258,191 @@
 @section('opyional_js')
 <script src="{{url('assets/plugins/global/plugins.bundle.js')}}"></script>
 <script>
-     $(document).on('select2:open', () => {
+    var itemsInTable=[];
+    var count=0;
+    $(document).on('select2:open', () => {
         document.querySelector('.select2-search__field').focus();
+    });
+    $(function(){
+        $('#supplier').focus();
+    });
+    $('#item').change(function(){
+        if($('#item').val()!="" && $('#item').val()!=null){
+            $('#discount').val("0.00");
+            $('#quantity').focus();
+        }
+    });
+    $('#label_price').keyup(function(){
+        if(($('#item').val()!="" && $('#item').val()!=null) && ($('#quantity').val()!="" && $('#quantity').val()!=null)){
+            let amount=($('#label_price').val()-$('#discount').val())*$('#quantity').val();
+            $('#amount').val(amount);
+        }
+    });
+    $('#discount').keyup(function(){
+        if(($('#item').val()!="" && $('#item').val()!=null) && ($('#quantity').val()!="" && $('#quantity').val()!=null) && ($('#discount').val()!="" && $('#discount').val()!=null)){
+            let amount=($('#label_price').val()-$('#discount').val())*$('#quantity').val();
+            $('#amount').val(amount);
+        }
+    });
+    $('#discount').focusout(function(){
+        $('#have_free').focus();
+    });
+    $('#btn-add').click(function(){
+        if($('#item').val()=="" || $('#item').val()==null){
+            alert('Please select an Item to continue');
+            $('#item').focus();
+        }else if($('#quantity').val()=="" || $('#quantity').val()==null){
+            alert('Please input the quantity');
+            $('#quantity').focus();
+        }else if($('#label_price').val()=="" || $('#label_price').val()==null){
+            alert('Label price can not be empty');
+            $('#label_price').focus();
+        }else if($('#discount').val()=="" || $('#discount').val()==null){
+            alert('Enter the discount for one unit..');
+            $('#discount').focus();
+        }else{
+            let item_id=$('#item').val();
+            let item_name=$('#item').find(":selected").data('name');
+            let label_price=$('#label_price').val();
+            let quantity=$('#quantity').val();
+            let discount=$('#discount').val();
+            let amount=$('#amount').val();
+            if(itemsInTable.includes(item_id+"")){
+                alert('Item Already Inserted');
+            }else{
+                itemsInTable.push(item_id+"");
+                let markup=`
+                <tr class="border-bottom border-bottom-dashed item-row" data-kt-element="item" id="tr${count}" data-item="${item_id}">
+                    <td class="pe-7">
+                        <p>${item_name}</p>
+                        <input type="hidden" name="details[${count}][item]" value="${item_id}"/>
+                    </td>
+
+                    <td>
+                        <input type="text" class="form-control form-control-solid text-end label_price" name="details[${count}][label_price]" value="${label_price}" placeholder="0.00" value="0.00" />
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-solid text-end discount" name="details[${count}][discount]" value="${discount}" placeholder="0.00" value="0.00" />
+                    </td>
+                    <td class="ps-0">
+                        <input class="form-control form-control-solid qty" type="number" min="1" name="details[${count}][quantity]" value="${quantity}" placeholder="1" value="1" />
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-solid text-end amount" name="details[${count}][amount]" value="${amount}" placeholder="0.00" value="0.00" />
+                    </td>
+                    <td class="pt-5 text-end">
+                        <button type="button" class="btn btn-sm btn-icon btn-active-color-primary" onclick="deleteItem(${count})">
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
+                            <span class="svg-icon svg-icon-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black" />
+                                    <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black" />
+                                    <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </button>
+                    </td>
+                </tr>
+                `;
+                $("#tbl-items tbody").append(markup);
+                count=count*1+1;
+                calInvoiceTotal();
+                $('#item').val("");
+                $('#item').trigger('change');
+                $('#quantity').val("");
+                $('#label_price').val("");
+                $('#discount').val("");
+                $('#amount').val("");
+                $('#item').focus();
+            }
+        }
+    });
+    function calInvoiceTotal(){
+        total=0;
+        $("#tbl-items .item-row").each(function(){
+            total=total+($(this).find('.qty').val()*$(this).find('.label_price').val())*1;
+        });
+        $('#total').val(total);
+        discount=0;
+        $('#tbl-items .item-row').each(function(){
+            discount=discount+($(this).find('.qty').val()*$(this).find('.discount').val())*1;
+        });
+        $('#total_discount').val(discount);
+        $('#net_total').val(total-discount);
+    }
+    function deleteItem(index){
+        let item_id=$('#tr'+index).data('item-id');
+        $('#tr'+index).remove();
+        console.log(itemsInTable);
+        let search=item_id+"";
+        let i = itemsInTable.indexOf(search+"");
+        console.log(i);
+        if ( i >= 0 ) itemsInTable.splice( i , 1 );
+    }
+    var itemsInFreeTable=[];
+    var free_count=0;
+    $('#btn-add-free').click(function(){
+        if($('#free_item').val()=="" || $('#free_item').val()==null){
+            alert('Please select an Free issue Item to continue');
+            $('#free_item').focus();
+        }else if($('#free_quantity').val()=="" || $('#free_quantity').val()==null){
+            alert('Please input free issued quantity');
+            $('#free_quantity').focus();
+        }else{
+            let free_item_id=$('#free_item').val();
+            let free_item_name=$('#free_item').find(":selected").data('name');
+            let free_qty=$('#free_quantity').val();
+            if(itemsInFreeTable.includes(free_item_id+"")){
+                alert('Item already Inserted');
+                $('#free_item').focus();
+            }else{
+                itemsInFreeTable.push(free_item_id+"");
+                let free_markup=`
+                <tr class="border-bottom border-bottom-dashed item-row" data-free-item="${free_item_id}" id="row${free_count}">
+                    <td class="pe-7">
+                        <p>${free_item_name}</p>
+                        <input type="hidden" name="free_details[${free_count}][item]" value="${free_item_id}"/>
+                    </td>
+                    <td class="ps-0">
+                        <input class="form-control form-control-solid" type="number" min="1" name="free_details[${free_count}][quantity]" placeholder="1" value="${free_qty}" data-kt-element="quantity" />
+                    </td>
+                    <td class="pt-5 text-end">
+                        <button type="button" onclick="deleteFreeItem(${free_count})" class="btn btn-sm btn-icon btn-active-color-primary" data-kt-element="remove-item">
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
+                            <span class="svg-icon svg-icon-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="black" />
+                                    <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="black" />
+                                    <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="black" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </button>
+                    </td>
+                </tr>
+                `;
+                $("#tbl-free-items tbody").append(free_markup);
+                free_count=free_count*1+1;
+                $('#free_item').val("");
+                $('#free_item').trigger('change');
+                $('#free_quantity').val("");
+                $('#free_item').focus();
+            }
+        }
+    });
+    function deleteFreeItem(index){
+        let item_id=$('#row'+index).data('free-item');
+        $('#row'+index).remove();
+        let search=item_id+"";
+        let i = itemsInFreeTable.indexOf(search+"");
+        console.log(i);
+        if ( i >= 0 ) itemsInFreeTable.splice( i , 1 );
+    }
+    $(document).on('keydown', function(event) {
+       if (event.key == "Escape") {
+           $('#btn-submit').focus();
+       }
     });
 </script>
 @endsection

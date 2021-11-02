@@ -149,6 +149,10 @@
                     <label for="pay_amount" class="required form-label">Pay Amount:</label>
                     <input type="text" class="form-control" name="pay_amount" id="pay_amount"/>
                 </div>
+                <div class="row mb-3">
+                    <label for="balance_amount" class="required form-label">Customer Balance:</label>
+                    <input type="text" class="form-control" name="balance_amount" id="balance_amount"/>
+                </div>
                 <!--end::Input group-->
                 <!--begin::Separator-->
                 <div class="separator separator-dashed mb-8"></div>
@@ -436,7 +440,7 @@
             }
         }
     });
-    $('#quantity').keydown(function(){
+    $('#quantity').keyup(function(){
         if($('#item').val()!="" && $('#item').val()!=null){
             let qih=$('#item').find(":selected").data('qih');
             if($('#quantity').val()!="" && $('#quantity').val()!=null){
@@ -493,7 +497,7 @@
                             <input type="text" class="form-control form-control-solid text-end amount" name="details[${count}][amount]" placeholder="0.00" value="${quantity*(unit_price-discount)}" />
                         </td>
                         <td class="pt-5 text-end">
-                            <button type="button" class="btn btn-sm btn-icon btn-active-color-primary" data-kt-element="remove-item">
+                            <button type="button" class="btn btn-sm btn-icon btn-active-color-primary" data-kt-element="remove-item" onclick="deleteItem(${count})">
                                 <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
                                 <span class="svg-icon svg-icon-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -510,6 +514,13 @@
                 $("#tbl-items tbody").append(markup);
                 count=count*1+1;
                 calInvoiceTotal();
+                $('#item').val("");
+                $('#item').trigger('change');
+                $('#quantity').val("");
+                $('#unit_price').val("");
+                $('#discount').val("");
+                $('#amount').val("");
+                $('#item').focus();
             }
 
         }
@@ -556,6 +567,8 @@
                 $('#customer').focus();
             }
         }
+        let customer_balance=$('#pay_amount').val()-$('#final_total').val();
+        $('#balance_amount').val(customer_balance);
     });
     function deleteItem(index){
         let item_id=$('#tr'+index).data('item-id');
