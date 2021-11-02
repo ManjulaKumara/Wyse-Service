@@ -15,6 +15,7 @@ use App\Http\Controllers\GrnController;
 use App\Http\Controllers\SupplierVoucherController;
 use App\Http\Controllers\CustomerReceiptController;
 use App\Http\Controllers\StockReturnController;
+use App\Http\Controllers\ItemRelationshipController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,7 +100,7 @@ Route::post('/stock-issues/store',[StockIssueController::class,'store']);
 Route::get('/stock-returns/create',[StockReturnController::class,'create']);
 Route::get('/supplier-vouchers/create',[SupplierVoucherController::class,'create']);
 Route::get('/customer-receipts/create',[CustomerReceiptController::class,'create']);
-Route::get('/item-relationship/create',function(){return view('pages.item-relationship.item-relationship');});
+Route::get('/item-relationship/create',[ItemRelationshipController::class,'create']);
 Route::get('/item-conversion/create',function(){return view('pages.item-conversion.item-conversion');});
 
 Route::get('/open-stock/all',[ StockController::class, 'open_stock_index' ]);

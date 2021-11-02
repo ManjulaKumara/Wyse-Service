@@ -61,6 +61,7 @@ class GrnController extends Controller
             $header->save();
             if(isset($request->details)){
                 foreach($details as $element){
+                    $item=Item::find($element['item']);
                     $detail_data=[
                         'item'=>$element['item'],
                         'purchase_price'=>$element['label_price'],
@@ -96,6 +97,12 @@ class GrnController extends Controller
                     ];
                     $transaction=new ItemTransaction($transaction_data);
                     $transaction->save();
+                    $stocks=ItemStock::where('item',$element['item'])->get();
+                    foreach($stocks as $var){
+                        $var->sales_price=$element['label_price'];
+                        $var->sales_rate=($element['label_price']-$var->cost_price)/$var->cost_price;
+                        $var->save();
+                    }
                 }
             }
             if(isset($request->free_details)){

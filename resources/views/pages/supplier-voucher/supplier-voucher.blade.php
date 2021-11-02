@@ -267,7 +267,7 @@
 <script src="{{url('assets/plugins/global/plugins.bundle.js')}}"></script>
 <script>
     var count=0;
-     $(document).on('select2:open', () => {
+    $(document).on('select2:open', () => {
         document.querySelector('.select2-search__field').focus();
     });
     $('#supplier').change(function(){

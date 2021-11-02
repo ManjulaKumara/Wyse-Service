@@ -24,8 +24,11 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="item" class="required form-label">Item</label>
-                                                <select class="form-select" name="parent_item" id="parent_item" data-control="select2" data-placeholder="Select an option">
+                                                <select class="form-select" required name="parent_item" id="parent_item" data-control="select2" data-placeholder="Select an option">
                                                     <option value="">Please select an Item</option>
+                                                    @foreach ($items as $item)
+                                                        <option value="{{$item->id}}">{{$item->item_name}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -70,8 +73,11 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="item" class="required form-label">Item</label>
-                                                <select class="form-select" name="child_item" id="child_item" data-control="select2" data-placeholder="Select an option">
+                                                <select class="form-select" required name="child_item" id="child_item" data-control="select2" data-placeholder="Select an option">
                                                     <option value="">Please select an Item</option>
+                                                    @foreach ($items as $item)
+                                                        <option value="{{$item->id}}">{{$item->item_name}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -83,7 +89,7 @@
                                                 <label class="form-label fs-6 fw-bolder mb-3">Quantity</label>
                                                 <!--begin::Input group-->
                                                 <div class="mb-5">
-                                                    <input type="number" min="1" id="quantity" name="quantity" class="form-control" />
+                                                    <input type="number" required min="1" id="units_per_parent" name="units_per_parent" class="form-control" />
                                                 </div>
                                             </div>
                                             <!--end::Col-->
@@ -121,5 +127,29 @@
 @endsection
 @section('opyional_js')
 <script src="{{url('assets/plugins/global/plugins.bundle.js')}}"></script>
-
+<script>
+    $(document).on('select2:open', () => {
+        document.querySelector('.select2-search__field').focus();
+    });
+    $('#parent_item').change(function(){
+        if($('#child_item').val()!="" && $('#child_item').val()!=null){
+            if($('#parent_item').val()!="" && $('#parent_item').val()!=null){
+                if($('#parent_item').val()==$('#child_item').val()){
+                    alert('Parent Item and Child Item can not be same..');
+                    $('#parent_item').focus();
+                }
+            }
+        }
+    });
+    $('#child_item').change(function(){
+        if($('#child_item').val()!="" && $('#child_item').val()!=null){
+            if($('#parent_item').val()!="" && $('#parent_item').val()!=null){
+                if($('#parent_item').val()==$('#child_item').val()){
+                    alert('Parent Item and Child Item can not be same..');
+                    $('#child_item').focus();
+                }
+            }
+        }
+    });
+</script>
 @endsection
