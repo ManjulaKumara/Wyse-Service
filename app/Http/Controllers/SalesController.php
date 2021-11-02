@@ -221,7 +221,7 @@ class SalesController extends Controller
                         $service_record=new InvoiceService($service_data);
                         $service_record->save();
                     }
-                    if($element['item_type']=='service'){
+                    if($element['item_type']=='item'){
                         $stock_issue=StockIssue::where('vehicle_number',$request->vehicle_no)->where('item',$element['item'])->where('is_invoiced',0)->where('id',$element['stock_no'])->first();
                         if($stock_issue){
                             $stock_issue->is_invoiced=1;
@@ -236,7 +236,7 @@ class SalesController extends Controller
                                 'stock_no'=>$element['stock_no'],
                             ];
                             $item_record=new InvoiceItem($item_data);
-                            $item_data->save();
+                            $item_record->save();
                         }else{
                             $item_stock=null;
                             $item_stock=ItemStock::where('item',$element['item'])->where('qty_in_hand','>=',$element['qty'])->orderBy('id')->first();
@@ -274,7 +274,7 @@ class SalesController extends Controller
                                     'stock_no'=>$item_stock->id,
                                 ];
                                 $item_record=new InvoiceItem($item_data);
-                                $item_data->save();
+                                $item_record->save();
                             }else{
                                 $qty=0;
                                 while($qty<=$element['qty']){
@@ -362,19 +362,29 @@ class SalesController extends Controller
                 $cash->save();
             }else{
                 if($paid_amount<$request->final_total){
-                    $customer=Customer::find($request->customer);
-                    $customer->current_balance=$customer->current_balance+($request->final_total-$paid_amount);
-                    $customer->save();
-                    $cash_data=[
-                        'transaction_type'=>'sales',
-                        'reference_id'=>$header->id,
-                        'debit_amount'=>0,
-                        'credit_amount'=>$request->final_total-$paid_amount,
-                    ];
-                    $cash=new CashTransaction($cash_data);
-                    $cash->save();
-                }
-                if($paid_amount>0){
+                    if($paid_amount>0){
+                        $customer=Customer::find($request->customer);
+                        $customer->current_balance=$customer->current_balance+($request->final_total-$paid_amount);
+                        $customer->save();
+                        $cash_data=[
+                            'transaction_type'=>'sales',
+                            'reference_id'=>$header->id,
+                            'debit_amount'=>0,
+                            'credit_amount'=>$request->final_total-$paid_amount,
+                        ];
+                        $cash=new CashTransaction($cash_data);
+                        $cash->save();
+                    }else{
+                        $cash_data=[
+                            'transaction_type'=>'sales',
+                            'reference_id'=>$header->id,
+                            'debit_amount'=>$paid_amount,
+                            'credit_amount'=>0,
+                        ];
+                        $cash=new CashTransaction($cash_data);
+                        $cash->save();
+                    }
+                }else{
                     $cash_data=[
                         'transaction_type'=>'sales',
                         'reference_id'=>$header->id,
@@ -389,6 +399,7 @@ class SalesController extends Controller
             return redirect(url('/sales/invoice/'.$header->id))->with('success','Item Sales Stored Successfully!!!');
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             return redirect()->back()->with('error', 'Something went wrong!!');;
         }
     }

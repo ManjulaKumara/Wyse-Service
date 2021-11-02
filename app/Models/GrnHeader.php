@@ -20,7 +20,8 @@ class GrnHeader extends Model
         'paid_amount',
         'remarks',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'receipt_no',
     ];
     public $timestamps = true;
 }

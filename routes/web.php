@@ -13,6 +13,7 @@ use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StockIssueController;
 use App\Http\Controllers\GrnController;
+use App\Http\Controllers\SupplierVoucherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +43,7 @@ Route::get('/suppliers/view/{id}',[ SupplierController::class, 'supplier_view' ]
 Route::get('/suppliers/edit/{id}',[ SupplierController::class, 'supplier_edit' ]);
 Route::post('/suppliers/update/{id}',[ SupplierController::class, 'supplier_update' ]);
 
-Route::get('/users/all',[ UserController::class, 'users_index' ]);
+Route::get('/user/all',[ UserController::class, 'users_index' ]);
 Route::get('/users/get-all',[ UserController::class, 'users_get_all' ]);
 Route::get('/user/create',[ UserController::class, 'user_create' ]);
 Route::post('/user/store',[ UserController::class, 'user_store' ]);
@@ -91,9 +92,10 @@ Route::get('/sevices/edit/{id}',[ ServiceController::class, 'service_edit' ]);
 Route::post('/sevices/update/{id}',[ ServiceController::class, 'service_update' ]);
 
 Route::get('/grns/create',[GrnController::class,'create']);
+Route::post('/grns/store',[GrnController::class,'store']);
 Route::get('/stock-issues/create',[StockIssueController::class,'createIssues']);
 Route::post('/stock-issues/store',[StockIssueController::class,'store']);
-Route::get('/supplier-vouchers/create',function(){return view('pages.supplier-voucher.supplier-voucher');});
+Route::get('/supplier-vouchers/create',[SupplierVoucherController::class,'create']);
 Route::get('/customer-receipts/create',function(){return view('pages.customer-receipt.customer-receipts');});
 
 Route::get('/open-stock/all',[ StockController::class, 'open_stock_index' ]);
@@ -114,6 +116,7 @@ Route::group(['prefix'=>'ajax'],function(){
     Route::get('/items-n-services',[SalesController::class,'getItemsAndServices']);
     Route::get('/items',[SalesController::class,'getItems']);
     Route::get('/services',[SalesController::class,'getServices']);
+    Route::get('/unpaid-grns/{supplier}',[SupplierVoucherController::class,'get_pending_grns']);
 });
 
 Route::get('/dashboard', function () {

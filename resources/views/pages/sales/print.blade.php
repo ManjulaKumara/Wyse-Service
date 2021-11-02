@@ -65,7 +65,12 @@
                                                 <tr>
                                                     <td width="50%" style="font-family: Arial; font-size: 20px; color:black; vertical-align: top; border-top-width: 1px; border-top-color: rgb(58, 48, 48); border-top-style: solid;border-bottom-width: 1px; border-bottom-color: rgb(58, 48, 48); border-bottom-style: solid; margin: 0; padding: 10px 0;"
                                                         valign="top">
-                                                        <p style="font-size: 17px;"><b>Customer: {{$header->customer}} </b></p>
+                                                        @if(isset($header->customer))
+                                                            @php
+                                                                $customer=App\Models\Customer::find($header->customer);
+                                                            @endphp
+                                                            <p style="font-size: 17px;"><b>Customer: {{$customer->customer_name}} </b></p>
+                                                        @endif
                                                     </td>
                                                     <td width="50%" class="alignright"
                                                         style="font-family: Arial; font-size: 22px; color:black; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: rgb(58, 48, 48); border-top-style: solid;border-bottom-width: 1px; border-bottom-color: rgb(58, 48, 48); border-bottom-style: solid; margin: 0; padding: 10px 0;"
@@ -104,18 +109,21 @@
                                                                 </td>
                                                             </tr>
                                                             @foreach($items as $item)
+                                                            @php
+                                                                $element=App\Models\Item::find($item->item);
+                                                            @endphp
                                                             <tr style="padding-bottom: 15px;">
                                                                 <td width="60%" valign="top" style="font-size: 17px;">
-                                                                    <b>XXXXXXXXXXXX</b>
+                                                                    <b>{{$element->item_name}}</b>
                                                                 </td>
                                                                 <td width="15%" style="text-align: right;font-size: 15px;border-right:1px dashed grey;">
-                                                                    <b>450.00</b>
+                                                                    <b>{{number_format($item->unit_price-$item->discount,2,'.','')}}</b>
                                                                 </td>
                                                                 <td width="10%" style="text-align: right;font-size: 17px;border-right:1px dashed grey;">
-                                                                    <b>1</b>
+                                                                    <b>{{$item->qty}}</b>
                                                                 </td>
                                                                 <td width="15%" style="text-align: right;font-size: 17px;">
-                                                                    <b>450.00</b>
+                                                                    <b>{{number_format($item->amount,2,'.','')}}</b>
                                                                 </td>
                                                             </tr>
                                                             @endforeach

@@ -55,7 +55,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Heading-->
 							<div class="text-center mb-10">
 								<!--begin::Title-->
-								<h1 class="text-dark mb-3">Wyse Service Center Management</h1>
+								<h1 class="text-dark mb-3">Diamond Service Station (Pvt) Ltd.</h1>
 								<!--end::Title-->
 								<!--begin::Link-->
 

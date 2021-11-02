@@ -47,37 +47,37 @@
                             </a>
                             <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/index.html">
+                                    <a class="menu-link py-3" href="{{url('/user/all')}}">
                                         <span class="menu-title">Users</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/dashboards/compact.html">
+                                    <a class="menu-link py-3" href="{{url('/customers/all')}}">
                                         <span class="menu-title">Customers</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('/suppliers/all')}}">
                                         <span class="menu-title">Suppliers</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('/items/all')}}">
                                         <span class="menu-title">Item Master</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('/services/all')}}">
                                         <span class="menu-title">Service Master</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('/item-category/all')}}">
                                         <span class="menu-title">Item Category</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('/user-role/all')}}">
                                         <span class="menu-title">User Roles</span>
                                     </a>
                                 </div>
@@ -90,7 +90,7 @@
                             </a>
                             <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/index.html">
+                                    <a class="menu-link py-3" href="{{url('/sales/create')}}">
                                         <span class="menu-title">Create Invoice</span>
                                     </a>
                                 </div>
