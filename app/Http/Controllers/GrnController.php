@@ -98,6 +98,12 @@ class GrnController extends Controller
                     ];
                     $transaction=new ItemTransaction($transaction_data);
                     $transaction->save();
+                    $stocks=ItemStock::where('item',$element['item'])->get();
+                    foreach($stocks as $var){
+                        $var->sales_price=$element['label_price'];
+                        $var->sales_rate=($element['label_price']-$var->cost_price)/$var->cost_price;
+                        $var->save();
+                    }
                 }
             }
             if(isset($request->free_details)){
@@ -157,7 +163,6 @@ class GrnController extends Controller
                     }
                 }
             }
-
             DB::commit();
             return redirect()->back()->with('success','GRN Stored Successfully!!!');
         } catch (\Exception $e) {
