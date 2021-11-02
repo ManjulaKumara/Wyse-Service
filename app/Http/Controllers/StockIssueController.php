@@ -8,7 +8,7 @@ use App\Models\ItemStock;
 use App\Models\ItemCategorie;
 use App\Models\StockIssue;
 use App\Models\ItemTransaction;
-use DB;
+use Illuminate\Support\Facades\DB;
 use DateTime;
 
 class StockIssueController extends Controller
@@ -109,5 +109,82 @@ class StockIssueController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error', 'Something went wrong!!');;
         }
+    }
+
+    public function stock_issue_index(){
+        return view('pages.stock-issues.index');
+    }
+
+    public function stock_issue_get_all(Request $request){
+        $columns = [
+            0 =>'vehicle_number',
+            1 =>'item',
+            2=> 'qty',
+            3=> 'is_invoiced',
+        ];
+        $totalData = StockIssue::count();
+        $totalFiltered = $totalData;
+
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if( empty($request->input('search.value')) ) {
+            $issues = StockIssue::join('items','stock_issue.item','=','items.id')
+                    ->select('stock_issue.*','items.item_name as item_name')
+                    ->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order,$dir)
+                    ->get();
+        } else {
+            $search = $request->input('search.value');
+
+            $issues =  StockIssue::join('items','stock_issue.item','=','items.id')
+                        ->select('stock_issue.*','items.item_name as item_name')
+                        ->where('stock_issue.vehicle_number','LIKE',"%{$search}%")
+                        ->orWhere('items.item_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order,$dir)
+                        ->get();
+
+            $totalFiltered = StockIssue::join('items','stock_issue.item','=','items.id')
+                        ->select('stock_issue.*','items.item_name as item_name')
+                        ->where('stock_issue.vehicle_number','LIKE',"%{$search}%")
+                        ->orWhere('items.item_name', 'LIKE',"%{$search}%")
+                        ->count();
+        }
+
+        $data = array();
+        if( !empty($issues) ) {
+            foreach ($issues as $item)
+                {
+                    $status=0;
+                    if ($item->is_invoiced==0) {
+                        $status='Not Invoiced';
+                    } else if($item->is_invoiced==1){
+                        $status='Invoiced';
+                    } else{
+                        $status='Returned';
+                    }
+
+                    $issue['vehicle_number'] = $item->vehicle_number;
+                    $issue['item'] = $item->item_name;
+                    $issue['qty'] = $item->qty;
+                    $issue['is_invoiced'] = $status;
+                    $data[] = $issue;
+
+                }
+        }
+
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),
+            "recordsTotal"    => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data"            => $data
+            );
+
+        echo json_encode($json_data);
     }
 }

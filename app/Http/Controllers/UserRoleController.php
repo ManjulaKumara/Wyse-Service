@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\modules;
 use Illuminate\Http\Request;
 use App\Models\UserRole;
 use Exception;

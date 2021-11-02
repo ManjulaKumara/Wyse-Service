@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\modules;
+use App\Models\Modules;
 use Illuminate\Http\Request;
 
 class ModuleController extends Controller
@@ -18,7 +18,7 @@ class ModuleController extends Controller
             2=> 'md_name',
             3=> 'is_active',
         ];
-        $totalData = modules::count();
+        $totalData = Modules::count();
         $totalFiltered = $totalData;
 
         $limit = $request->input('length');
@@ -27,14 +27,14 @@ class ModuleController extends Controller
         $dir = $request->input('order.0.dir');
 
         if( empty($request->input('search.value')) ) {
-            $modules = modules::offset($start)
+            $modules = Modules::offset($start)
                     ->limit($limit)
                     ->orderBy($order,$dir)
                     ->get();
         } else {
             $search = $request->input('search.value');
 
-            $modules =  modules::where('md_code','LIKE',"%{$search}%")
+            $modules =  Modules::where('md_code','LIKE',"%{$search}%")
                         ->orWhere('md_name', 'LIKE',"%{$search}%")
                         ->orWhere('id', 'LIKE',"%{$search}%")
                         ->offset($start)
@@ -42,7 +42,7 @@ class ModuleController extends Controller
                         ->orderBy($order,$dir)
                         ->get();
 
-            $totalFiltered = modules::where('md_code','LIKE',"%{$search}%")
+            $totalFiltered = Modules::where('md_code','LIKE',"%{$search}%")
                         ->orWhere('md_name', 'LIKE',"%{$search}%")
                         ->orWhere('id', 'LIKE',"%{$search}%")
                         ->count();
@@ -84,7 +84,7 @@ class ModuleController extends Controller
 
     public function module_store(Request $request){
         try {
-            $module = new modules();
+            $module = new Modules();
             $module->md_code = $request->get('md_code');
             $module->md_name = $request->get('md_name');
             $module->md_group = $request->get('md_group');
@@ -106,20 +106,20 @@ class ModuleController extends Controller
     }
 
     public function module_view($id){
-        $module = modules::find($id);
+        $module = Modules::find($id);
         view()->share('module',$module);
         return view('pages.MasterFile.modules._form');
     }
 
     public function module_edit($id){
-        $module = modules::find($id);
+        $module = Modules::find($id);
         view()->share('module',$module);
         return view('pages.MasterFile.modules._form');
     }
 
     public function module_update(Request $request, $id){
         try {
-            $module = modules::find($id);
+            $module = Modules::find($id);
             $module->md_code = $request->get('md_code');
             $module->md_name = $request->get('md_name');
             $module->md_group = $request->get('md_group');
