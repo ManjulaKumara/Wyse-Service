@@ -84,11 +84,11 @@
                                 <div class="row gx-10 mb-5">
                                     <div class="col-lg-3">
                                         <label for="label_price" class="required form-label">Label Price(LKR):</label>
-                                        <input type="text" class="form-control" readonly name="label_price" id="label_price"/>
+                                        <input type="text" class="form-control" name="label_price" id="label_price"/>
                                     </div>
                                     <div class="col-lg-3">
                                         <label for="discount" class="required form-label">Discount(LKR):</label>
-                                        <input type="text" class="form-control" readonly  name="discount" id="discount"/>
+                                        <input type="text" class="form-control"  name="discount" id="discount"/>
                                     </div>
                                     <div class="col-lg-3">
                                         <label for="amount" class="required form-label">Total(LKR):</label>
@@ -122,15 +122,15 @@
                 <!--begin::Input group-->
                 <div class="row mb-3">
                     <label for="total" class="required form-label">Total:</label>
-                    <input type="text" required class="form-control" name="total" id="total"/>
+                    <input type="text" required class="form-control" readonly name="total" id="total"/>
                 </div>
                 <div class="row mb-3">
                     <label for="total_discount" class="required form-label">Total Discount:</label>
-                    <input type="text" required class="form-control" name="total_discount" id="total_discount"/>
+                    <input type="text" required class="form-control" readonly name="total_discount" id="total_discount"/>
                 </div>
                 <div class="row mb-3">
                     <label for="net_total" class="required form-label">Net Total:</label>
-                    <input type="text" required class="form-control" name="net_total" id="net_total"/>
+                    <input type="text" required class="form-control" readonly name="net_total" id="net_total"/>
                 </div>
                 <!--end::Input group-->
                 <!--begin::Separator-->
@@ -319,16 +319,16 @@
                     </td>
 
                     <td>
-                        <input type="text" class="form-control form-control-solid text-end label_price" name="details[${count}][label_price]" value="${label_price}" placeholder="0.00" value="0.00" />
+                        <input type="text" class="form-control form-control-solid text-end label_price" readonly name="details[${count}][label_price]" value="${label_price}" placeholder="0.00" value="0.00" />
                     </td>
                     <td>
-                        <input type="text" class="form-control form-control-solid text-end discount" name="details[${count}][discount]" value="${discount}" placeholder="0.00" value="0.00" />
+                        <input type="text" class="form-control form-control-solid text-end discount" readonly name="details[${count}][discount]" value="${discount}" placeholder="0.00" value="0.00" />
                     </td>
                     <td class="ps-0">
-                        <input class="form-control form-control-solid qty" type="number" min="1" name="details[${count}][quantity]" value="${quantity}" placeholder="1" value="1" />
+                        <input class="form-control form-control-solid qty" type="number" min="1" readonly name="details[${count}][quantity]" value="${quantity}" placeholder="1" value="1" />
                     </td>
                     <td>
-                        <input type="text" class="form-control form-control-solid text-end amount" name="details[${count}][amount]" value="${amount}" placeholder="0.00" value="0.00" />
+                        <input type="text" class="form-control form-control-solid text-end amount" readonly name="details[${count}][amount]" value="${amount}" placeholder="0.00" value="0.00" />
                     </td>
                     <td class="pt-5 text-end">
                         <button type="button" class="btn btn-sm btn-icon btn-active-color-primary" onclick="deleteItem(${count})">

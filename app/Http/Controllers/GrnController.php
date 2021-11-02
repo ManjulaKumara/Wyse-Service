@@ -9,9 +9,11 @@ use App\Models\GrnHeader;
 use App\Models\GrnDetails;
 use App\Models\ItemStock;
 use App\Models\FreeIssue;
+use App\Models\GrnDetail;
 use App\Models\ItemTransaction;
-use DB;
+use Illuminate\Support\Facades\DB;
 use DateTime;
+use Illuminate\Support\Facades\Auth;
 
 
 class GrnController extends Controller
@@ -22,7 +24,7 @@ class GrnController extends Controller
         if(sizeof($max_code)==0) {
             $new_code=0;
         } else {
-            $last_code_no=$max_code[0]->invoice_number;
+            $last_code_no=$max_code[0]->grn_code;
             list($Regi,$new_code) = explode('-', $last_code_no);
         }
         $new_code='GRN'.'-'.sprintf('%010d', intval($new_code) + 1);
@@ -60,7 +62,7 @@ class GrnController extends Controller
             $header=new GrnHeader($header_data);
             $header->save();
             if(isset($request->details)){
-                foreach($details as $element){
+                foreach($request->details as $element){
                     $detail_data=[
                         'item'=>$element['item'],
                         'purchase_price'=>$element['label_price'],
@@ -159,8 +161,87 @@ class GrnController extends Controller
             DB::commit();
             return redirect()->back()->with('success','GRN Stored Successfully!!!');
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
             return redirect()->back()->with('error', 'Something went wrong!!');;
         }
+    }
+
+    public function grn_index(){
+        return view('pages.grn.index');
+    }
+
+    public function grn_get_all(Request $request){
+        $columns = [
+            0 =>'grn_code',
+            1 =>'supplier',
+            2=> 'amount',
+            3=> 'paid_amount',
+            4=> 'return_amount',
+            5=> 'balance',
+        ];
+        $totalData = GrnHeader::count();
+        $totalFiltered = $totalData;
+
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if( empty($request->input('search.value')) ) {
+            $grns = GrnHeader::join('supplier','grn_header.supplier','=','supplier.id')
+                    ->select('grn_header.*','supplier.supplier_name as supplier_name')
+                    ->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order,$dir)
+                    ->get();
+        } else {
+            $search = $request->input('search.value');
+
+            $grns =  GrnHeader::join('supplier','grn_header.supplier','=','supplier.id')
+                        ->select('grn_header.*','supplier.supplier_name as supplier_name')
+                        ->where('grn_header.grn_code','LIKE',"%{$search}%")
+                        ->orWhere('supplier.supplier_name', 'LIKE',"%{$search}%")
+                        ->orWhere('grn_header.receipt_no', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order,$dir)
+                        ->get();
+
+            $totalFiltered = GrnHeader::join('supplier','grn_header.supplier','=','supplier.id')
+                        ->select('grn_header.*','supplier.supplier_name as supplier_name')
+                        ->where('grn_header.grn_code','LIKE',"%{$search}%")
+                        ->orWhere('supplier.supplier_name', 'LIKE',"%{$search}%")
+                        ->orWhere('grn_header.receipt_no', 'LIKE',"%{$search}%")
+                        ->count();
+        }
+
+        $data = array();
+        if( !empty($grns) ) {
+            foreach ($grns as $item)
+                {
+                    $grn['grn_code'] = $item->grn_code;
+                    $grn['supplier'] = $item->supplier_name;
+                    $grn['amount'] = $item->amount;
+                    $grn['paid_amount'] = $item->paid_amount;
+                    $grn['return_amount'] = $item->return_amount;
+                    $grn['balance'] = $item->balance;
+                    $grn['action'] = '<div class="btn-group">
+                    <a href="#'.$item->id.'" class="btn btn-xs  btn-success " title="View"><i class="fa fa-eye"></i>
+                    </a>
+                    </div>';
+                    $data[] = $grn;
+
+                }
+        }
+
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),
+            "recordsTotal"    => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data"            => $data
+            );
+
+        echo json_encode($json_data);
     }
 }

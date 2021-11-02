@@ -103,7 +103,7 @@ class StockController extends Controller
             $item_stock->cost_price = $request->get('cost_price');
             $item_stock->grn = 0;
             $item_stock->sales_price = $request->get('sales_price');
-            $item_stock->sales_rate = (($request->get('sales_price')-$request->get('cost_price'))/$request->get('cost_price'))*100;
+            $item_stock->sales_rate = ($request->get('sales_price')-$request->get('cost_price'))/$request->get('cost_price');
             $item_stock->stock_type = 'open stock';
             $item_stock->save();
 
