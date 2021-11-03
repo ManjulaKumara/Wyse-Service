@@ -355,7 +355,7 @@ class SalesController extends Controller
                 $cheque=new CustomerCheque($cheque_data);
                 $cheque->save();
                 $cash_data=[
-                    'transaction_type'=>'customer-cheque',
+                    'transaction_type'=>'customer-receipt(cheque)',
                     'reference_id'=>$cheque->id,
                     'debit_amount'=>0,
                     'credit_amount'=>$detail->pay_amount,
@@ -399,10 +399,10 @@ class SalesController extends Controller
                     }
                 }else{
                     $cash_data=[
-                        'transaction_type'=>'sales',
+                        'transaction_type'=>'sales-cash',
                         'reference_id'=>$header->id,
-                        'debit_amount'=>$paid_amount,
-                        'credit_amount'=>0,
+                        'debit_amount'=>0,
+                        'credit_amount'=>$paid_amount,
                     ];
                     $cash=new CashTransaction($cash_data);
                     $cash->save();

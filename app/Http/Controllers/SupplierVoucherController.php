@@ -63,7 +63,7 @@ class SupplierVoucherController extends Controller
                 $cheque=new SupplierCheque($cheque_data);
                 $cheque->save();
                 $cash_data=[
-                    'transaction_type'=>'supplier-cheque',
+                    'transaction_type'=>'supplier-voucher(cheque)',
                     'reference_id'=>$header->id,
                     'debit_amount'=>$request->total,
                     'credit_amount'=>0,

@@ -84,7 +84,7 @@ class CustomerReceiptController extends Controller
                 $cheque=new CustomerCheque($cheque_data);
                 $cheque->save();
                 $cash_data=[
-                    'transaction_type'=>'customer-cheque',
+                    'transaction_type'=>'customer-receipt(cheque)',
                     'reference_id'=>$cheque->id,
                     'debit_amount'=>0,
                     'credit_amount'=>$$request->total,
@@ -93,7 +93,7 @@ class CustomerReceiptController extends Controller
                 $cash->save();
             }else{
                 $cash_data=[
-                    'transaction_type'=>'supplier-voucher',
+                    'transaction_type'=>'customer-receipt(cash)',
                     'reference_id'=>$header->id,
                     'debit_amount'=>0,
                     'credit_amount'=>$request->total,
