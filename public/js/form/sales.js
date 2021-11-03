@@ -3,15 +3,18 @@ $(document).ready(function () {
         "processing": true,
         "serverSide": true,
         "ajax":{
-            "url": APP_URL+'/stock-issues/get-all',
+            "url": APP_URL+'/sales/get-all',
             "dataType": "json",
             "type": "get",
         },
         "columns": [
+            { "data": "invoice_number" },
+            { "data": "customer" },
             { "data": "vehicle_number" },
-            { "data": "item" },
-            { "data": "qty" },
-            { "data": "is_invoiced" },
+            { "data": "net_amount" },
+            { "data": "paid_amount" },
+            { "data": "balance" },
+            { "data": "action" }
         ]
     });
 });
