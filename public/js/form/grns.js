@@ -3,7 +3,7 @@ $(document).ready(function () {
         "processing": true,
         "serverSide": true,
         "ajax":{
-            "url": APP_URL+'grns/get_all',
+            "url": APP_URL+'/grns/get_all',
             "dataType": "json",
             "type": "get",
         },

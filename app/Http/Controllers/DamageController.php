@@ -47,7 +47,7 @@ class DamageController extends Controller
                     'qty'=>$request->damage_quantity,
                     'stock_no'=>$item_stock->id,
                 ];
-                $damage=new ItemDamage($issue_data);
+                $damage=new ItemDamage($damage_data);
                 $damage->save();
                 $item_stock->qty_in_hand=$item_stock->qty_in_hand-$request->damage_quantity;
                 $item_stock->save();
@@ -72,7 +72,7 @@ class DamageController extends Controller
                         'qty'=>$item_stock->qty_in_hand,
                         'stock_no'=>$item_stock->id,
                     ];
-                    $damage=new ItemDamage($issue_data);
+                    $damage=new ItemDamage($damage_data);
                     $damage->save();
                     $before=$item_stock->qty_in_hand;
                     $qty=$qty+$item_stock->qty_in_hand;
@@ -86,7 +86,7 @@ class DamageController extends Controller
                         'qih_before'=>$before,
                         'qih_after'=>$item_stock->qty_in_hand,
                         'transfer_qty'=>$before,
-                        'reference_id'=>$issue->id,
+                        'reference_id'=>$item_stock->id,
                     ];
                     $transaction=new ItemTransaction($transaction_data);
                     $transaction->save();
@@ -95,8 +95,75 @@ class DamageController extends Controller
             DB::commit();
             return redirect()->back()->with('success','Item Damage Stored Successfully!!!');
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
             return redirect()->back()->with('error', 'Something went wrong!!');;
         }
+    }
+
+    public function damage_index(){
+        return view('pages.damges.index');
+    }
+
+    public function damage_get_all(Request $request){
+        $columns = [
+            0 =>'item',
+            1 =>'qty',
+            2=> 'created_at',
+        ];
+        $totalData = ItemDamage::count();
+        $totalFiltered = $totalData;
+
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if( empty($request->input('search.value')) ) {
+            $damages = ItemDamage::join('items','item_damages.item','=','items.id')
+                    ->select('item_damages.*','items.item_name as item_name')
+                    ->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order,$dir)
+                    ->get();
+        } else {
+            $search = $request->input('search.value');
+
+            $damages =  ItemDamage::join('items','item_damages.item','=','items.id')
+                        ->select('item_damages.*','items.item_name as item_name')
+                        ->where('item_damages.qty','LIKE',"%{$search}%")
+                        ->orWhere('items.item_name', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order,$dir)
+                        ->get();
+
+            $totalFiltered = ItemDamage::join('items','item_damages.item','=','items.id')
+                        ->select('item_damages.*','items.item_name as item_name')
+                        ->where('item_damages.qty','LIKE',"%{$search}%")
+                        ->orWhere('items.item_name', 'LIKE',"%{$search}%")
+                        ->count();
+        }
+
+        $data = array();
+        if( !empty($damages) ) {
+            foreach ($damages as $item)
+                {
+                    $damage['item'] = $item->item_name;
+                    $damage['qty'] = $item->qty;
+                    $damage['created_at'] = $item->created_at->format('Y-m-d');
+                    $data[] = $damage;
+
+                }
+        }
+
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),
+            "recordsTotal"    => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data"            => $data
+            );
+
+        echo json_encode($json_data);
     }
 }
