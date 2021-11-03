@@ -362,9 +362,6 @@ class SalesController extends Controller
                 ];
                 $cash=new CashTransaction($cash_data);
                 $cash->save();
-                $customer=Customer::find($request->customer);
-                $customer->current_balance=$customer->current_balance-$detail->pay_amount;
-                $customer->save();
             }else{
                 if($paid_amount<$request->final_total){
                     if($paid_amount>0){

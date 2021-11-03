@@ -308,7 +308,7 @@
         $(table+" .item-row").each(function() {
             total +=  $(this).find('.total-amount').val()*1;
         });
-        $('#total').text(total);
+        $('#total').val(total);
     }
     $(document).on('keyup input.total-amount', function(){
         calTotal();
