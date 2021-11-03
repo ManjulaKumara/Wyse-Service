@@ -17,6 +17,8 @@ use App\Http\Controllers\CustomerReceiptController;
 use App\Http\Controllers\StockReturnController;
 use App\Http\Controllers\ItemRelationshipController;
 use App\Http\Controllers\ItemConversionController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\DamageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,6 +122,12 @@ Route::post('/item-relationship/store',[ItemRelationshipController::class,'store
 
 Route::get('/item-conversion/create',[ItemConversionController::class,'create']);
 Route::post('/item-conversion/store',[ItemConversionController::class,'store']);
+
+Route::get('/item-damages/create',[DamageController::class,'create']);
+Route::post('/item-damages/store',[DamageController::class,'store']);
+
+Route::get('/expense/create',[ExpenseController::class,'create']);
+Route::post('/expense/store',[ExpenseController::class,'store']);
 
 Route::get('/open-stock/all',[ StockController::class, 'open_stock_index' ]);
 Route::get('/open-stock/get-all',[ StockController::class, 'open_stock_get_all' ]);

@@ -24,6 +24,7 @@ class ItemRelationshipController extends Controller
                 'units_per_parent'=>$request->units_per_parent,
             ];
             $relationship=new ItemRelationship($relationship_data);
+            $relationship->save();
             DB::commit();
             return redirect()->back()->with('success','Item Relationship Stored Successfully!!!');
         } catch (\Exception $e) {

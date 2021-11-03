@@ -170,6 +170,11 @@
                                         <span class="menu-title">Item Conversion</span>
                                     </a>
                                 </div>
+                                <div class="menu-item">
+                                    <a class="menu-link py-3" href="{{url('item-damages/create')}}">
+                                        <span class="menu-title">Item Damages</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion me-lg-1">
@@ -179,7 +184,7 @@
                             </a>
                             <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/index.html">
+                                    <a class="menu-link py-3" href="{{url('expense/create')}}">
                                         <span class="menu-title">Other Expenses</span>
                                     </a>
                                 </div>

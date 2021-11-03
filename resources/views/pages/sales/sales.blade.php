@@ -363,16 +363,16 @@
                                         <input type="hidden" name="details[${count}][item_type]" value="item" />
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control form-control-solid text-end" name="details[${count}][unit_price]" placeholder="0.00" value="${entry.unit_price}" />
+                                        <input type="text" class="form-control text-end" name="details[${count}][unit_price]" readonly placeholder="0.00" value="${entry.unit_price}" />
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control form-control-solid text-end" name="details[${count}][discount]" placeholder="0.00" value="${entry.discount}" />
+                                        <input type="text" class="form-control text-end" name="details[${count}][discount]" readonly placeholder="0.00" value="${entry.discount}" />
                                     </td>
                                     <td class="ps-0">
-                                        <input class="form-control form-control-solid" type="number" min="1" name="details[${count}][qty]" placeholder="1" value="${entry.quantity}"/>
+                                        <input class="form-control " type="number" min="1" name="details[${count}][qty]" readonly placeholder="1" value="${entry.quantity}"/>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control form-control-solid text-end amount" name="details[${count}][amount]" placeholder="0.00" value="${entry.quantity*(entry.unit_price-entry.discount)}" />
+                                        <input type="text" class="form-control text-end amount" name="details[${count}][amount]" readonly placeholder="0.00" value="${entry.quantity*(entry.unit_price-entry.discount)}" />
                                     </td>
                                     <td class="pt-5 text-end">
                                         <button type="button" disabled class="btn btn-sm btn-icon btn-active-color-primary" data-kt-element="remove-item">
@@ -485,16 +485,16 @@
                             <input type="hidden" name="details[${count}][item_type]" value="${item_type}" />
                         </td>
                         <td>
-                            <input type="text" class="form-control form-control-solid text-end" name="details[${count}][unit_price]" placeholder="0.00" value="${unit_price}" />
+                            <input type="text" class="form-control text-end" name="details[${count}][unit_price]" readonly placeholder="0.00" value="${unit_price}" />
                         </td>
                         <td>
-                            <input type="text" class="form-control form-control-solid text-end" name="details[${count}][discount]" placeholder="0.00" value="${discount}" />
+                            <input type="text" class="form-control text-end" name="details[${count}][discount]" readonly placeholder="0.00" value="${discount}" />
                         </td>
                         <td class="ps-0">
-                            <input class="form-control form-control-solid" type="number" min="1" name="details[${count}][qty]" placeholder="1" value="${quantity}"/>
+                            <input class="form-control " type="number" min="1" name="details[${count}][qty]" readonly placeholder="1" value="${quantity}"/>
                         </td>
                         <td>
-                            <input type="text" class="form-control form-control-solid text-end amount" name="details[${count}][amount]" placeholder="0.00" value="${quantity*(unit_price-discount)}" />
+                            <input type="text" class="form-control text-end amount" name="details[${count}][amount]" readonly placeholder="0.00" value="${quantity*(unit_price-discount)}" />
                         </td>
                         <td class="pt-5 text-end">
                             <button type="button" class="btn btn-sm btn-icon btn-active-color-primary" data-kt-element="remove-item" onclick="deleteItem(${count})">

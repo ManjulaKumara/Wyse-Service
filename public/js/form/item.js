@@ -1,9 +1,9 @@
-$(document).ready(function () {
-    $('#table').DataTable({
+$(function () {
+    $('#my-table').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax":{
-            "url": APP_URL+'items/get-all',
+            "url": APP_URL+'/items/get-all',
             "dataType": "json",
             "type": "get",
         },

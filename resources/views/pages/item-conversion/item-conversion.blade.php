@@ -16,7 +16,7 @@
                         <h3>Item Convertion</h3>
                     </div>
                     <div class="col-md-6">
-                        <h3 style="text-align: right">Date : </h3>
+                        <h3 style="text-align: right">Date : {{$today}}</h3>
                     </div>
                 </div>
                 <div class="separator separator-dashed my-10"></div>
@@ -65,7 +65,7 @@
                                         <label class="form-label fs-6 fw-bolder text-gray-700 mb-3">To Quantity</label>
                                         <!--begin::Input group-->
                                         <div class="mb-5">
-                                            <input type="number" id="quantity" readonly name="quantity" required class="form-control" />
+                                            <input type="number" id="to_quantity" readonly name="to_quantity" required class="form-control" />
                                         </div>
                                     </div>
                                 </div>
