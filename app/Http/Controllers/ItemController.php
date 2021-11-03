@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\ItemCategorie;
+use App\Models\ItemStock;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -57,6 +58,7 @@ class ItemController extends Controller
         if( !empty($items) ) {
             foreach ($items as $value)
                 {
+                    $item_stock=ItemStock::where('item',$value->id)->orderBy('id','desc')->first();
                     $item['id'] = $value->id;
                     $item['item_code'] = $value->item_code;
                     $item['item_name'] = $value->item_name;
@@ -67,8 +69,14 @@ class ItemController extends Controller
                     </a>
                     <a href="/items/edit/'.$value->id.'" class="btn btn-xs  btn-warning " title="Update">
                             <i class="fa fa-edit"></i>
+                    </a>';
+                    if($item_stock){
+                        $item['action']=$item['action'].'<a href="#" class="btn btn-xs  btn-primary" data-current="'.$item_stock->sales_price.'" data-name="'.$value->item_name.'" data-cost="'.$item_stock->cost_price.'" data-discount=""  title="Update Price" data-bs-toggle="modal" data-bs-target="#price_change">
+                        <i class="fa fa-usd"></i>
                     </a>
                     </div>';
+                    }
+
                     $data[] = $item;
 
                 }

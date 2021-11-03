@@ -3,7 +3,7 @@ $(document).ready(function () {
         "processing": true,
         "serverSide": true,
         "ajax":{
-            "url": APP_URL+'open-stock/get-all',
+            "url": APP_URL+'/open-stock/get-all',
             "dataType": "json",
             "type": "get",
         },
