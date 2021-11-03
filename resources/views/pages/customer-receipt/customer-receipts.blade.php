@@ -69,32 +69,7 @@
                                 <!--end::Top-->
                                 <!--begin::Separator-->
                                 <div class="separator separator-dashed my-10"></div>
-                                <div class="table-responsive mb-10">
-                                    <!--begin::Table-->
-                                    <table class="table g-5 gs-0 mb-0 fw-bolder text-gray-700" id="tbl-invoices">
-                                        <!--begin::Table head-->
-                                        <thead>
-                                            <tr class="border-bottom fs-7 fw-bolder text-gray-700 text-uppercase">
-                                                <th class="min-w-175px w-175px">Invoice No</th>
-                                                <th class="min-w-175px w-175px">Total Amount</th>
-                                                <th class="min-w-175px w-175px">Paid Amount</th>
-                                                <th class="min-w-175px w-175px">Return Amount</th>
-                                                <th class="min-w-175px w-175px">Balance</th>
-                                                <th class="min-w-175px w-175px text-end">Pay Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <!--end::Table head-->
-                                        <!--begin::Table body-->
-                                        <tbody>
 
-                                        </tbody>
-                                        <!--end::Table body-->
-                                    </table>
-                                    <div class="mb-0">
-                                        <label class="form-label fs-6 fw-bolder text-gray-700">Notes</label>
-                                        <textarea name="notes" class="form-control form-control-solid" rows="3" placeholder="Thanks for your business"></textarea>
-                                    </div>
-                                </div>
                                 <!--end::Table-->
                             </div>
                         </div>
@@ -146,6 +121,40 @@
             <!--end::Card body-->
         </div>
         <!--end::Card-->
+    </div>
+</div>
+<div class="row" style="margin-top:20px;">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive mb-10">
+                    <!--begin::Table-->
+                    <table class="table g-5 gs-0 mb-0 fw-bolder text-gray-700" id="tbl-invoices">
+                        <!--begin::Table head-->
+                        <thead>
+                            <tr class="border-bottom fs-7 fw-bolder text-gray-700 text-uppercase">
+                                <th class="min-w-175px w-175px">Invoice No</th>
+                                <th class="min-w-175px w-175px">Total Amount</th>
+                                <th class="min-w-175px w-175px">Paid Amount</th>
+                                <th class="min-w-175px w-175px">Return Amount</th>
+                                <th class="min-w-175px w-175px">Balance</th>
+                                <th class="min-w-175px w-175px text-end">Pay Amount</th>
+                            </tr>
+                        </thead>
+                        <!--end::Table head-->
+                        <!--begin::Table body-->
+                        <tbody>
+
+                        </tbody>
+                        <!--end::Table body-->
+                    </table>
+                    <div class="mb-0">
+                        <label class="form-label fs-6 fw-bolder text-gray-700">Notes</label>
+                        <textarea name="notes" class="form-control form-control-solid" rows="3" placeholder="Thanks for your business"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="modal fade" id="cheque_modal" tabindex="-1" aria-hidden="true">
