@@ -165,4 +165,22 @@ class ItemController extends Controller
             return back()->withInput()->withErrors('Something went wrong!');
         }
     }
+
+    public function update_price(Request $request){
+        try {
+            DB::beginTransaction();
+            $stocks=ItemStock::where('item',$request->item)->get();
+            foreach($stocks as $var){
+                $var->sales_price=$request->new_price;
+                $var->sales_rate=($request->new_price-$var->cost_price)/$var->cost_price;
+                $var->save();
+            }
+            DB::commit();
+            return redirect()->back()->with('success','Price updated Successfully!!!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            return redirect()->back()->with('error', 'Something went wrong!!');;
+        }
+    }
 }

@@ -224,7 +224,7 @@ class SalesController extends Controller
                         $service_record->save();
                     }
                     if($element['item_type']=='item'){
-                        $stock_issue=StockIssue::where('vehicle_number',$request->vehicle_no)->where('item',$element['item'])->where('is_invoiced',0)->where('id',$element['stock_no'])->first();
+                        $stock_issue=StockIssue::where('vehicle_number',$request->vehicle_no)->where('item',$element['item'])->where('is_invoiced',0)->first();
                         if($stock_issue){
                             $stock_issue->is_invoiced=1;
                             $stock_issue->save();
@@ -235,7 +235,7 @@ class SalesController extends Controller
                                 'unit_price'=>$element['unit_price'],
                                 'discount'=>$element['discount'],
                                 'amount'=>$element['amount'],
-                                'stock_no'=>$element['stock_no'],
+                                'stock_no'=>$stock_issue->id,
                             ];
                             $item_record=new InvoiceItem($item_data);
                             $item_record->save();
@@ -357,11 +357,14 @@ class SalesController extends Controller
                 $cash_data=[
                     'transaction_type'=>'customer-cheque',
                     'reference_id'=>$cheque->id,
-                    'debit_amount'=>$detail->pay_amount,
-                    'credit_amount'=>0,
+                    'debit_amount'=>0,
+                    'credit_amount'=>$detail->pay_amount,
                 ];
                 $cash=new CashTransaction($cash_data);
                 $cash->save();
+                $customer=Customer::find($request->customer);
+                $customer->current_balance=$customer->current_balance-$detail->pay_amount;
+                $customer->save();
             }else{
                 if($paid_amount<$request->final_total){
                     if($paid_amount>0){
@@ -369,16 +372,24 @@ class SalesController extends Controller
                         $customer->current_balance=$customer->current_balance+($request->final_total-$paid_amount);
                         $customer->save();
                         $cash_data=[
-                            'transaction_type'=>'sales',
+                            'transaction_type'=>'sales-cash',
                             'reference_id'=>$header->id,
                             'debit_amount'=>0,
-                            'credit_amount'=>$request->final_total-$paid_amount,
+                            'credit_amount'=>$paid_amount,
+                        ];
+                        $cash=new CashTransaction($cash_data);
+                        $cash->save();
+                        $cash_data=[
+                            'transaction_type'=>'sales-credit',
+                            'reference_id'=>$header->id,
+                            'debit_amount'=>$request->final_total-$paid_amount,
+                            'credit_amount'=>0,
                         ];
                         $cash=new CashTransaction($cash_data);
                         $cash->save();
                     }else{
                         $cash_data=[
-                            'transaction_type'=>'sales',
+                            'transaction_type'=>'sales-credit',
                             'reference_id'=>$header->id,
                             'debit_amount'=>$paid_amount,
                             'credit_amount'=>0,
