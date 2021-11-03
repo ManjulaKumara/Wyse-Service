@@ -89,7 +89,7 @@
                 <!--begin::Input group-->
                 <div class="row mb-3">
                     <label for="inv_no" class="required form-label">Total:</label>
-                    <input type="text" class="form-control" name="total" id="total"/>
+                    <input type="text" readonly required class="form-control" name="total" id="total"/>
                 </div>
                 <div class="row mb-3">
                     <label for="inv_no" class="required form-label">Pay Method:</label>
