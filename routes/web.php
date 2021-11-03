@@ -96,9 +96,13 @@ Route::get('/sevices/view/{id}',[ ServiceController::class, 'service_view' ]);
 Route::get('/sevices/edit/{id}',[ ServiceController::class, 'service_edit' ]);
 Route::post('/sevices/update/{id}',[ ServiceController::class, 'service_update' ]);
 
+Route::get('/grns/all',[GrnController::class,'grn_index']);
+Route::get('/grns/get_all',[GrnController::class,'grn_get_all']);
 Route::get('/grns/create',[GrnController::class,'create']);
 Route::post('/grns/store',[GrnController::class,'store']);
 
+Route::get('/stock-issues/all',[StockIssueController::class,'stock_issue_index']);
+Route::get('/stock-issues/get-all',[StockIssueController::class,'stock_issue_get_all']);
 Route::get('/stock-issues/create',[StockIssueController::class,'createIssues']);
 Route::post('/stock-issues/store',[StockIssueController::class,'store']);
 
