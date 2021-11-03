@@ -184,6 +184,9 @@ $(function() {
 });
 $(document).on('click','.update-price',function(){
     let id=$(this).data('id');
+    let name=$(this).data('name');
+    let current_price=$(this).data('current');
+    
     $('#price_change').modal('show');
 });
 </script>
