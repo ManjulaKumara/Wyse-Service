@@ -80,7 +80,8 @@
             <!--begin::Modal body-->
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                 <!--begin::Form-->
-                {{-- <form id="kt_modal_new_card_form" class="form" action="#"> --}}
+                <form id="price-change" action="{{url('items/update-price')}}" method="POST">
+                    @csrf
                     <!--begin::Input group-->
                     <div class="d-flex flex-column mb-7 fv-row">
                         <!--begin::Label-->
@@ -123,7 +124,7 @@
                     <!--begin::Input group-->
                     <div class="row mb-10">
                         <!--begin::Col-->
-                        <div class="col-md-6 fv-row">
+                        <div class="d-flex flex-column mb-7 fv-row">
                             <!--begin::Label-->
                             <label class="required fs-6 fw-bold form-label mb-2">New Selling Price</label>
                             <!--end::Label-->
@@ -147,7 +148,7 @@
                         </button>
                     </div>
                     <!--end::Actions-->
-                {{-- </form> --}}
+                </form>
                 <!--end::Form-->
             </div>
             <!--end::Modal body-->
@@ -186,7 +187,11 @@ $(document).on('click','.update-price',function(){
     let id=$(this).data('id');
     let name=$(this).data('name');
     let current_price=$(this).data('current');
-    
+    let current_cost=$(this).data('cost');
+    $('#item').val(id);
+    $('#item_name').val(name);
+    $('#current_price').val(current_price);
+    $('#current_cost').val(current_cost);
     $('#price_change').modal('show');
 });
 </script>

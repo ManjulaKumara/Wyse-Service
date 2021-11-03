@@ -81,6 +81,7 @@ Route::post('/items/store',[ ItemController::class, 'item_store' ]);
 Route::get('/items/view/{id}',[ ItemController::class, 'item_view' ]);
 Route::get('/items/edit/{id}',[ ItemController::class, 'item_edit' ]);
 Route::post('/items/update/{id}',[ ItemController::class, 'item_update' ]);
+Route::post('/items/update-price',[ ItemController::class, 'update_price' ]);
 
 Route::get('/item-category/all',[ ItemCategoryController::class, 'item_category_index' ]);
 Route::get('/item-category/get-all',[ ItemCategoryController::class, 'item_category_get_all' ]);
