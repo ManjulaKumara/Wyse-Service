@@ -9,7 +9,7 @@
         <!--begin::Card title-->
         <div class="card-title">
             <!--begin::Search-->
-            <h4>Sales</h4>
+            <h4>Customer Receipts</h4>
         </div>
         <!--begin::Card title-->
         <!--begin::Card toolbar-->
@@ -17,7 +17,7 @@
             <!--begin::Toolbar-->
             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                 <!--begin::Add new-->
-                <a href="{{url('/sales/create')}}"><button type="button" class="btn btn-primary" >Create Invoice</button></a>
+                <a href="{{url('/customer-receipts/create')}}"><button type="button" class="btn btn-primary" >Create Receipt</button></a>
                 <!--end::Add new-->
             </div>
             <!--end::Toolbar-->
@@ -33,12 +33,10 @@
             <thead>
                 <!--begin::Table row-->
                 <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
-                    <th class="min-w-125px">Invoice Number</th>
+                    <th class="min-w-125px">Recept No</th>
                     <th class="min-w-125px">Customer</th>
-                    <th class="min-w-125px">Vehicle Number</th>
-                    <th class="min-w-125px">Net Amount</th>
-                    <th class="min-w-125px">Paid Amount</th>
-                    <th class="min-w-125px">Balance</th>
+                    <th class="min-w-125px">Amount</th>
+                    <th class="min-w-125px">Payment Type</th>
                     <th class="min-w-70px">Actions</th>
                 </tr>
                 <!--end::Table row-->
@@ -57,7 +55,7 @@
 
 @endsection
 @section('opyional_js')
-<script src="{{ url('js/form/sales.js')}}"></script>
+<script src="{{ url('js/form/customer_receipt.js')}}"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 @endsection

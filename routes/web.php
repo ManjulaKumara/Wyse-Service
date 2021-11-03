@@ -115,6 +115,8 @@ Route::post('/stock-returns/store',[StockReturnController::class,'store']);
 Route::get('/supplier-vouchers/create',[SupplierVoucherController::class,'create']);
 Route::post('/supplier-vouchers/store',[SupplierVoucherController::class,'store']);
 
+Route::get('/customer-receipts/all',[CustomerReceiptController::class,'customer_receipt_index']);
+Route::get('/customer-receipts/get-all',[CustomerReceiptController::class,'customer_receipt_get_all']);
 Route::get('/customer-receipts/create',[CustomerReceiptController::class,'create']);
 Route::post('/customer-receipts/store',[CustomerReceiptController::class,'store']);
 
