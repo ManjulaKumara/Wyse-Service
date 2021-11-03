@@ -32,7 +32,13 @@
 
 }
 </style>
-<div class=""></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            
+        </div>
+    </div>
+</div>
 <div class="m-auto" style="width: 60%;">
     <!-- email template -->
     <table id="section-to-print" width="40%" style="font-family: Arial; font-size: 14px; background-color: #fff; margin: 0;width:100%;">

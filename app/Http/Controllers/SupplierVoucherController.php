@@ -48,6 +48,9 @@ class SupplierVoucherController extends Controller
                     ];
                     $details=new SupplierVoucherDetail($detail_data);
                     $details->save();
+                    $grn=GrnHeader::find($element['grn']);
+                    $grn->balance=$grn->balance-$element['pay_amount'];
+                    $grn->save();
                 }
             }
             if($request->pay_method=='cheque'){

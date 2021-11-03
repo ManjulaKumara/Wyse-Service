@@ -69,6 +69,9 @@ class CustomerReceiptController extends Controller
                     ];
                     $details=new CustomerReceptDetail($detail_data);
                     $details->save();
+                    $invoice_header=InvoiceHeader::find($element['invoice']);
+                    $invoice_header->balance=$invoice_header->balance-$element['pay_amount'];
+                    $invoice_header->save();
                 }
             }
             if($request->pay_method=='cheque'){

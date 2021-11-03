@@ -291,7 +291,7 @@
                             <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][balance]" placeholder="0.00" value="${entry.balance}" />
                         </td>
                         <td>
-                            <input type="text" class="form-control form-control-solid text-end total_amount" name="details[${count}][pay_amount]" placeholder="0.00" value=""  />
+                            <input type="text" required class="form-control form-control-solid text-end total_amount" name="details[${count}][pay_amount]" placeholder="0.00" value="0.00"  />
                         </td>
                     </tr>
                     `;
