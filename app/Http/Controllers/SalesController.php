@@ -244,7 +244,7 @@ class SalesController extends Controller
                             $item_stock=ItemStock::where('item',$element['item'])->where('qty_in_hand','>=',$element['qty'])->orderBy('id')->first();
                             if($item_stock){
                                 $issue_data=[
-                                    'vehicle_number'=>$element['vehicle_no'],
+                                    'vehicle_number'=>$request->vehicle_no,
                                     'item'=>$element['item'],
                                     'qty'=>$element['qty'],
                                     'stock_no'=>$item_stock->id,
@@ -282,7 +282,7 @@ class SalesController extends Controller
                                 while($qty<=$element['qty']){
                                     $item_stock=ItemStock::where('item',$element['item'])->where('qty_in_hand','>',0)->orderBy('id')->first();
                                     $issue_data=[
-                                        'vehicle_number'=>$element['vehicle_no'],
+                                        'vehicle_number'=>$request->vehicle_no,
                                         'item'=>$element['item'],
                                         'qty'=>$item_stock->qty_in_hand,
                                         'stock_no'=>$item_stock->id,

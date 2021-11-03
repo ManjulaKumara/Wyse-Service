@@ -182,5 +182,9 @@ $(function() {
         ]
     });
 });
+$(document).on('click','.update-price',function(){
+    let id=$(this).data('id');
+    $('#price_change').modal('show');
+});
 </script>
 @endsection

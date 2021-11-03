@@ -560,7 +560,7 @@
 
         }
     });
-    $('#pay_amount').focusout(function(){
+    $('#pay_amount').keyup(function(){
         if($('#pay_method').val()=='credit' || $('#pay_amount').val()<$('#final_total').val()){
             if($('#customer').val()=="" || $('#customer').val()==null){
                 alert('Please Select a Customer if you want to save invoice as credit.You may want to create a customer if the customer is not available in the system.');
