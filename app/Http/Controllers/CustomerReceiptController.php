@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\CustomerRecept;
 use App\Models\InvoiceHeader;
 use App\Models\CustomerReceptDetail;
+use App\Models\CashTransaction;
 use DB;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
