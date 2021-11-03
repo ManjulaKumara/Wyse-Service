@@ -34,6 +34,8 @@ use App\Http\Controllers\DamageController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/sales/all',[SalesController::class,'sales_index']);
+Route::get('/sales/get-all',[SalesController::class,'sales_get_all']);
 Route::get('/sales/create',[SalesController::class,'create']);
 Route::post('/sales/store',[SalesController::class,'store']);
 Route::get('/sales/invoice/{id}',[SalesController::class,'invoice']);

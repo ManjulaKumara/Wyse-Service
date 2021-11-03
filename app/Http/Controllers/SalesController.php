@@ -14,7 +14,7 @@ use App\Models\InvoiceItem;
 use App\Models\InvoiceService;
 use App\Models\ItemTransaction;
 use App\Models\CashTransaction;
-use DB;
+use Illuminate\Support\Facades\DB;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 
@@ -432,5 +432,85 @@ class SalesController extends Controller
         view()->share('items',$invoice_items);
         view()->share('services',$invoice_services);
         return view('pages.sales.print');
+    }
+
+    public function sales_index(){
+        return view('pages.sales.index');
+    }
+
+    public function sales_get_all(Request $request){
+        $columns = [
+            0 =>'invoice_number',
+            1 =>'customer',
+            2=> 'vehicle_number',
+            3=> 'net_amount',
+            4=> 'paid_amount',
+            5=> 'balance',
+        ];
+        $totalData = InvoiceHeader::count();
+        $totalFiltered = $totalData;
+
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if( empty($request->input('search.value')) ) {
+            $invoices = InvoiceHeader::join('customers','invoice_header.customer','=','customers.id')
+                    ->select('invoice_header.*','customers.customer_name as customer_name')
+                    ->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order,$dir)
+                    ->get();
+        } else {
+            $search = $request->input('search.value');
+
+            $invoices =  InvoiceHeader::join('customers','invoice_header.customer','=','customers.id')
+                        ->select('invoice_header.*','customers.customer_name as customer_name')
+                        ->where('invoice_header.invoice_number','LIKE',"%{$search}%")
+                        ->orWhere('customers.customer_name', 'LIKE',"%{$search}%")
+                        ->orWhere('invoice_header.vehicle_number', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order,$dir)
+                        ->get();
+
+            $totalFiltered = InvoiceHeader::join('customers','invoice_header.customer','=','customers.id')
+                        ->select('invoice_header.*','customers.customer_name as customer_name')
+                        ->where('invoice_header.invoice_number','LIKE',"%{$search}%")
+                        ->orWhere('customers.customer_name', 'LIKE',"%{$search}%")
+                        ->orWhere('invoice_header.vehicle_number', 'LIKE',"%{$search}%")
+                        ->count();
+        }
+
+        $data = array();
+        if( !empty($invoices) ) {
+            foreach ($invoices as $item)
+                {
+                    $invoice['invoice_number'] = $item->invoice_number;
+                    $invoice['customer'] = $item->customer_name;
+                    $invoice['vehicle_number'] = $item->vehicle_number;
+                    $invoice['net_amount'] = $item->net_amount;
+                    $invoice['paid_amount'] = $item->paid_amount;
+                    $invoice['balance'] = $item->balance;
+                    $invoice['action'] = '<div class="btn-group">
+                    <a href="#'.$item->id.'" class="btn btn-xs  btn-success " title="View"><i class="fa fa-eye"></i>
+                    </a>
+                    <a href="#'.$item->id.'" class="btn btn-xs  btn-denger " title="Return"><i class="fa fa-exit"></i>
+                    </a>
+                    </div>';
+                    $data[] = $invoice;
+
+                }
+        }
+
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),
+            "recordsTotal"    => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data"            => $data
+            );
+
+        echo json_encode($json_data);
     }
 }
