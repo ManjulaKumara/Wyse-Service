@@ -129,7 +129,7 @@
                                                             @endforeach
                                                             @foreach($services as $service)
                                                             @php
-                                                                $element=App\Models\Service::find($service->service);
+                                                                $element=App\Models\ServiceMaster::find($service->service);
                                                             @endphp
                                                             <tr>
                                                                 <td width="60%" valign="top" style="font-size: 17px;">

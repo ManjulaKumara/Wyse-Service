@@ -436,6 +436,7 @@
             let type = $('#item').find(":selected").data('type');
             if(type=='service'){
                 $('#quantity').val('1');
+                $('#quantity').trigger('keyup');
                 $('#btn-add').focus();
             }
         }

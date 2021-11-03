@@ -496,7 +496,7 @@ class SalesController extends Controller
                     $invoice['action'] = '<div class="btn-group">
                     <a href="#'.$item->id.'" class="btn btn-xs  btn-success " title="View"><i class="fa fa-eye"></i>
                     </a>
-                    <a href="#'.$item->id.'" class="btn btn-xs  btn-denger " title="Return"><i class="fa fa-exit"></i>
+                    <a href="#'.$item->id.'" class="btn btn-xs  btn-danger " title="Return"><i class="fa fa-undo"></i>
                     </a>
                     </div>';
                     $data[] = $invoice;
