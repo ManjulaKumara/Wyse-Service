@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\CustomerRecept;
 use App\Models\InvoiceHeader;
-use App\Models\CustomerRecept;
 use App\Models\CustomerReceptDetail;
 use DB;
 use DateTime;

@@ -125,7 +125,7 @@
                     </select>
                 </div>
                 <!--end::Input group-->
-                <!--begin::Separator--> 
+                <!--begin::Separator-->
                 <div class="separator separator-dashed mb-8"></div>
                 <!--end::Separator-->
                 <!--begin::Input group-->
@@ -243,6 +243,7 @@
 @section('opyional_js')
 <script src="{{url('assets/plugins/global/plugins.bundle.js')}}"></script>
 <script>
+    var count=0;
     $(document).on('select2:open', () => {
         document.querySelector('.select2-search__field').focus();
     });
@@ -266,7 +267,7 @@
                     <tr class="border-bottom border-bottom-dashed item-row" data-kt-element="item">
                         <td class="pe-7">
                             <p>${entry.invoice_number}</p>
-                            <input type="hidden" name="details[${count}][invoice]" value="${$entry.id}" />
+                            <input type="hidden" name="details[${count}][invoice]" value="${entry.id}" />
                         </td>
                         <td>
                             <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][total]" placeholder="0.00" value="${entry.total_amount}" />
