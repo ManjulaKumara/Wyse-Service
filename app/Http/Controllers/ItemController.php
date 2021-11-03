@@ -72,7 +72,7 @@ class ItemController extends Controller
                     </a>';
                     if($item_stock){
                         $item['action']=$item['action'].'<a href="#" class="btn btn-xs  btn-primary" data-current="'.$item_stock->sales_price.'" data-name="'.$value->item_name.'" data-cost="'.$item_stock->cost_price.'" data-discount=""  title="Update Price" data-bs-toggle="modal" data-bs-target="#price_change">
-                        <i class="fa fa-usd"></i>
+                        <i class="fas fa-coins"></i>
                     </a>
                     </div>';
                     }
