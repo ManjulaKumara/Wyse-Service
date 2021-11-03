@@ -305,14 +305,13 @@
                         <td>
                             <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][balance]" placeholder="0.00" value="${entry.balance}" />
                         </td>
-                        <td>
+                        <td class="amount">
                             <input type="text" class="form-control form-control-solid text-end total_amount" name="details[${count}][pay_amount]" placeholder="0.00" value=""  />
                         </td>
                     </tr>
                     `;
                     $("#tbl-grns tbody").append(markup);
                     count++;
-                    calTotal();
                 });
             });
         }
@@ -321,9 +320,9 @@
         let table ='#tbl-grns tbody';
         let total=0;
         $(table+" .item-row").each(function() {
-            total +=  $(this).find('.total-amount').val()*1;
+            total +=  $(this).find('td.amount').find('input.total_amount').val()*1;
         });
-        $('#total').text(total);
+        $('#total').val(total);
     }
     $(document).on('keyup input.total-amount', function(){
         calTotal();

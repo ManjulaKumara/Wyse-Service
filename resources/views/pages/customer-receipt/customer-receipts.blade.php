@@ -290,14 +290,13 @@
                         <td>
                             <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][balance]" placeholder="0.00" value="${entry.balance}" />
                         </td>
-                        <td>
-                            <input type="text" required class="form-control form-control-solid text-end total_amount" name="details[${count}][pay_amount]" placeholder="0.00" value="0.00"  />
+                        <td class="amount">
+                            <input type="text" required class="form-control form-control-solid text-end total_amount" data-amount="0" name="details[${count}][pay_amount]" placeholder="0.00" value="0.00"  />
                         </td>
                     </tr>
                     `;
                     $("#tbl-invoices tbody").append(markup);
                     count++;
-                    calTotal();
                 });
             });
         }
@@ -306,7 +305,7 @@
         let table ='#tbl-invoices tbody';
         let total=0;
         $(table+" .item-row").each(function() {
-            total +=  $(this).find('.total-amount').val()*1;
+            total +=  $(this).find('td.amount').find('input.total_amount').val()*1;
         });
         $('#total').val(total);
     }

@@ -8,6 +8,7 @@ use App\Models\CustomerRecept;
 use App\Models\InvoiceHeader;
 use App\Models\CustomerReceptDetail;
 use App\Models\CashTransaction;
+use App\Models\CustomerCheque;
 use DB;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
@@ -71,6 +72,7 @@ class CustomerReceiptController extends Controller
                     $details->save();
                     $invoice_header=InvoiceHeader::find($element['invoice']);
                     $invoice_header->balance=$invoice_header->balance-$element['pay_amount'];
+                    $invoice_header->paid_amount=$invoice_header->paid_amount+$element['pay_amount'];
                     $invoice_header->save();
                 }
             }
@@ -81,7 +83,7 @@ class CustomerReceiptController extends Controller
                     'cheque_number'=>$request->cheque_number,
                     'bank_name'=>$request->bank_name,
                     'banked_date'=>$request->cheque_date,
-                    'cheque_amount'=>$detail->pay_amount,
+                    'cheque_amount'=>$request->total,
                     'is_returned'=>0,
                     'cashier'=>Auth::user()->id,
                 ];

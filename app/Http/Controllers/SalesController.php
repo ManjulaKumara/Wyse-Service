@@ -14,6 +14,9 @@ use App\Models\InvoiceItem;
 use App\Models\InvoiceService;
 use App\Models\ItemTransaction;
 use App\Models\CashTransaction;
+use App\Models\CustomerRecept;
+use App\Models\CustomerReceptDetail;
+use App\Models\CustomerCheque;
 use Illuminate\Support\Facades\DB;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
@@ -316,7 +319,7 @@ class SalesController extends Controller
                                         'stock_no'=>$item_stock->id,
                                     ];
                                     $item_record=new InvoiceItem($item_data);
-                                    $item_data->save();
+                                    $item_record->save();
                                 }
                             }
                         }
