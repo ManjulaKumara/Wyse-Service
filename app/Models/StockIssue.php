@@ -16,7 +16,8 @@ class StockIssue extends Model
         'stock_no',
         'is_invoiced',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'invoice',
     ];
     public $timestamps = true;
 }

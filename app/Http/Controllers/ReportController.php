@@ -8,6 +8,11 @@ use App\Models\CashTransaction;
 use App\Models\CustomerRecept;
 use App\Models\Expense;
 use App\Models\SupplierVoucher;
+use App\Models\Item;
+use App\Models\ItemTransaction;
+use App\Models\GrnHeader;
+use App\Models\StockIssue;
+use App\Models\ItemStock;
 use DateTime;
 
 
@@ -48,6 +53,123 @@ class ReportController extends Controller
     }
 
     public function bincard(){
+        view()->share('bin_data',null);
         return view('pages.reports.bincard');
     }
+
+    public function fill_bincard(Request $request){
+        $item=$request->item;
+        $qih=ItemStock::where('item',$item)->sum('qty_in_hand');
+        view()->share('qih',$qih);
+        $item=Item::find($item);
+        view()->share('item',$item);
+        $transactions=ItemTransaction::where('item',$item->id)->get();
+        $bincard_data=[];
+        foreach($transactions as $transaction){
+            $date=new DateTime($transaction->created_at);
+            $date=$date->format('Y-m-d');
+            $refrence="";
+            if($transaction->transaction_type=="open stock"){
+                $reference=$item->item_code;
+            }elseif($transaction->transaction_type=="GRN"){
+                $grn=GrnHeader::find($transaction->reference_id);
+                $reference=$grn->grn_code;
+            }elseif($transaction->transaction_type=="sales/stock-issue"){
+                //need to get invoice id from stock issue number.
+                $issue=StockIssue::find($transaction->reference_id);
+                $invoice=InvoiceHeader::find($issue->invoice);
+                $reference=($invoice)?$invoice->invoice_number:$issue->id;
+            }elseif($transaction->transaction_type=="damage"){
+                $reference=$transaction->reference_id;
+            }
+            $data=[
+                'date'=>$date,
+                'transaction_type'=>$transaction->transaction_type,
+                'tran_status'=>$transaction->tran_status,
+                'transfer_qty'=>$transaction->transfer_qty,
+                'reference_id'=>$reference,
+                'balance'=>$transaction->total_qih_after,
+            ];
+            array_push($bincard_data,(object)$data);
+        }
+        view()->share('bin_data',$bincard_data);
+        return view('pages.reports.bincard');
+    }
+
+    public function sales_reports(){
+        view()->share('sales_entry',null);
+        return view('pages.reports.sales-report');
+    }
+
+    public function fill_sales_reports(Request $request){
+        $from=$request->from_date;
+        $to=$request->to_date;
+        $invoices=CashTransaction::where('transaction_type','like','sales%')->where('created_at','<=',$to)->where('created_at','>=',$from)->distinct()->get('reference_id');
+        $sales_entry=[];
+        foreach($invoices as $element){
+            $invoice=InvoiceHeader::find($element->reference_id);
+            $cash_sale=CashTransaction::where('reference_id',$element->reference_id)->where('transaction_type','sales-cash')->where('created_at','<=',$to)->where('created_at','>=',$from)->sum('credit_amount');
+            $cheque_sale=CashTransaction::where('reference_id',$element->reference_id)->where('transaction_type','sales-cheque')->where('created_at','<=',$to)->where('created_at','>=',$from)->sum('credit_amount');
+            $credit_sale=CashTransaction::where('reference_id',$element->reference_id)->where('transaction_type','sales-credit')->where('created_at','<=',$to)->where('created_at','>=',$from)->sum('credit_amount');
+            $date=new DateTime($invoice->created_at);
+            $date=$date->format('Y-m-d');
+            array_push($sales_entry,(object)['invoice_number'=>$invoice->invoice_number,'date'=>$date,'cash_sale'=>$cash_sale,'cheque_sale'=>$cheque_sale,'credit_sale'=>$credit_sale]);
+        }
+        view()->share('sales_entry',$sales_entry);
+        return view('pages.reports.sales-report');
+    }
+
+    public function sales_summary(){
+        view()->share('sales_entry',$sales_entry);
+        return view('pages.reports.sales-summary');
+    }
+
+    public function fill_sales_summary(Request $request){
+        $from=$request->from_date;
+        $to=$request->to_date;
+        $dates=CashTransaction::where('transaction_type','like','sales%')->where('created_at','<=',$to)->where('created_at','>=',$from)->distinct()->get('transaction_date');
+        $sales_entry=[];
+        foreach($dates as $element){
+            $invoices=CashTransaction::where('transaction_type','like','sales%')->where('transaction_date',$element->transaction_date)->distinct()->get('reference_id');
+            $invoice_details=[];
+            $total_cash_sale=0;
+            $total_cheque_sale=0;
+            $total_credit_sale=0;
+            $total=0;
+            foreach($invoices as $inv){
+                $cash_sale=CashTransaction::where('reference_id',$element->reference_id)->where('transaction_type','sales-cash')->sum('credit_amount');
+                $cheque_sale=CashTransaction::where('reference_id',$element->reference_id)->where('transaction_type','sales-cheque')->sum('credit_amount');
+                $credit_sale=CashTransaction::where('reference_id',$element->reference_id)->where('transaction_type','sales-credit')->sum('credit_amount');
+                $total_cash_sale=$total_cash_sale+$cash_sale;
+                $total_cheque_sale=$total_cheque_sale+$cheque_sale;
+                $total_credit_sale=$total_credit_sale+$credit_sale;
+            }
+            array_push($sales_entry,(object)['date'=>$element->transaction_date,'cash_sale'=>$total_cash_sale,'cheque_sale'=>$total_cheque_sale,'credit_sale'=>$total_credit_sale]);
+        }
+        view()->share('sales_entry',$sales_entry);
+        return view('pages.reports.sales-summary');
+    }
+
+    public function price_list(){
+        $stocks=ItemStock::distinct()->get('item');
+        $price_list=[];
+        foreach($stocks as $element){
+            $item=Item::find($element->item);
+            $price=ItemStock::where('item',$item->id)->orderBy('id','desc')->first();
+            array_push($price_list,(object)['item_code'=>$item->item_code,'item_name'=>$item->item_name,'selling_price'=>$price->sales_price,'discount'=>$item->discount_rate]);
+        }
+        view()->share('price_list',$price_list);
+        return view('pages.reports.price-list');
+    }
+
+    public function stock_report(){
+        $items=Item::where('is_active',1)->get();
+        $stock_list=[];
+        foreach($items as $item){
+            $item_qty=ItemStock::where('item',$item->id)->sum('qty_in_hand');
+            array_push($stock_list,(object)['item_code'=>$item->item_code,'item_name'=>$item->item_name,'stock'=>$item_qty]);
+        }
+        return view('pages.reports.stock-report');
+    }
+
 }

@@ -19,6 +19,7 @@ use App\Http\Controllers\ItemRelationshipController;
 use App\Http\Controllers\ItemConversionController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\DamageController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -155,6 +156,13 @@ Route::group(['prefix'=>'ajax'],function(){
     Route::get('/unpaid-grns/{supplier}',[SupplierVoucherController::class,'get_pending_grns']);
     Route::get('/unpaid-invoices/{customer}',[CustomerReceiptController::class,'get_pending_invoices']);
     Route::get('/child-items/{parent}',[ItemConversionController::class,'get_child_items']);
+});
+
+Route::group(['prefix'=>'reports'],function(){
+    Route::get('/price-list',[ReportController::class,'price_list']);
+    Route::get('/sales-report',[ReportController::class,'sales_reports']);
+    Route::post('/sales-report',[ReportController::class,'fill_sales_reports']);
+
 });
 
 Route::get('/dashboard', function () {

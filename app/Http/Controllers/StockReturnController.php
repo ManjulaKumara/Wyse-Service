@@ -34,7 +34,7 @@ class StockReturnController extends Controller
                 'stock_id'=>$item_stock->id,
                 'item'=>$item_stock->item,
                 'transaction_type'=>'Stock returns',
-                'tran_status'=>'complete',
+                'tran_status'=>'in',
                 'qih_before'=>$item_stock->qty_in_hand-$request->quantity,
                 'qih_after'=>$item_stock->qty_in_hand,
                 'transfer_qty'=>$request->quantity,

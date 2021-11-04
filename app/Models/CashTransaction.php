@@ -18,6 +18,7 @@ class CashTransaction extends Model
         'balance_before',
         'created_at',
         'updated_at',
+        'transaction_date',
     ];
     public $timestamps = true;
 }

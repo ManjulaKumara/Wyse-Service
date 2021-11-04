@@ -231,6 +231,7 @@ class SalesController extends Controller
                         $stock_issue=StockIssue::where('vehicle_number',$request->vehicle_no)->where('item',$element['item'])->where('is_invoiced',0)->first();
                         if($stock_issue){
                             $stock_issue->is_invoiced=1;
+                            $stock_issue->invoice=$header->id;
                             $stock_issue->save();
                             $item_data=[
                                 'invoice'=>$header->id,
@@ -253,6 +254,7 @@ class SalesController extends Controller
                                     'qty'=>$element['qty'],
                                     'stock_no'=>$item_stock->id,
                                     'is_invoiced'=>1,
+                                    'invoice'=>$header->id,
                                 ];
                                 $issue=new StockIssue($issue_data);
                                 $issue->save();
@@ -263,7 +265,7 @@ class SalesController extends Controller
                                     'stock_id'=>$item_stock->id,
                                     'item'=>$element['item'],
                                     'transaction_type'=>'sales/stock-issue',
-                                    'tran_status'=>'complete',
+                                    'tran_status'=>'out',
                                     'qih_before'=>$item_stock->qty_in_hand+$element['qty'],
                                     'qih_after'=>$item_stock->qty_in_hand,
                                     'transfer_qty'=>$element['qty'],
@@ -294,6 +296,7 @@ class SalesController extends Controller
                                         'qty'=>$item_stock->qty_in_hand,
                                         'stock_no'=>$item_stock->id,
                                         'is_invoiced'=>1,
+                                        'invoice'=>$header->id,
                                     ];
                                     $issue=new StockIssue($issue_data);
                                     $issue->save();
@@ -306,7 +309,7 @@ class SalesController extends Controller
                                         'stock_id'=>$item_stock->id,
                                         'item'=>$element['item'],
                                         'transaction_type'=>'sales/stock-issue',
-                                        'tran_status'=>'complete',
+                                        'tran_status'=>'out',
                                         'qih_before'=>$before,
                                         'qih_after'=>$item_stock->qty_in_hand,
                                         'transfer_qty'=>$before,
@@ -366,7 +369,7 @@ class SalesController extends Controller
                 $cheque->save();
                 $cash_data=[
                     'transaction_type'=>'sales-cheque',
-                    'reference_id'=>$cheque->id,
+                    'reference_id'=>$header->id,
                     'debit_amount'=>0,
                     'credit_amount'=>$detail->pay_amount,
                 ];
@@ -389,8 +392,8 @@ class SalesController extends Controller
                         $cash_data=[
                             'transaction_type'=>'sales-credit',
                             'reference_id'=>$header->id,
-                            'debit_amount'=>$request->final_total-$paid_amount,
-                            'credit_amount'=>0,
+                            'debit_amount'=>0,
+                            'credit_amount'=>$request->final_total-$paid_amount,
                         ];
                         $cash=new CashTransaction($cash_data);
                         $cash->save();
@@ -398,8 +401,8 @@ class SalesController extends Controller
                         $cash_data=[
                             'transaction_type'=>'sales-credit',
                             'reference_id'=>$header->id,
-                            'debit_amount'=>$paid_amount,
-                            'credit_amount'=>0,
+                            'debit_amount'=>0,
+                            'credit_amount'=>$paid_amount,
                         ];
                         $cash=new CashTransaction($cash_data);
                         $cash->save();
