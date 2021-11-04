@@ -29,6 +29,7 @@ class StockReturnController extends Controller
             $item_stock=ItemStock::find($stock_issue->stock_no);
             $item_stock->qty_in_hand=$item_stock->qty_in_hand+$request->quantity;
             $item_stock->save();
+            $item_qtys=ItemStock::where('item',$item_stock->item)->sum('qty_in_hand');
             $transaction_data=[
                 'stock_id'=>$item_stock->id,
                 'item'=>$item_stock->item,
@@ -38,6 +39,8 @@ class StockReturnController extends Controller
                 'qih_after'=>$item_stock->qty_in_hand,
                 'transfer_qty'=>$request->quantity,
                 'reference_id'=>$stock_issue->id,
+                'total_qih_before'=>$item_qtys-$request->quantity,
+                'total_qih_after'=>$item_qtys,
             ];
             $transaction=new ItemTransaction($transaction_data);
             $transaction->save();

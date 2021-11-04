@@ -132,6 +132,7 @@ class SalesController extends Controller
                 array_push($item_list,(object)$data);
             }
         }
+        return response()->json($item_list,200);
     }
 
     public function getServices(){
@@ -257,6 +258,7 @@ class SalesController extends Controller
                                 $issue->save();
                                 $item_stock->qty_in_hand=$item_stock->qty_in_hand-$element['qty'];
                                 $item_stock->save();
+                                $item_qtys=ItemStock::where('item',$element['item'])->sum('qty_in_hand');
                                 $transaction_data=[
                                     'stock_id'=>$item_stock->id,
                                     'item'=>$element['item'],
@@ -266,6 +268,8 @@ class SalesController extends Controller
                                     'qih_after'=>$item_stock->qty_in_hand,
                                     'transfer_qty'=>$element['qty'],
                                     'reference_id'=>$issue->id,
+                                    'total_qih_before'=>$item_qtys+$element['qty'],
+                                    'total_qih_after'=>$item_qtys,
                                 ];
                                 $transaction=new ItemTransaction($transaction_data);
                                 $transaction->save();
@@ -297,6 +301,7 @@ class SalesController extends Controller
                                     $qty=$qty+$item_stock->qty_in_hand;
                                     $item_stock->qty_in_hand=$item_stock->qty_in_hand-$item_stock->qty_in_hand;
                                     $item_stock->save();
+                                    $item_qtys=ItemStock::where('item',$element['item'])->sum('qty_in_hand');
                                     $transaction_data=[
                                         'stock_id'=>$item_stock->id,
                                         'item'=>$element['item'],
@@ -306,6 +311,8 @@ class SalesController extends Controller
                                         'qih_after'=>$item_stock->qty_in_hand,
                                         'transfer_qty'=>$before,
                                         'reference_id'=>$issue->id,
+                                        'total_qih_before'=>$item_qtys+$before,
+                                        'total_qih_after'=>$item_qtys,
                                     ];
                                     $transaction=new ItemTransaction($transaction_data);
                                     $transaction->save();
@@ -358,7 +365,7 @@ class SalesController extends Controller
                 $cheque=new CustomerCheque($cheque_data);
                 $cheque->save();
                 $cash_data=[
-                    'transaction_type'=>'customer-receipt(cheque)',
+                    'transaction_type'=>'sales-cheque',
                     'reference_id'=>$cheque->id,
                     'debit_amount'=>0,
                     'credit_amount'=>$detail->pay_amount,

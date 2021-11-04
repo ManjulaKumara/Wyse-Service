@@ -51,6 +51,7 @@ class DamageController extends Controller
                 $damage->save();
                 $item_stock->qty_in_hand=$item_stock->qty_in_hand-$request->damage_quantity;
                 $item_stock->save();
+                $item_qtys=ItemStock::where('item',$request->item)->sum('qty_in_hand');
                 $transaction_data=[
                     'stock_id'=>$item_stock->id,
                     'item'=>$request->item,
@@ -60,6 +61,8 @@ class DamageController extends Controller
                     'qih_after'=>$item_stock->qty_in_hand,
                     'transfer_qty'=>$request->damage_quantity,
                     'reference_id'=>$damage->id,
+                    'total_qih_before'=>$item_qtys+$request->damage_quantity,
+                    'total_qih_after'=>$item_qtys,
                 ];
                 $transaction=new ItemTransaction($transaction_data);
                 $transaction->save();
@@ -78,6 +81,7 @@ class DamageController extends Controller
                     $qty=$qty+$item_stock->qty_in_hand;
                     $item_stock->qty_in_hand=$item_stock->qty_in_hand-$item_stock->qty_in_hand;
                     $item_stock->save();
+                    $item_qtys=ItemStock::where('item',$request->item)->sum('qty_in_hand');
                     $transaction_data=[
                         'stock_id'=>$item_stock->id,
                         'item'=>$request->item,
@@ -87,6 +91,8 @@ class DamageController extends Controller
                         'qih_after'=>$item_stock->qty_in_hand,
                         'transfer_qty'=>$before,
                         'reference_id'=>$item_stock->id,
+                        'total_qih_before'=>$item_qtys+$before,
+                        'total_qih_after'=>$item_qtys,
                     ];
                     $transaction=new ItemTransaction($transaction_data);
                     $transaction->save();

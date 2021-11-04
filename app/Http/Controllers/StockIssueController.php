@@ -58,6 +58,7 @@ class StockIssueController extends Controller
                         $issue->save();
                         $item_stock->qty_in_hand=$item_stock->qty_in_hand-$element['qty'];
                         $item_stock->save();
+                        $item_qtys=ItemStock::where('item',$element['item'])->sum('qty_in_hand');
                         $transaction_data=[
                             'stock_id'=>$item_stock->id,
                             'item'=>$element['item'],
@@ -67,6 +68,8 @@ class StockIssueController extends Controller
                             'qih_after'=>$item_stock->qty_in_hand,
                             'transfer_qty'=>$element['qty'],
                             'reference_id'=>$issue->id,
+                            'total_qih_before'=>$item_qtys+$element['qty'],
+                            'total_qih_after'=>$item_qtys,
                         ];
                         $transaction=new ItemTransaction($transaction_data);
                         $transaction->save();
@@ -87,6 +90,7 @@ class StockIssueController extends Controller
                             $qty=$qty+$item_stock->qty_in_hand;
                             $item_stock->qty_in_hand=$item_stock->qty_in_hand-$item_stock->qty_in_hand;
                             $item_stock->save();
+                            $item_qtys=ItemStock::where('item',$element['item'])->sum('qty_in_hand');
                             $transaction_data=[
                                 'stock_id'=>$item_stock->id,
                                 'item'=>$element['item'],
@@ -96,6 +100,8 @@ class StockIssueController extends Controller
                                 'qih_after'=>$item_stock->qty_in_hand,
                                 'transfer_qty'=>$before,
                                 'reference_id'=>$issue->id,
+                                'total_qih_before'=>$item_qtys+$before,
+                                'total_qih_after'=>$item_qtys,
                             ];
                             $transaction=new ItemTransaction($transaction_data);
                             $transaction->save();

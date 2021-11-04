@@ -86,6 +86,7 @@ class GrnController extends Controller
                     ];
                     $stock=new ItemStock($stock_data);
                     $stock->save();
+                    $item_qtys=ItemStock::where('item',$element['item'])->sum('qty_in_hand');
                     $transaction_data=[
                         'stock_id'=>$stock->id,
                         'item'=>$element['item'],
@@ -95,6 +96,8 @@ class GrnController extends Controller
                         'qih_after'=>$element['quantity'],
                         'transfer_qty'=>$element['quantity'],
                         'reference_id'=>$header->id,
+                        'total_qih_before'=>$item_qtys-$element['quantity'],
+                        'total_qih_after'=>$item_qtys,
                     ];
                     $transaction=new ItemTransaction($transaction_data);
                     $transaction->save();
@@ -120,6 +123,7 @@ class GrnController extends Controller
                         $item_stock->purchase_qty=$item_stock->purchase_qty+$element['quantity'];
                         $item_stock->qty_in_hand=$item_stock->qty_in_hand+$element['quantity'];
                         $item_stock->save();
+                        $item_qtys=ItemStock::where('item',$element['item'])->sum('qty_in_hand');
                         $transaction_data=[
                             'stock_id'=>$item_stock->id,
                             'item'=>$element['item'],
@@ -129,6 +133,8 @@ class GrnController extends Controller
                             'qih_after'=>$item_stock->qty_in_hand,
                             'transfer_qty'=>$element['quantity'],
                             'reference_id'=>$free_issue->id,
+                            'total_qih_before'=>$item_qtys-$element['quantity'],
+                            'total_qih_after'=>$item_qtys,
                         ];
                         $transaction=new ItemTransaction($transaction_data);
                         $transaction->save();
@@ -147,6 +153,7 @@ class GrnController extends Controller
                         ];
                         $stock=new ItemStock($stock_data);
                         $stock->save();
+                        $item_qtys=ItemStock::where('item',$element['item'])->sum('qty_in_hand');
                         $transaction_data=[
                             'stock_id'=>$stock->id,
                             'item'=>$element['item'],
@@ -156,6 +163,8 @@ class GrnController extends Controller
                             'qih_after'=>$element['quantity'],
                             'transfer_qty'=>$element['quantity'],
                             'reference_id'=>$header->id,
+                            'total_qih_before'=>$item_qtys-$element['quantity'],
+                            'total_qih_after'=>$item_qtys,
                         ];
                         $transaction=new ItemTransaction($transaction_data);
                         $transaction->save();

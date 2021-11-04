@@ -19,7 +19,9 @@ class ItemTransaction extends Model
         'transfer_qty',
         'reference_id',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'total_qih_before',
+        'total_qih_after'
     ];
     public $timestamps = true;
 }

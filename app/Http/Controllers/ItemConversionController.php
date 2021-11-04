@@ -51,6 +51,7 @@ class ItemConversionController extends Controller
             $parent_stock=ItemStock::where('item',$request->from_item)->orderBy('id','desc')->first();
             $parent_stock->qty_in_hand=$parent_stock->qty_in_hand-$request->from_quantity;
             $parent_stock->save();
+            $item_qtys=ItemStock::where('item',$request->from_item)->sum('qty_in_hand');
             $transaction_data=[
                 'stock_id'=>$parent_stock->id,
                 'item'=>$request->from_item,
@@ -60,6 +61,8 @@ class ItemConversionController extends Controller
                 'qih_after'=>$parent_stock->qty_in_hand,
                 'transfer_qty'=>$request->from_quantity,
                 'reference_id'=>$conversion->id,
+                'total_qih_before'=>$item_qtys+$request->from_quantity,
+                'total_qih_after'=>$item_qtys,
             ];
             $transaction=new ItemTransaction($transaction_data);
             $transaction->save();
@@ -76,6 +79,7 @@ class ItemConversionController extends Controller
             ];
             $new_stock=new ItemStock($stock_data);
             $new_stock->save();
+            $item_qtys=ItemStock::where('item',$request->to_item)->sum('qty_in_hand');
             $new_transaction_data=[
                 'stock_id'=>$parent_stock->id,
                 'item'=>$request->to_item,
@@ -85,6 +89,8 @@ class ItemConversionController extends Controller
                 'qih_after'=>$request->to_quantity,
                 'transfer_qty'=>$request->to_quantity,
                 'reference_id'=>$conversion->id,
+                'total_qih_before'=>$item_qtys-$request->to_quantity,
+                'total_qih_after'=>$item_qtys,
             ];
             $new_transaction=new ItemTransaction($new_transaction_data);
             $new_transaction->save();
