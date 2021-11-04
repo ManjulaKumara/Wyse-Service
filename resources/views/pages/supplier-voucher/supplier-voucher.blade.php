@@ -89,11 +89,11 @@
                 <!--begin::Input group-->
                 <div class="row mb-3">
                     <label for="total" class="required form-label">Total:</label>
-                    <input type="text" class="form-control" name="total" id="total"/>
+                    <input type="text" required class="form-control" name="total" id="total"/>
                 </div>
                 <div class="row mb-3">
                     <label for="inv_no" class="required form-label">Pay Method:</label>
-                    <select name="pay_method" id="pay_method" class="form-control">
+                    <select name="pay_method" required id="pay_method" class="form-control">
                         <option value="">Please select a payment method</option>
                         <option value="cash">CASH</option>
                         <option value="cheque">CHEQUE</option>
