@@ -77,6 +77,8 @@
 		<!--end::Page Custom Javascript-->
 		<!--end::Javascript-->
         @yield('opyional_js')
+        <script src="{{ url('assets/js/toastr.js')}}"></script>
+		<script src="{{ url('assets/js/sweetalert2.js')}}"></script>
         @if(Session::has('success'))
             <script>
                 var message='{{Session::get("success")}}';
