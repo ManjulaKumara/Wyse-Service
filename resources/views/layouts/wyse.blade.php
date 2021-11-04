@@ -13,6 +13,7 @@
 		<!--begin::Global Stylesheets Bundle(used by all pages)-->
 		<link href="{{url('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
 		<link href="{{url('assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{url('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css"/>
         @yield('optional_css')
 		<!--end::Global Stylesheets Bundle-->
 	</head>
@@ -69,12 +70,25 @@
 		<script src="{{url('assets/js/custom/apps/chat/chat.js')}}"></script>
 		<script src="{{url('assets/js/custom/modals/create-app.js')}}"></script>
 		<script src="{{url('assets/js/custom/modals/upgrade-plan.js')}}"></script>
+        <script src="{{url('assets/plugins/global/plugins.bundle.js')}}"></script>
         <script>
 			const APP_URL = "{{env('APP_URL')}}";
 		</script>
 		<!--end::Page Custom Javascript-->
 		<!--end::Javascript-->
         @yield('opyional_js')
+        @if(Session::has('success'))
+            <script>
+                var message='{{Session::get("success")}}';
+                toastr.success(message);
+            </script>
+        @endif
+        @if(Session::has('error'))
+            <script>
+                var message='{{Session::get("error")}}';
+                toastr.error(message);
+            </script>
+        @endif
 	</body>
 	<!--end::Body-->
 </html>

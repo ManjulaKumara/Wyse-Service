@@ -156,7 +156,7 @@ Route::group(['prefix'=>'ajax'],function(){
     Route::get('/unpaid-grns/{supplier}',[SupplierVoucherController::class,'get_pending_grns']);
     Route::get('/unpaid-invoices/{customer}',[CustomerReceiptController::class,'get_pending_invoices']);
     Route::get('/child-items/{parent}',[ItemConversionController::class,'get_child_items']);
-});
+}); 
 
 Route::group(['prefix'=>'reports'],function(){
     Route::get('/price-list',[ReportController::class,'price_list']);

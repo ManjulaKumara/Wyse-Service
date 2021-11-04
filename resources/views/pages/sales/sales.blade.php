@@ -51,9 +51,9 @@
                                         <label for="inv_type" class="required form-label">Invoice Type:</label>
                                         <select required class="form-control" name="inv_type" id="inv_type">
                                             <option value="">Please select invoice type</option>
-                                            <option value="1">Items and Services</option>
-                                            <option value="2">Items Only</option>
-                                            <option value="3">Services/Repairs Only</option>
+                                            <option value="1">Items and Services(Private Vehicles)</option>
+                                            <option value="2">Items Only(Government Vehicles)</option>
+                                            <option value="3">Services/Repairs Only(Government Vehicles)</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
@@ -431,8 +431,8 @@
         if($('#item').val()!="" && $('#item').val()!=null){
             let unit_price=$('#item').find(":selected").data('uprice');
             let discount=$('#item').find(":selected").data('discount');
-            $('#unit_price').val(unit_price);
-            $('#discount').val(discount);
+            $('#unit_price').val(Number(unit_price).toFixed(2));
+            $('#discount').val(Number(discount).toFixed(2));
             let type = $('#item').find(":selected").data('type');
             if(type=='service'){
                 $('#quantity').val('1');
@@ -452,7 +452,7 @@
                     let unit_price=$('#item').find(":selected").data('uprice');
                     let discount=$('#item').find(":selected").data('discount');
                     let total=(unit_price-discount)*$('#quantity').val();
-                    $('#amount').val(total);
+                    $('#amount').val(Number(total).toFixed(2));
                 }
             }
         }
@@ -486,16 +486,16 @@
                             <input type="hidden" name="details[${count}][item_type]" value="${item_type}" />
                         </td>
                         <td>
-                            <input type="text" class="form-control text-end" name="details[${count}][unit_price]" readonly placeholder="0.00" value="${unit_price}" />
+                            <input type="text" class="form-control text-end" name="details[${count}][unit_price]" readonly placeholder="0.00" value="${Number(unit_price).toFixed(2)}" />
                         </td>
                         <td>
-                            <input type="text" class="form-control text-end" name="details[${count}][discount]" readonly placeholder="0.00" value="${discount}" />
+                            <input type="text" class="form-control text-end" name="details[${count}][discount]" readonly placeholder="0.00" value="${Number(discount).toFixed(2)}" />
                         </td>
                         <td class="ps-0">
                             <input class="form-control " type="number" min="1" name="details[${count}][qty]" readonly placeholder="1" value="${quantity}"/>
                         </td>
                         <td>
-                            <input type="text" class="form-control text-end amount" name="details[${count}][amount]" readonly placeholder="0.00" value="${quantity*(unit_price-discount)}" />
+                            <input type="text" class="form-control text-end amount" name="details[${count}][amount]" readonly placeholder="0.00" value="${Number(quantity*(unit_price-discount)).toFixed(2)}" />
                         </td>
                         <td class="pt-5 text-end">
                             <button type="button" class="btn btn-sm btn-icon btn-active-color-primary" data-kt-element="remove-item" onclick="deleteItem(${count})">
@@ -531,7 +531,7 @@
         $("#tbl-items .item-row").each(function(){
             total=total+$(this).find('.amount').val()*1;
         });
-        $('#total').val(total);
+        $('#total').val(Number(total).toFixed(2));
     }
     $(document).on('keydown', function(event) {
        if (event.key == "Escape") {
@@ -545,7 +545,7 @@
     $('#bill_discount').keyup(function(){
         if($('#bill_discount').val()!="" && $('#bill_discount').val()!=null){
             let final_total=$('#total').val()-$('#bill_discount').val();
-            $('#final_total').val(final_total);
+            $('#final_total').val(Number(final_total).toFixed(2));
         }
     });
     $('#pay_method').change(function(){
@@ -569,7 +569,7 @@
             }
         }
         let customer_balance=$('#pay_amount').val()-$('#final_total').val();
-        $('#balance_amount').val(customer_balance);
+        $('#balance_amount').val(Number(customer_balance).toFixed(2));
     });
     function deleteItem(index){
         let item_id=$('#tr'+index).data('item-id');

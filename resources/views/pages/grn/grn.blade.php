@@ -275,13 +275,13 @@
     $('#label_price').keyup(function(){
         if(($('#item').val()!="" && $('#item').val()!=null) && ($('#quantity').val()!="" && $('#quantity').val()!=null)){
             let amount=($('#label_price').val()-$('#discount').val())*$('#quantity').val();
-            $('#amount').val(amount);
+            $('#amount').val(Number(amount).toFixed(2));
         }
     });
     $('#discount').keyup(function(){
         if(($('#item').val()!="" && $('#item').val()!=null) && ($('#quantity').val()!="" && $('#quantity').val()!=null) && ($('#discount').val()!="" && $('#discount').val()!=null)){
             let amount=($('#label_price').val()-$('#discount').val())*$('#quantity').val();
-            $('#amount').val(amount);
+            $('#amount').val(Number(amount).toFixed(2));
         }
     });
     $('#discount').focusout(function(){
@@ -319,16 +319,16 @@
                     </td>
 
                     <td>
-                        <input type="text" class="form-control form-control-solid text-end label_price" readonly name="details[${count}][label_price]" value="${label_price}" placeholder="0.00" value="0.00" />
+                        <input type="text" class="form-control form-control-solid text-end label_price" readonly name="details[${count}][label_price]" value="${Number(label_price).toFixed(2)}" placeholder="0.00" value="0.00" />
                     </td>
                     <td>
-                        <input type="text" class="form-control form-control-solid text-end discount" readonly name="details[${count}][discount]" value="${discount}" placeholder="0.00" value="0.00" />
+                        <input type="text" class="form-control form-control-solid text-end discount" readonly name="details[${count}][discount]" value="${Number(discount).toFixed(2)}" placeholder="0.00" value="0.00" />
                     </td>
                     <td class="ps-0">
                         <input class="form-control form-control-solid qty" type="number" min="1" readonly name="details[${count}][quantity]" value="${quantity}" placeholder="1" value="1" />
                     </td>
                     <td>
-                        <input type="text" class="form-control form-control-solid text-end amount" readonly name="details[${count}][amount]" value="${amount}" placeholder="0.00" value="0.00" />
+                        <input type="text" class="form-control form-control-solid text-end amount" readonly name="details[${count}][amount]" value="${Number(amount).toFixed(2)}" placeholder="0.00" value="0.00" />
                     </td>
                     <td class="pt-5 text-end">
                         <button type="button" class="btn btn-sm btn-icon btn-active-color-primary" onclick="deleteItem(${count})">
@@ -363,13 +363,13 @@
         $("#tbl-items .item-row").each(function(){
             total=total+($(this).find('.qty').val()*$(this).find('.label_price').val())*1;
         });
-        $('#total').val(total);
+        $('#total').val(Number(total).toFixed(2));
         discount=0;
         $('#tbl-items .item-row').each(function(){
             discount=discount+($(this).find('.qty').val()*$(this).find('.discount').val())*1;
         });
-        $('#total_discount').val(discount);
-        $('#net_total').val(total-discount);
+        $('#total_discount').val(Number(discount).toFixed(2));
+        $('#net_total').val(Number(total-discount).toFixed(2));
     }
     function deleteItem(index){
         let item_id=$('#tr'+index).data('item-id');

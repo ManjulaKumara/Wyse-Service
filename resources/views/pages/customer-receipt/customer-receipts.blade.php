@@ -266,8 +266,8 @@
             $('#email').val(email);
             $('#telephone').val(telephone);
             $('#address').val(address);
-            $('#credit_limit').val(credit_limit);
-            $('#current_balance').val(current_balance);
+            $('#credit_limit').val(Number(credit_limit).toFixed(2));
+            $('#current_balance').val(Number(current_balance).toFixed(2));
 
             let _url=APP_URL+'/ajax/unpaid-invoices/'+$('#customer').val();
             $.getJSON( _url, function ( data ) {
@@ -279,16 +279,16 @@
                             <input type="hidden" name="details[${count}][invoice]" value="${entry.id}" />
                         </td>
                         <td>
-                            <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][total]" placeholder="0.00" value="${entry.total_amount}" />
+                            <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][total]" placeholder="0.00" value="${Number(entry.total_amount).toFixed(2)}" />
                         </td>
                         <td>
-                            <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][paid]" placeholder="0.00" value="${entry.paid_amount}" />
+                            <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][paid]" placeholder="0.00" value="${Number(entry.paid_amount).toFixed(2)}" />
                         </td>
                         <td>
-                            <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][returned]" placeholder="0.00" value="${entry.return_amount}" />
+                            <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][returned]" placeholder="0.00" value="${Number(entry.return_amount).toFixed(2)}" />
                         </td>
                         <td>
-                            <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][balance]" placeholder="0.00" value="${entry.balance}" />
+                            <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][balance]" placeholder="0.00" value="${Number(entry.balance).toFixed(2)}" />
                         </td>
                         <td class="amount">
                             <input type="text" required class="form-control form-control-solid text-end total_amount" data-amount="0" name="details[${count}][pay_amount]" placeholder="0.00" value="0.00"  />
@@ -307,7 +307,7 @@
         $(table+" .item-row").each(function() {
             total +=  $(this).find('td.amount').find('input.total_amount').val()*1;
         });
-        $('#total').val(total);
+        $('#total').val(Number(total).toFixed(2));
     }
     $(document).on('keyup input.total-amount', function(){
         calTotal();
