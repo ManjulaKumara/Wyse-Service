@@ -12,14 +12,14 @@
             <!--begin::Toolbar-->
             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                 <!--begin::Add new-->
-                <a href="{{url('/sevices/all')}}"><button type="button" class="btn btn-success" >Back<i class="fa fa-angle-left"></i></button></a>
+                <a href="{{url('/services/all')}}"><button type="button" class="btn btn-success" >Back<i class="fa fa-angle-left"></i></button></a>
                 <!--end::Add new-->
             </div>
             <!--end::Toolbar-->
         </div>
         <!--end::Card toolbar-->
     </div>
-    <form class="form" method="POST" @if (Request::segment(2)=='view') action="{{url('#')}}" @elseif (Request::segment(2)=='edit') action="{{url('/sevices/update/'.$service->id)}}" @else action="{{url('/sevices/store')}}" @endif>
+    <form class="form" method="POST" @if (Request::segment(2)=='view') action="{{url('#')}}" @elseif (Request::segment(2)=='edit') action="{{url('/services/update/'.$service->id)}}" @else action="{{url('/services/store')}}" @endif>
         @csrf
         <input type="hidden" name="lead_id" id="cust_lead_id">
         <div class="card-body">

@@ -92,14 +92,10 @@ class ServiceController extends Controller
             $service->service_rate = $request->get('service_rate');
             $service->discount_rate = $request->get('discount_rate');
             $service->save();
-            $notification = array(
-                'message' => 'Successfully Created!',
-                'alert-type' => 'success'
-            );
-            return redirect('/sevices/all')->with($notification);
+            return redirect('/services/all')->with('success','Service Stored Successfully!!!');
 
         } catch (\Throwable $th) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 
@@ -123,14 +119,10 @@ class ServiceController extends Controller
             $service->service_rate = $request->get('service_rate');
             $service->discount_rate = $request->get('discount_rate');
             $service->save();
-            $notification = array(
-                'message' => 'Successfully Updated!',
-                'alert-type' => 'success'
-            );
-            return redirect('/sevices/all')->with($notification);
+            return redirect('/services/all')->with('success','Service Updated Successfully!!!');
 
         } catch (\Throwable $th) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 }

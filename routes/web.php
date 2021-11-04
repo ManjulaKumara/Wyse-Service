@@ -92,13 +92,13 @@ Route::get('/item-category/view/{id}',[ ItemCategoryController::class, 'item_cat
 Route::get('/item-category/edit/{id}',[ ItemCategoryController::class, 'item_category_edit' ]);
 Route::post('/item-category/update/{id}',[ ItemCategoryController::class, 'item_category_update' ]);
 
-Route::get('/sevices/all',[ ServiceController::class, 'service_index' ]);
-Route::get('/sevices/get-all',[ ServiceController::class, 'service_get_all' ]);
-Route::get('/sevices/create',[ ServiceController::class, 'service_crete' ]);
-Route::post('/sevices/store',[ ServiceController::class, 'service_store' ]);
-Route::get('/sevices/view/{id}',[ ServiceController::class, 'service_view' ]);
-Route::get('/sevices/edit/{id}',[ ServiceController::class, 'service_edit' ]);
-Route::post('/sevices/update/{id}',[ ServiceController::class, 'service_update' ]);
+Route::get('/services/all',[ ServiceController::class, 'service_index' ]);
+Route::get('/services/get-all',[ ServiceController::class, 'service_get_all' ]);
+Route::get('/services/create',[ ServiceController::class, 'service_crete' ]);
+Route::post('/services/store',[ ServiceController::class, 'service_store' ]);
+Route::get('/services/view/{id}',[ ServiceController::class, 'service_view' ]);
+Route::get('/services/edit/{id}',[ ServiceController::class, 'service_edit' ]);
+Route::post('/services/update/{id}',[ ServiceController::class, 'service_update' ]);
 
 Route::get('/grns/all',[GrnController::class,'grn_index']);
 Route::get('/grns/get_all',[GrnController::class,'grn_get_all']);
@@ -156,7 +156,7 @@ Route::group(['prefix'=>'ajax'],function(){
     Route::get('/unpaid-grns/{supplier}',[SupplierVoucherController::class,'get_pending_grns']);
     Route::get('/unpaid-invoices/{customer}',[CustomerReceiptController::class,'get_pending_invoices']);
     Route::get('/child-items/{parent}',[ItemConversionController::class,'get_child_items']);
-}); 
+});
 
 Route::group(['prefix'=>'reports'],function(){
     Route::get('/price-list',[ReportController::class,'price_list']);

@@ -17,7 +17,7 @@
             <!--begin::Toolbar-->
             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                 <!--begin::Add new-->
-                <a href="{{url('/sevices/create')}}"><button type="button" class="btn btn-primary" >Add Service</button></a>
+                <a href="{{url('/services/create')}}"><button type="button" class="btn btn-primary" >Add Service</button></a>
                 <!--end::Add new-->
             </div>
             <!--end::Toolbar-->
