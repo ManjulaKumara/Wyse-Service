@@ -126,6 +126,8 @@ Route::post('/item-relationship/store',[ItemRelationshipController::class,'store
 Route::get('/item-conversion/create',[ItemConversionController::class,'create']);
 Route::post('/item-conversion/store',[ItemConversionController::class,'store']);
 
+Route::get('/item-damages/all',[DamageController::class,'damage_index']);
+Route::get('/item-damages/get-all',[DamageController::class,'damage_get_all']);
 Route::get('/item-damages/create',[DamageController::class,'create']);
 Route::post('/item-damages/store',[DamageController::class,'store']);
 

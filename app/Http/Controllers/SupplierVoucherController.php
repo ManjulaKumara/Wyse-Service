@@ -8,6 +8,7 @@ use App\Models\SupplierVoucher;
 use App\Models\GrnHeader;
 use App\Models\SupplierVoucherDetail;
 use App\Models\SupplierCheque;
+use App\Models\CashTransaction;
 use DateTime;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -50,6 +51,7 @@ class SupplierVoucherController extends Controller
                     $details->save();
                     $grn=GrnHeader::find($element['grn']);
                     $grn->balance=$grn->balance-$element['pay_amount'];
+                    $grn->balance=$grn->paid_amount+$element['pay_amount'];
                     $grn->save();
                 }
             }
@@ -75,7 +77,7 @@ class SupplierVoucherController extends Controller
                 $cash->save();
             }else{
                 $cash_data=[
-                    'transaction_type'=>'supplier-voucher',
+                    'transaction_type'=>'supplier-voucher(cash)',
                     'reference_id'=>$header->id,
                     'debit_amount'=>$request->total,
                     'credit_amount'=>0,
