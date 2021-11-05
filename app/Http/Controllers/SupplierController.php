@@ -102,10 +102,10 @@ class SupplierController extends Controller
                 'message' => 'Successfully Created!',
                 'alert-type' => 'success'
             );
-            return redirect('/suppliers/all')->with($notification);
+            return redirect('/suppliers/all')->with('success','Supplier Stored Successfully!!!');
 
         } catch (Exception $e) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 
@@ -137,10 +137,10 @@ class SupplierController extends Controller
                 'message' => 'Successfully Updated!',
                 'alert-type' => 'success'
             );
-            return redirect('/suppliers/all')->with($notification);
+            return redirect('/suppliers/all')->with('success','Supplier Updated Successfully!!!');
 
         } catch (Exception $e) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 }

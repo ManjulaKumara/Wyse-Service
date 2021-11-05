@@ -121,9 +121,9 @@ class StockController extends Controller
                 'message' => 'Successfully Created!',
                 'alert-type' => 'success'
             );
-            return redirect('/open-stock/all')->with($notification);
+            return redirect('/open-stock/all')->with('success','Stored Successfully!!!');
         } catch (\Throwable $th) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 }

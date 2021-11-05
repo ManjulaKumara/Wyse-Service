@@ -99,9 +99,9 @@ class ModuleController extends Controller
                 'message' => 'Successfully Created!',
                 'alert-type' => 'success'
             );
-            return redirect('/module/all')->with($notification);
+            return redirect('/module/all')->with('success','Module Stored Successfully!!!');
         } catch (\Throwable $th) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 
@@ -134,9 +134,9 @@ class ModuleController extends Controller
                 'message' => 'Successfully Updated!',
                 'alert-type' => 'success'
             );
-            return redirect('/module/all')->with($notification);
+            return redirect('/module/all')->with('success','Module Updated Successfully!!!');
         } catch (\Throwable $th) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 }
