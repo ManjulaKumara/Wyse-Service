@@ -20,6 +20,7 @@ use App\Http\Controllers\ItemConversionController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\DamageController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\MaterialIssueCOntroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,6 +160,9 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get('/unpaid-invoices/{customer}',[CustomerReceiptController::class,'get_pending_invoices']);
         Route::get('/child-items/{parent}',[ItemConversionController::class,'get_child_items']);
     });
+
+    Route::get('/material-issues/create',[MaterialIssueController::class,'create']);
+    Route::post('/material-issues/store',[MaterialIssueController::class,'store']);
 
 
 });

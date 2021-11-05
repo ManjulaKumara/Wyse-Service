@@ -13,6 +13,7 @@ use App\Models\ItemTransaction;
 use App\Models\GrnHeader;
 use App\Models\StockIssue;
 use App\Models\ItemStock;
+use App\Models\MaterialIssue;
 use DateTime;
 use DB;
 
@@ -112,6 +113,9 @@ class ReportController extends Controller
                 $reference=($invoice)?$invoice->invoice_number:$issue->id;
             }elseif($transaction->transaction_type=="damage"){
                 $reference=$transaction->reference_id;
+            }elseif($transaction->transaction_type=="material-issue"){
+                $issue=MaterialIssue::find($transaction->reference_id);
+                $reference=$issue->issue_no;
             }
             $data=[
                 'date'=>$date,

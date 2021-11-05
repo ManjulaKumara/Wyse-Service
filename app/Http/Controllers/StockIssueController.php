@@ -8,6 +8,7 @@ use App\Models\ItemStock;
 use App\Models\ItemCategorie;
 use App\Models\StockIssue;
 use App\Models\ItemTransaction;
+use App\Models\InvoiceHeader;
 use Illuminate\Support\Facades\DB;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
@@ -128,6 +129,7 @@ class StockIssueController extends Controller
             1 =>'item',
             2=> 'qty',
             3=> 'is_invoiced',
+            4=> 'invoice',
         ];
         $totalData = StockIssue::count();
         $totalFiltered = $totalData;
@@ -168,8 +170,11 @@ class StockIssueController extends Controller
             foreach ($issues as $item)
                 {
                     $status=0;
+                    $invoice_no="";
                     if ($item->is_invoiced==0) {
                         $status='Not Invoiced';
+                        $invoice=InvoiceHeader::find($item->invoice);
+                        $invoice_no=$invoice->invoice_number;
                     } else if($item->is_invoiced==1){
                         $status='Invoiced';
                     } else{
@@ -180,6 +185,7 @@ class StockIssueController extends Controller
                     $issue['item'] = $item->item_name;
                     $issue['qty'] = $item->qty;
                     $issue['is_invoiced'] = $status;
+                    $issue['invoice']=$invoice_no;
                     $data[] = $issue;
 
                 }

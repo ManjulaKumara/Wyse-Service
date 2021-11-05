@@ -37,6 +37,7 @@
                     <th class="min-w-125px">Item</th>
                     <th class="min-w-125px">Quantity</th>
                     <th class="min-w-125px">Status</th>
+                    <th class="min-w-125px">Invoice</th>
                 </tr>
                 <!--end::Table row-->
             </thead>
