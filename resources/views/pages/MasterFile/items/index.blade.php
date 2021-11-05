@@ -36,7 +36,7 @@
                     <th class="min-w-40px">ID</th>
                     <th class="min-w-70px">Item Code</th>
                     <th class="min-w-125px">Item Name</th>
-                    <th class="min-w-125px">Item Type</th>
+                    <th class="min-w-125px">Item Category</th>
                     <th class="min-w-125px">Status</th>
                     <th class="min-w-70px">Actions</th>
                 </tr>
@@ -177,7 +177,7 @@ $(function() {
             { "data": "id" },
             { "data": "item_code" },
             { "data": "item_name" },
-            { "data": "item_type" },
+            { "data": "category" },
             { "data": "is_active" },
             { "data": "action" }
         ]

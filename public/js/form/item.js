@@ -11,7 +11,7 @@ $(function () {
             { "data": "id" },
             { "data": "item_code" },
             { "data": "item_name" },
-            { "data": "item_type" },
+            { "data": "category" },
             { "data": "is_active" },
             { "data": "action" }
         ]
