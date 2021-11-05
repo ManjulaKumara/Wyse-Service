@@ -45,7 +45,7 @@
             <div class="form-group row">
                 <div class="col-lg-6">
                     <label class="required">Cost Price</label>
-                    <input type="text"  id="cost_price" name="cost_price" class="form-control" required @if (Request::segment(2)=='view') value="{{$service->discount_rate}}" readonly @elseif (Request::segment(2)=='edit') value="{{$service->discount_rate}}" @else value="" @endif/>
+                    <input type="text"  id="cost_price" name="cost_price" class="form-control" @if (Request::segment(2)=='view') value="{{$service->discount_rate}}" readonly @elseif (Request::segment(2)=='edit') value="{{$service->discount_rate}}" @else value="" @endif/>
                 </div>
                 <div class="col-lg-6">
                     <label class="required">Sales Price</label>
