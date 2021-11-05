@@ -19,7 +19,7 @@ class ItemController extends Controller
             0 =>'id',
             1 =>'item_code',
             2=> 'item_name',
-            3=> 'item_type',
+            3=> 'category',
             4=> 'is_active',
         ];
         $totalData = Item::count();
@@ -31,26 +31,30 @@ class ItemController extends Controller
         $dir = $request->input('order.0.dir');
 
         if( empty($request->input('search.value')) ) {
-            $items = Item::offset($start)
+            $items = Item::join('item_categories','items.category','=','item_categories.id')
+                    ->select('items.*','item_categories.category_name as category_name')
+                    ->offset($start)
                     ->limit($limit)
                     ->orderBy($order,$dir)
                     ->get();
         } else {
             $search = $request->input('search.value');
 
-            $items =  Item::where('item_code','LIKE',"%{$search}%")
-                        ->orWhere('item_name', 'LIKE',"%{$search}%")
-                        ->orWhere('item_type', 'LIKE',"%{$search}%")
-                        ->orWhere('id', 'LIKE',"%{$search}%")
+            $items =  Item::join('item_categories','items.category','=','item_categories.id')
+                        ->select('items.*','item_categories.category_name as category_name')
+                        ->where('items.item_code','LIKE',"%{$search}%")
+                        ->orWhere('items.item_name', 'LIKE',"%{$search}%")
+                        ->orWhere('item_categories.category_name', 'LIKE',"%{$search}%")
                         ->offset($start)
                         ->limit($limit)
                         ->orderBy($order,$dir)
                         ->get();
 
-            $totalFiltered = Item::where('item_code','LIKE',"%{$search}%")
-                        ->orWhere('item_name', 'LIKE',"%{$search}%")
-                        ->orWhere('item_type', 'LIKE',"%{$search}%")
-                        ->orWhere('id', 'LIKE',"%{$search}%")
+            $totalFiltered = Item::join('item_categories','items.category','=','item_categories.id')
+                        ->select('items.*','item_categories.category_name as category_name')
+                        ->where('items.item_code','LIKE',"%{$search}%")
+                        ->orWhere('items.item_name', 'LIKE',"%{$search}%")
+                        ->orWhere('item_categories.category_name', 'LIKE',"%{$search}%")
                         ->count();
         }
 
@@ -62,7 +66,7 @@ class ItemController extends Controller
                     $item['id'] = $value->id;
                     $item['item_code'] = $value->item_code;
                     $item['item_name'] = $value->item_name;
-                    $item['item_type'] = $value->item_type;
+                    $item['category'] = $value->category_name;
                     $item['is_active'] = ($value->is_active==1)?'Active':'Inactive';
                     $item['action'] = '<div class="btn-group">
                     <a href="/items/view/'.$value->id.'" class="btn btn-xs  btn-success " title="View"><i class="fa fa-eye"></i>
