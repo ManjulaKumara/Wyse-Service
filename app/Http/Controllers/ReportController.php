@@ -14,17 +14,23 @@ use App\Models\GrnHeader;
 use App\Models\StockIssue;
 use App\Models\ItemStock;
 use DateTime;
+use DB;
 
 
 class ReportController extends Controller
 {
+    public function index(){
+        $items=Item::get();
+        view()->share('items',$items);
+        return view('pages.reports.report-main');
+    }
     public function daily_summary(){
         view()->share('data',null);
         return view('pages.reports.daily-summary');
     }
 
     public function fill_data_summary(Request $request){
-        $date=$request->date;
+        $date=$request->summary_date;
         $date=new DateTime($date);
         $date=$date->format('Y-m-d');
         $total_sales=InvoiceHeader::where('created_at','like',$date.'%')->sum('net_amount');
@@ -48,6 +54,7 @@ class ReportController extends Controller
             'total_voucher_cash'=>$total_voucher_cash,
             'total_voucher_cheque'=>$total_voucher_cheque,
         ];
+        view()->share('date',$date);
         view()->share('data',$data);
         return view('pages.reports.daily-summary');
     }
@@ -116,6 +123,8 @@ class ReportController extends Controller
             array_push($sales_entry,(object)['invoice_number'=>$invoice->invoice_number,'date'=>$date,'cash_sale'=>$cash_sale,'cheque_sale'=>$cheque_sale,'credit_sale'=>$credit_sale]);
         }
         view()->share('sales_entry',$sales_entry);
+        view()->share('from_date',$from);
+        view()->share('to_date',$to);
         return view('pages.reports.sales-report');
     }
 
@@ -137,13 +146,15 @@ class ReportController extends Controller
             $total_credit_sale=0;
             $total=0;
             foreach($invoices as $inv){
-                $cash_sale=CashTransaction::where('reference_id',$element->reference_id)->where('transaction_type','sales-cash')->sum('credit_amount');
-                $cheque_sale=CashTransaction::where('reference_id',$element->reference_id)->where('transaction_type','sales-cheque')->sum('credit_amount');
-                $credit_sale=CashTransaction::where('reference_id',$element->reference_id)->where('transaction_type','sales-credit')->sum('credit_amount');
+                $cash_sale=CashTransaction::where('reference_id',$inv->reference_id)->where('transaction_type','sales-cash')->sum('credit_amount');
+                $cheque_sale=CashTransaction::where('reference_id',$inv->reference_id)->where('transaction_type','sales-cheque')->sum('credit_amount');
+                $credit_sale=CashTransaction::where('reference_id',$inv->reference_id)->where('transaction_type','sales-credit')->sum('credit_amount');
                 $total_cash_sale=$total_cash_sale+$cash_sale;
                 $total_cheque_sale=$total_cheque_sale+$cheque_sale;
                 $total_credit_sale=$total_credit_sale+$credit_sale;
             }
+            view()->share('from_date',$from);
+            view()->share('to_date',$to);
             array_push($sales_entry,(object)['date'=>$element->transaction_date,'cash_sale'=>$total_cash_sale,'cheque_sale'=>$total_cheque_sale,'credit_sale'=>$total_credit_sale]);
         }
         view()->share('sales_entry',$sales_entry);
@@ -169,6 +180,7 @@ class ReportController extends Controller
             $item_qty=ItemStock::where('item',$item->id)->sum('qty_in_hand');
             array_push($stock_list,(object)['item_code'=>$item->item_code,'item_name'=>$item->item_name,'stock'=>$item_qty]);
         }
+        view()->share('stock_list',$stock_list);
         return view('pages.reports.stock-report');
     }
 

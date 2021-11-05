@@ -206,8 +206,8 @@
 
                             </div>
                         </div>
-                        <div data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion me-lg-1">
-                            <a class="menu-link py-3">
+                        <div data-kt-menu-placement="bottom-start" class="menu-item me-lg-1">
+                            <a href="{{'/reports'}}" class="menu-link py-3">
                                 <span class="menu-title">Reports</span>
                                 <span class="menu-arrow d-lg-none"></span>
                             </a>

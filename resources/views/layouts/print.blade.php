@@ -15,7 +15,7 @@
     <!-- App styles -->
     <link rel="stylesheet" href="{{ url('print/assets/css/app.min.css') }}" type="text/css">
 </head>
-<body class="bg-white">
+<body style="background-color: grey;">
 
     @yield('content')
 
