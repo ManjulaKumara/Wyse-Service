@@ -1,9 +1,8 @@
 <html lang="en">
 	<!--begin::Head-->
-	<head><base href="">
+	<head>
 		<title>Wyse Service - Edition of the Wyse POS which is tailor made for Car Service Station</title>
-		<link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="https://wysheit.com/images/wyse.png" />
 		<!--begin::Fonts-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 		<!--end::Fonts-->

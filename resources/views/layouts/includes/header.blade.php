@@ -128,7 +128,7 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('/grns/all')}}">
                                         <span class="menu-title">Purchase List</span>
                                     </a>
                                 </div>
@@ -189,17 +189,17 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/dashboards/compact.html">
+                                    <a class="menu-link py-3" href="{{url('/reports/x-report')}}">
                                         <span class="menu-title">Daily Summary/X-Report</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('/')}}">
                                         <span class="menu-title">Cheques to be deposited</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
+                                    <a class="menu-link py-3" href="{{url('/')}}">
                                         <span class="menu-title">Cheques Issued</span>
                                     </a>
                                 </div>
@@ -211,29 +211,7 @@
                                 <span class="menu-title">Reports</span>
                                 <span class="menu-arrow d-lg-none"></span>
                             </a>
-                            {{-- <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">
-                                <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/index.html">
-                                        <span class="menu-title">Other Expenses</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/dashboards/compact.html">
-                                        <span class="menu-title">Daily Summary/X-Report</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
-                                        <span class="menu-title">Cheques to be deposited</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link py-3" href="../../demo4/dist/landing.html">
-                                        <span class="menu-title">Cheques Issued</span>
-                                    </a>
-                                </div>
 
-                            </div> --}}
                         </div>
                     </div>
                     <!--end::Menu-->
@@ -264,7 +242,11 @@
                                 </div>
                             </div>
                             <div class="menu-item px-5">
-                                <a href="" class="menu-link px-5">Sign Out</a>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <a href="" onclick="event.preventDefault();
+                                    this.closest('form').submit();" class="menu-link px-5">Sign Out</a>
+                                </form>
                             </div>
                         </div>
                         <!--end::Menu-->
