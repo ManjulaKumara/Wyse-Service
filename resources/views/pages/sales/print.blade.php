@@ -42,7 +42,7 @@
                     <h2 style="font-family: Copperplate, Fantasy;color:black; font-size: 45px;margin-left:15px;">
                         <b>DIAMOND SERVICE STATION (PVT) LIMITED.</b>
                     </h2>
-                    <p style="font-size: 20px;margin-left:160px;"><b>No. 22, Colombo Road, Embiligama, Pilimathalawa. </b><br><span><b style="margin-left: 85px;">TEL: 081-2 575 509 / 077-7 436 279 </b></span></p>
+                    <p style="font-size: 20px;margin-left:160px;"><b>No. 22, Colombo Road, Embilimeegama, Pilimathalawa. </b><br><span><b style="margin-left: 85px;">TEL: 081-2 575 509 / 077-7 436 279 </b></span></p>
                     <table class="main" cellpadding="0" cellspacing="0" width="100%">
                         <tr>
                             <td class="content-wrap aligncenter" style=" background-color: #fff;"
