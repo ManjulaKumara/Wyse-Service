@@ -32,7 +32,7 @@
                     <select class="form-select" name="item" id="item" data-control="select2" data-placeholder="Select an option" required>
                         <option value=""></option>
                         @foreach ($items as $item)
-                        <option value="{{$item->id}}">{{$item->item_name}}</option>
+                        <option value="{{$item->id}}">{{$item->item_code}} || {{$item->item_name}}</option>
                         @endforeach
                     </select>
                 </div>
