@@ -7,7 +7,7 @@
     <div class="card-header border-0 pt-6">
         <!--begin::Card title-->
         <div class="card-title">
-            <h4>@if (Request::segment(2)=='view') View @elseif (Request::segment(2)=='edit') Update @else New @endif Service</h4>
+            <h4>@if (Request::segment(2)=='view') View @elseif (Request::segment(2)=='edit') Update @else Add @endif Stock</h4>
         </div>
         <!--begin::Card title-->
         <!--begin::Card toolbar-->
