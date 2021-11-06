@@ -36,7 +36,7 @@
                                             <select required class="form-select" name="from_item" id="from_item" data-control="select2" data-placeholder="Select an option">
                                                 <option value="">Select an Item</option>
                                                 @foreach ($parent_items as $item)
-                                                <option value="{{$item->id}}">{{$item->item_name || $item->item_code}}</option>
+                                                <option value="{{$item->id}}">{{$item->item_name}} || {{$item->item_code}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -109,20 +109,21 @@
             });
         }
     });
+    var converted_quantity=0;
     $('#to_item').change(function(){
         if($('#from_quantity').val()=="" || $('#from_quantity').val()==null){
             alert('Please provide parent item quantity that you want to convert into child items.');
             $('#from_quantity').focus();
         }else{
             let upp=$('#to_item').find(':selected').data('upp');
-            let coverted_quantity=$('#from_quantity').val()*upp;
+            converted_quantity=$('#from_quantity').val()*upp;
             $('#to_quantity').val(converted_quantity);
         }
     });
     $('#from_quantity').keyup(function(){
         if($('#to_item').val()!="" && $('#to_item').val()!=null){
             let upp=$('#to_item').find(':selected').data('upp');
-            let coverted_quantity=$('#from_quantity').val()*upp;
+            converted_quantity=$('#from_quantity').val()*upp;
             $('#to_quantity').val(converted_quantity);
         }
     });

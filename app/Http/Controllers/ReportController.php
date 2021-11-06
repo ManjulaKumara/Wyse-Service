@@ -181,10 +181,11 @@ class ReportController extends Controller
                 $total_cheque_sale=$total_cheque_sale+$cheque_sale;
                 $total_credit_sale=$total_credit_sale+$credit_sale;
             }
-            view()->share('from_date',$from);
-            view()->share('to_date',$to);
+
             array_push($sales_entry,(object)['date'=>$element->transaction_date,'cash_sale'=>$total_cash_sale,'cheque_sale'=>$total_cheque_sale,'credit_sale'=>$total_credit_sale]);
         }
+        view()->share('from_date',$from);
+        view()->share('to_date',$to);
         view()->share('sales_entry',$sales_entry);
         return view('pages.reports.sales-summary');
     }

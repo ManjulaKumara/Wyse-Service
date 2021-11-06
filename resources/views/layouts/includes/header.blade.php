@@ -175,6 +175,11 @@
                                         <span class="menu-title">Item Damages</span>
                                     </a>
                                 </div>
+                                <div class="menu-item">
+                                    <a class="menu-link py-3" href="{{url('material-issues/create')}}">
+                                        <span class="menu-title">Material Issues</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion me-lg-1">
