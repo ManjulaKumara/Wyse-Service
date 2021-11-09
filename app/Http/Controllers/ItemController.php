@@ -45,6 +45,7 @@ class ItemController extends Controller
                         ->where('items.item_code','LIKE',"%{$search}%")
                         ->orWhere('items.item_name', 'LIKE',"%{$search}%")
                         ->orWhere('item_categories.category_name', 'LIKE',"%{$search}%")
+                        ->orWhere('items.barcode', 'LIKE',"%{$search}%")
                         ->offset($start)
                         ->limit($limit)
                         ->orderBy($order,$dir)
@@ -55,6 +56,7 @@ class ItemController extends Controller
                         ->where('items.item_code','LIKE',"%{$search}%")
                         ->orWhere('items.item_name', 'LIKE',"%{$search}%")
                         ->orWhere('item_categories.category_name', 'LIKE',"%{$search}%")
+                        ->orWhere('items.barcode', 'LIKE',"%{$search}%")
                         ->count();
         }
 
