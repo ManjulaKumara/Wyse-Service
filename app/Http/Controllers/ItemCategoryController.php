@@ -96,10 +96,10 @@ class ItemCategoryController extends Controller
                 'message' => 'Successfully Created!',
                 'alert-type' => 'success'
             );
-            return redirect('/item-category/all')->with($notification);
+            return redirect('/item-category/all')->with('success','Item Category Stored Successfully!!!');
 
         } catch (Exception $e) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 
@@ -128,10 +128,10 @@ class ItemCategoryController extends Controller
                 'message' => 'Successfully Updated!',
                 'alert-type' => 'success'
             );
-            return redirect('/item-category/all')->with($notification);
+            return redirect('/item-category/all')->with('success','Item Category Updated Successfully!!!');
 
         } catch (Exception $e) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 }

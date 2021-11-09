@@ -116,10 +116,10 @@ class UserController extends Controller
                 'message' => 'Successfully Created!',
                 'alert-type' => 'success'
             );
-            return redirect('/users/all')->with($notification);
+            return redirect('/users/all')->with('success','User Stored Successfully!!!');
 
         } catch (Exception $e) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 
@@ -170,10 +170,10 @@ class UserController extends Controller
                 'message' => 'Successfully Updated!',
                 'alert-type' => 'success'
             );
-            return redirect('/users/all')->with($notification);
+            return redirect('/users/all')->with('success','User Updated Successfully!!!');
 
         } catch (Exception $e) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 }

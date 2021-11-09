@@ -145,9 +145,9 @@ class UserRoleController extends Controller
                 'alert-type' => 'success'
             );
 
-            return redirect('user-role/all')->with($notification);
+            return redirect('user-role/all')->with('success','User role Stored Successfully!!!');
         } catch (Exception $e) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 
@@ -222,9 +222,9 @@ class UserRoleController extends Controller
                 'alert-type' => 'success'
             );
 
-            return redirect('user-role/all')->with($notification);
+            return redirect('user-role/all')->with('success','User Role Updated Successfully!!!');
         } catch (Exception $e) {
-            return back()->withInput()->withErrors('Something went wrong!');
+            return back()->withInput()->with('error','Something went wrong!!!');
         }
     }
 }

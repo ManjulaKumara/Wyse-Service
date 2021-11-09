@@ -12,6 +12,7 @@ $(document).ready(function () {
             { "data": "item" },
             { "data": "qty" },
             { "data": "is_invoiced" },
+            { "data": "invoice"},
         ]
     });
 });

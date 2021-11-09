@@ -338,7 +338,7 @@
         let _dop_url=APP_URL+'/ajax/items-n-services';
         $.getJSON( _dop_url, function ( data ) {
             $.each(data, function ( key, entry ) {
-                dropdown.append($('<option></option>').attr('value', entry.id).attr('data-stock',entry.stock_no).attr('data-uprice',entry.unit_price).attr('data-discount',entry.discount).attr('data-type',entry.type).attr('data-name',entry.name).text(entry.name+' || '+entry.category+' || '+entry.barcode));
+                dropdown.append($('<option></option>').attr('value', entry.id).attr('data-stock',entry.stock_no).attr('data-uprice',entry.unit_price).attr('data-discount',entry.discount).attr('data-type',entry.type).attr('data-name',entry.name).text(entry.name+' || '+entry.category+' || '+entry.item_code+' || '+entry.barcode));
             })
         });
     });
@@ -407,7 +407,7 @@
                     }
                     $.getJSON( _dop_url, function ( data ) {
                         $.each(data, function ( key, entry ) {
-                            dropdown.append($('<option></option>').attr('value', entry.id).attr('data-stock',entry.stock_no).attr('data-uprice',entry.unit_price).attr('data-discount',entry.discount).attr('data-type',entry.type).attr('data-name',entry.name).text(entry.name+' || '+entry.category+' || '+entry.barcode));
+                            dropdown.append($('<option></option>').attr('value', entry.id).attr('data-stock',entry.stock_no).attr('data-uprice',entry.unit_price).attr('data-discount',entry.discount).attr('data-type',entry.type).attr('data-name',entry.name).text(entry.name+' || '+entry.category+' || '+entry.item_code+' || '+entry.barcode));
                         })
                     });
                 }

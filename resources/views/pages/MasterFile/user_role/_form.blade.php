@@ -6,6 +6,9 @@
             ->select('user_role_permissions.*','modules.md_name as module_name','modules.can_create as can_createM','modules.can_read as can_readM','modules.can_update as can_updateM','modules.can_delete as can_deleteM')
             ->where('user_role_permissions.role_id',$user_role->id)
             ->get();
+        if(sizeof($elements)==0){
+            $elements =DB::table('modules')->where('md_code','<>','modules')->orderBy('id')->get();
+        }
     } else {
         $elements =DB::table('modules')->where('md_code','<>','modules')->orderBy('id')->get();
     }
@@ -80,7 +83,7 @@
                             <tr>
                                 <td scope="row" style="width: 30%">
                                     @if (Request::segment(2)=='view'||Request::segment(2)=='edit')
-                                    {{$element->module_name}}
+                                    {{(isset($element->module_name))?$element->module_name:$element->md_name}}
                                     @else
                                     {{$element->md_name}}
                                     @endif
@@ -90,7 +93,7 @@
                                 <td>
                                     <span class="switch switch-sm switch-icon">
                                         <label>
-                                            <input id="enable{{$element->id}}" name="{{'element['.$element->id.'][2][]'}}" type="checkbox"  @if (Request::segment(2)=='view') @if(isset($element))  @if($element->is_enable=='1') checked @endif @endif disabled @elseif (Request::segment(2)=='edit') @if(isset($element))  @if($element->is_enable=='1') checked @endif @endif @else @if(isset($element))  @if($element->is_active=='1') checked @endif @endif @endif/>
+                                            <input id="enable{{$element->id}}" name="{{'element['.$element->id.'][2][]'}}" type="checkbox"  @if (Request::segment(2)=='view') @if(isset($element->is_enable))  @if($element->is_enable=='1') checked @endif @endif disabled @elseif (Request::segment(2)=='edit') @if(isset($element->is_enable))  @if($element->is_enable=='1') checked @endif @endif @else @if(isset($elementis_active))  @if($element->is_active=='1') checked @endif @endif @endif/>
                                             <span></span>
                                         </label>
                                     </span>
@@ -98,7 +101,7 @@
                                 <td>
                                     <span class="switch switch-sm switch-icon">
                                         <label>
-                                            <input type="checkbox" id="read{{$element->id}}" name="{{'element['.$element->id.'][3][]'}}" @if (Request::segment(2)=='view') @if(isset($element)) @if($element->can_readM=='off') disabled @endif @if($element->can_read=='1') checked @endif @endif  disabled @elseif (Request::segment(2)=='edit') @if(isset($element)) @if($element->can_readM=='off') disabled @endif @if($element->can_read=='1') checked @endif @endif @else @if(isset($element))  @if($element->can_read=='off') disabled @endif @endif @endif/>
+                                            <input type="checkbox" id="read{{$element->id}}" name="{{'element['.$element->id.'][3][]'}}" @if (Request::segment(2)=='view') @if(isset($element->can_readM)) @if($element->can_readM=='off') disabled @endif @if($element->can_read=='1') checked @endif @endif  disabled @elseif (Request::segment(2)=='edit') @if(isset($element->can_readM)) @if($element->can_readM=='off') disabled @endif @if($element->can_read=='1') checked @endif @endif @else @if(isset($element->can_read))  @if($element->can_read=='off') disabled @endif @endif @endif/>
                                             <span></span>
                                         </label>
                                     </span>
@@ -106,7 +109,7 @@
                                 <td>
                                     <span class="switch switch-sm switch-icon">
                                         <label>
-                                            <input type="checkbox" id="create{{$element->id}}" name="{{'element['.$element->id.'][4][]'}}" @if (Request::segment(2)=='view') @if(isset($element)) @if($element->can_createM=='off') disabled @endif @if($element->can_create=='1') checked @endif @endif disabled @elseif (Request::segment(2)=='edit') @if(isset($element)) @if($element->can_createM=='off') disabled @endif @if($element->can_create=='1') checked @endif @endif @else @if(isset($element))  @if($element->can_create=='off') disabled @endif @endif @endif/>
+                                            <input type="checkbox" id="create{{$element->id}}" name="{{'element['.$element->id.'][4][]'}}" @if (Request::segment(2)=='view') @if(isset($element->can_createM)) @if($element->can_createM=='off') disabled @endif @if($element->can_create=='1') checked @endif @endif disabled @elseif (Request::segment(2)=='edit') @if(isset($element->can_createM)) @if($element->can_createM=='off') disabled @endif @if($element->can_create=='1') checked @endif @endif @else @if(isset($element->can_create))  @if($element->can_create=='off') disabled @endif @endif @endif/>
                                             <span></span>
                                         </label>
                                     </span>
@@ -114,7 +117,7 @@
                                 <td>
                                     <span class="switch switch-sm switch-icon">
                                         <label>
-                                            <input type="checkbox" id="update{{$element->id}}" name="{{'element['.$element->id.'][5][]'}}" @if (Request::segment(2)=='view') @if(isset($element)) @if($element->can_updateM=='off') disabled @endif  @if($element->can_update=='1') checked @endif @endif disabled @elseif (Request::segment(2)=='edit') @if(isset($element)) @if($element->can_updateM=='off') disabled @endif  @if($element->can_update=='1') checked @endif @endif @else @if(isset($element))  @if($element->can_update=='off') disabled @endif @endif @endif/>
+                                            <input type="checkbox" id="update{{$element->id}}" name="{{'element['.$element->id.'][5][]'}}" @if (Request::segment(2)=='view') @if(isset($element->can_updateM)) @if($element->can_updateM=='off') disabled @endif  @if($element->can_update=='1') checked @endif @endif disabled @elseif (Request::segment(2)=='edit') @if(isset($element->can_updateM)) @if($element->can_updateM=='off') disabled @endif  @if($element->can_update=='1') checked @endif @endif @else @if(isset($element->can_update))  @if($element->can_update=='off') disabled @endif @endif @endif/>
                                             <span></span>
                                         </label>
                                     </span>
@@ -122,7 +125,7 @@
                                 <td>
                                     <span class="switch switch-sm switch-icon">
                                         <label>
-                                            <input type="checkbox" id="delete{{$element->id}}" name="{{'element['.$element->id.'][6][]'}}" @if (Request::segment(2)=='view') @if(isset($element))  @if($element->can_deleteM=='off') disabled @endif @if($element->can_delete=='1') checked @endif @endif disabled @elseif (Request::segment(2)=='edit') @if(isset($element))  @if($element->can_deleteM=='off') disabled @endif @if($element->can_delete=='1') checked @endif @endif @else @if(isset($element))  @if($element->can_delete=='off') disabled @endif @endif @endif/>
+                                            <input type="checkbox" id="delete{{$element->id}}" name="{{'element['.$element->id.'][6][]'}}" @if (Request::segment(2)=='view') @if(isset($element->can_deleteM))  @if($element->can_deleteM=='off') disabled @endif @if($element->can_delete=='1') checked @endif @endif disabled @elseif (Request::segment(2)=='edit') @if(isset($element->can_deleteM))  @if($element->can_deleteM=='off') disabled @endif @if($element->can_delete=='1') checked @endif @endif @else @if(isset($element->can_delete))  @if($element->can_delete=='off') disabled @endif @endif @endif/>
                                             <span></span>
                                         </label>
                                     </span>

@@ -40,6 +40,7 @@ class SalesController extends Controller
                     'name'=>$item->item_name,
                     'category'=>$category->category_name,
                     'barcode'=>$item->barcode,
+                    'item_code'=>$item->item_code,
                     'unit_price'=>$sales_price->sales_price,
                     'discount'=>($item->discount_rate*$sales_price->sales_price)."",
                     'qih'=>$item_qtys,
@@ -55,6 +56,7 @@ class SalesController extends Controller
                 'name'=>$service->service_name,
                 'category'=>'Service',
                 'barcode'=>$service->id,
+                'item_code'=>$service->id,
                 'unit_price'=>$service->service_rate,
                 'discount'=>$service->discount_rate,
                 'qih'=>1,
@@ -84,6 +86,7 @@ class SalesController extends Controller
                     'stock_no'=>$sales_price->id,
                     'category'=>$category->category_name,
                     'barcode'=>$item->barcode,
+                    'item_code'=>$item->item_code,
                     'unit_price'=>$sales_price->sales_price,
                     'discount'=>($item->discount_rate*$sales_price->sales_price)."",
                     'qih'=>$item_qtys,
@@ -100,6 +103,7 @@ class SalesController extends Controller
                 'stock_no'=>0,
                 'category'=>'Service',
                 'barcode'=>$service->id,
+                'item_code'=>$service->id,
                 'unit_price'=>$service->service_rate,
                 'discount'=>$service->discount_rate,
                 'qih'=>1,
@@ -124,6 +128,7 @@ class SalesController extends Controller
                     'stock_no'=>$sales_price->id,
                     'category'=>$category->category_name,
                     'barcode'=>$item->barcode,
+                    'item_code'=>$item->item_code,
                     'unit_price'=>$sales_price->sales_price,
                     'discount'=>($item->discount_rate*$sales_price->sales_price)."",
                     'qih'=>$item_qtys,
@@ -145,6 +150,7 @@ class SalesController extends Controller
                 'stock_no'=>0,
                 'category'=>'Service',
                 'barcode'=>$service->id,
+                'item_code'=>$service->id,
                 'unit_price'=>$service->service_rate,
                 'discount'=>$service->discount_rate,
                 'qih'=>1,
@@ -194,6 +200,9 @@ class SalesController extends Controller
         try {
             DB::beginTransaction();
             $paid_amount=($request->pay_amount>$request->final_total)?$request->final_total:$request->pay_amount;
+            if($request->pay_method=='cheque'){
+                $paid_amount=$request->pay_amount;
+            }
             $header_data=[
                 'invoice_number'=>$this->code_Create(),
                 'vehicle_number'=>$request->vehicle_no,
@@ -355,6 +364,8 @@ class SalesController extends Controller
                 ];
                 $detail=new CustomerReceptDetail($receipt_data);
                 $detail->save();
+                $header->balance=$header->balance-$request->final_total;
+                $header->save();
                 $cheque_data=[
                     'receipt_id'=>$receipt->id,
                     'customer'=>$receipt->customer,

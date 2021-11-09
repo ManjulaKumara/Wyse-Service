@@ -8,14 +8,16 @@ use App\Models\ItemStock;
 use App\Models\ItemCategorie;
 use App\Models\StockIssue;
 use App\Models\ItemTransaction;
-use App\Models\InvoiceHeader;
 use Illuminate\Support\Facades\DB;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
+use App\Models\MaterialIssue;
 
-class StockIssueController extends Controller
+class MaterialIssueController extends Controller
 {
-    public function createIssues(){
+    public function create(){
+        $issue_number=$this->code_Create();
+        view()->share('issue_number',$issue_number);
         $items=Item::where('is_active',1)->get();
         $item_list=[];
         foreach($items as $item){
@@ -37,7 +39,19 @@ class StockIssueController extends Controller
         $today=new DateTime();
         $today=$today->format('d/m/Y');
         view()->share('today',$today);
-        return view('pages.stock-issues.issue');
+        return view('pages.material-issues.material-issue');
+    }
+    public function code_Create() {
+        $max_code=DB::select("select issue_no from material_issues ORDER BY RIGHT(issue_no , 5) DESC");
+        $Regi=null;
+        if(sizeof($max_code)==0) {
+            $new_code=0;
+        } else {
+            $last_code_no=$max_code[0]->issue_no;
+            list($Regi,$new_code) = explode('-', $last_code_no);
+        }
+        $new_code='MI'.'-'.sprintf('%05d', intval($new_code) + 1);
+        return $new_code;
     }
 
     public function store(Request $request){
@@ -49,13 +63,12 @@ class StockIssueController extends Controller
                     $item_stock=ItemStock::where('item',$element['item'])->where('qty_in_hand','>=',$element['qty'])->orderBy('id')->first();
                     if($item_stock){
                         $issue_data=[
-                            'vehicle_number'=>$element['vehicle_no'],
+                            'issue_no'=>$element['issue_no'],
                             'item'=>$element['item'],
-                            'qty'=>$element['qty'],
+                            'quantity'=>$element['qty'],
                             'stock_no'=>$item_stock->id,
-                            'is_invoiced'=>0,
                         ];
-                        $issue=new StockIssue($issue_data);
+                        $issue=new MaterialIssue($issue_data);
                         $issue->save();
                         $item_stock->qty_in_hand=$item_stock->qty_in_hand-$element['qty'];
                         $item_stock->save();
@@ -63,7 +76,7 @@ class StockIssueController extends Controller
                         $transaction_data=[
                             'stock_id'=>$item_stock->id,
                             'item'=>$element['item'],
-                            'transaction_type'=>'sales/stock-issue',
+                            'transaction_type'=>'material-issue',
                             'tran_status'=>'out',
                             'qih_before'=>$item_stock->qty_in_hand+$element['qty'],
                             'qih_after'=>$item_stock->qty_in_hand,
@@ -79,13 +92,12 @@ class StockIssueController extends Controller
                         while($qty<=$element['qty']){
                             $item_stock=ItemStock::where('item',$element['item'])->where('qty_in_hand','>',0)->orderBy('id')->first();
                             $issue_data=[
-                                'vehicle_number'=>$element['vehicle_no'],
+                                'issue_no'=>$element['issue_no'],
                                 'item'=>$element['item'],
-                                'qty'=>$item_stock->qty_in_hand,
+                                'quantity'=>$item_stock->qty_in_hand,
                                 'stock_no'=>$item_stock->id,
-                                'is_invoiced'=>0,
                             ];
-                            $issue=new StockIssue($issue_data);
+                            $issue=new MaterialIssue($issue_data);
                             $issue->save();
                             $before=$item_stock->qty_in_hand;
                             $qty=$qty+$item_stock->qty_in_hand;
@@ -95,7 +107,7 @@ class StockIssueController extends Controller
                             $transaction_data=[
                                 'stock_id'=>$item_stock->id,
                                 'item'=>$element['item'],
-                                'transaction_type'=>'sales/stock-issue',
+                                'transaction_type'=>'material-issue',
                                 'tran_status'=>'out',
                                 'qih_before'=>$before,
                                 'qih_after'=>$item_stock->qty_in_hand,
@@ -108,7 +120,6 @@ class StockIssueController extends Controller
                             $transaction->save();
                         }
                     }
-
                 }
             }
             DB::commit();
@@ -117,87 +128,5 @@ class StockIssueController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error', 'Something went wrong!!');;
         }
-    }
-
-    public function stock_issue_index(){
-        return view('pages.stock-issues.index');
-    }
-
-    public function stock_issue_get_all(Request $request){
-        $columns = [
-            0 =>'vehicle_number',
-            1 =>'item',
-            2=> 'qty',
-            3=> 'is_invoiced',
-            4=> 'invoice',
-        ];
-        $totalData = StockIssue::count();
-        $totalFiltered = $totalData;
-
-        $limit = $request->input('length');
-        $start = $request->input('start');
-        $order = $columns[$request->input('order.0.column')];
-        $dir = $request->input('order.0.dir');
-
-        if( empty($request->input('search.value')) ) {
-            $issues = StockIssue::join('items','stock_issue.item','=','items.id')
-                    ->select('stock_issue.*','items.item_name as item_name')
-                    ->offset($start)
-                    ->limit($limit)
-                    ->orderBy($order,$dir)
-                    ->get();
-        } else {
-            $search = $request->input('search.value');
-
-            $issues =  StockIssue::join('items','stock_issue.item','=','items.id')
-                        ->select('stock_issue.*','items.item_name as item_name')
-                        ->where('stock_issue.vehicle_number','LIKE',"%{$search}%")
-                        ->orWhere('items.item_name', 'LIKE',"%{$search}%")
-                        ->offset($start)
-                        ->limit($limit)
-                        ->orderBy($order,$dir)
-                        ->get();
-
-            $totalFiltered = StockIssue::join('items','stock_issue.item','=','items.id')
-                        ->select('stock_issue.*','items.item_name as item_name')
-                        ->where('stock_issue.vehicle_number','LIKE',"%{$search}%")
-                        ->orWhere('items.item_name', 'LIKE',"%{$search}%")
-                        ->count();
-        }
-
-        $data = array();
-        if( !empty($issues) ) {
-            foreach ($issues as $item)
-                {
-                    $status=0;
-                    $invoice_no="";
-                    if ($item->is_invoiced==0) {
-                        $status='Not Invoiced';
-                        $invoice=InvoiceHeader::find($item->invoice);
-                        $invoice_no=$invoice->invoice_number;
-                    } else if($item->is_invoiced==1){
-                        $status='Invoiced';
-                    } else{
-                        $status='Returned';
-                    }
-
-                    $issue['vehicle_number'] = $item->vehicle_number;
-                    $issue['item'] = $item->item_name;
-                    $issue['qty'] = $item->qty;
-                    $issue['is_invoiced'] = $status;
-                    $issue['invoice']=$invoice_no;
-                    $data[] = $issue;
-
-                }
-        }
-
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),
-            "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data"            => $data
-            );
-
-        echo json_encode($json_data);
     }
 }
