@@ -17,6 +17,8 @@ use App\Models\CashTransaction;
 use App\Models\CustomerRecept;
 use App\Models\CustomerReceptDetail;
 use App\Models\CustomerCheque;
+use App\Models\SalesReturn;
+use App\Mpdels\SalesReturnDetail;
 use Illuminate\Support\Facades\DB;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
@@ -313,6 +315,7 @@ class SalesController extends Controller
             $header=new InvoiceHeader($header_data);
             $header->save();
             $returned_items=[];
+            $return_amount=0;
             if(isset($request->details)){
                 foreach($request->details as $element){
                     if($element['item_type']=='service'){
@@ -335,6 +338,7 @@ class SalesController extends Controller
                                 'stock_no'=>$element['stock_no'],
                             ];
                             array_push($returned_items,$return_data);
+                            $return_amount=$return_amount+$element['amount'];
                         }
 
                     }
@@ -368,6 +372,7 @@ class SalesController extends Controller
                                         'stock_no'=>$element['stock_no'],
                                     ];
                                     array_push($returned_items,$return_data);
+                                    $return_amount=$return_amount+$element['amount'];
                                     $item_data=[
                                         'invoice'=>$header->id,
                                         'item'=>$element['item'],
@@ -429,6 +434,7 @@ class SalesController extends Controller
                                         'stock_no'=>$element['stock_no'],
                                     ];
                                     array_push($returned_items,$return_data);
+                                    $return_amount=$return_amount+$element['amount'];
                                     $item_data=[
                                         'invoice'=>$header->id,
                                         'item'=>$element['item'],
@@ -490,6 +496,31 @@ class SalesController extends Controller
                             }
                         }
                     }
+                }
+            }
+            if(sizeof($returned_items)>0){
+
+                $sales_ret_data=[
+                    'return_number'=>$this->return_code_create(),
+                    'return_amount'=>$return_amount,
+                    'invoice_no'=>$header->id,
+                    'cashier'=>Auth::user()->id,
+                ];
+                $sales_return=new SalesReturn($sales_ret_data);
+                $sales_return->save();
+                $header->return_amount=$header->return_amount+$return_amount;
+                $header->save();
+                foreach($returned_items as $return){
+                    $return_data=[
+                        'return_id'=>$sales_return->id,
+                        'item'=>$return['item'],
+                        'stock'=>$return['stock_no'],
+                        'qty'=>$return['qty'],
+                        'unit_price'=>$return['unit_price'],
+                        'amount'=>$return['amount'],
+                    ];
+                    $return_detail=new SalesReturnDetail($return_data);
+                    $return_detail->save();
                 }
             }
             if($request->pay_method=='cheque'){
@@ -595,6 +626,19 @@ class SalesController extends Controller
             list($Regi,$new_code) = explode('-', $last_code_no);
         }
         $new_code='RCPT'.'-'.sprintf('%010d', intval($new_code) + 1);
+        return $new_code;
+    }
+
+    public function return_code_create(){
+        $max_code=DB::select("select return_number  from sales_returns  ORDER BY RIGHT(return_number , 10) DESC");
+        $Regi=null;
+        if(sizeof($max_code)==0) {
+            $new_code=0;
+        } else {
+            $last_code_no=$max_code[0]->invoice_number;
+            list($Regi,$new_code) = explode('-', $last_code_no);
+        }
+        $new_code='S-RET'.'-'.sprintf('%010d', intval($new_code) + 1);
         return $new_code;
     }
 
