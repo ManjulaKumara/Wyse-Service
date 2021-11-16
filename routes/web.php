@@ -159,6 +159,9 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get('/unpaid-grns/{supplier}',[SupplierVoucherController::class,'get_pending_grns']);
         Route::get('/unpaid-invoices/{customer}',[CustomerReceiptController::class,'get_pending_invoices']);
         Route::get('/child-items/{parent}',[ItemConversionController::class,'get_child_items']);
+        Route::get('/search-items',[[SalesController::class,'searchItem']]);
+        Route::get('/search-services',[[SalesController::class,'searchService']]);
+        Route::get('/search-items-n-services',[[SalesController::class,'searchItemsnServices']]);
     });
     Route::get('/material-issues/create',[MaterialIssueController::class,'create']);
     Route::post('/material-issues/store',[MaterialIssueController::class,'store']);

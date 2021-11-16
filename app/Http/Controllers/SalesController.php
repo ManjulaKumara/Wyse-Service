@@ -23,6 +23,96 @@ use Illuminate\Support\Facades\Auth;
 
 class SalesController extends Controller
 {
+    public function searchItem(Request $request){
+        $search=$request->search;
+        $items=Item::where('item_code','LIKE',"%{$search}%")->orWhere('barcode', 'LIKE',"%{$search}%")->orWhere('item_name', 'LIKE',"%{$search}%")->get();
+        $item_list=[];
+        foreach($items as $item){
+            $item_qtys=ItemStock::where('item',$item->id)->sum('qty_in_hand');
+            if($item_qtys>0){
+                $category=ItemCategorie::find($item->category);
+                $sales_price=ItemStock::where('item',$item->id)->orderBy('id','desc')->first();
+                $data=[
+                    'id'=>$item->id,
+                    'name'=>$item->item_name,
+                    'category'=>$category->category_name,
+                    'barcode'=>$item->barcode,
+                    'item_code'=>$item->item_code,
+                    'unit_price'=>$sales_price->sales_price,
+                    'discount'=>($item->discount_rate*$sales_price->sales_price)."",
+                    'qih'=>$item_qtys,
+                    'type'=>'item',
+                ];
+                array_push($item_list,(object)$data);
+            }
+        }
+        return response()->json($item_list);
+    }
+
+    public function searchService(Request $request){
+        $search=$request->search;
+        $services=ServiceMaster::where('service_name','LIKE',"%{$search}%")->get();
+        $item_list=[];
+        foreach($services as $service){
+            $data=[
+                'id'=>$service->id,
+                'name'=>$service->service_name,
+                'stock_no'=>0,
+                'category'=>'Service',
+                'barcode'=>$service->id,
+                'item_code'=>$service->id,
+                'unit_price'=>$service->service_rate,
+                'discount'=>$service->discount_rate,
+                'qih'=>1,
+                'type'=>'service',
+            ];
+            array_push($item_list,(object)$data);
+        }
+        return response()->json($item_list,200);
+    }
+
+    public function searchItemsnServices(Request $request){
+        $items=Item::where('item_code','LIKE',"%{$search}%")->orWhere('barcode', 'LIKE',"%{$search}%")->orWhere('item_name', 'LIKE',"%{$search}%")->get();
+        $item_list=[];
+        foreach($items as $item){
+            $item_qtys=ItemStock::where('item',$item->id)->sum('qty_in_hand');
+            if($item_qtys>0){
+                $category=ItemCategorie::find($item->category);
+                $sales_price=ItemStock::where('item',$item->id)->where('qty_in_hand','>',0)->orderBy('id')->first();
+                $data=[
+                    'id'=>$item->id,
+                    'name'=>$item->item_code.' || '.$item->item_name,
+                    'stock_no'=>$sales_price->id,
+                    'category'=>$category->category_name,
+                    'barcode'=>$item->barcode,
+                    'item_code'=>$item->item_code,
+                    'unit_price'=>$sales_price->sales_price,
+                    'discount'=>($item->discount_rate*$sales_price->sales_price)."",
+                    'qih'=>$item_qtys,
+                    'type'=>'item',
+                ];
+                array_push($item_list,(object)$data);
+            }
+        }
+        $services=ServiceMaster::where('service_name','LIKE',"%{$search}%")->get();
+        foreach($services as $service){
+            $data=[
+                'id'=>$service->id,
+                'name'=>$service->service_name,
+                'stock_no'=>0,
+                'category'=>'Service',
+                'barcode'=>$service->id,
+                'item_code'=>$service->id,
+                'unit_price'=>$service->service_rate,
+                'discount'=>$service->discount_rate,
+                'qih'=>1,
+                'type'=>'service',
+            ];
+            array_push($item_list,(object)$data);
+        }
+        return response()->json($item_list,200);
+    }
+
     public function create(){
         $customers=Customer::get();
         view()->share('customers',$customers);

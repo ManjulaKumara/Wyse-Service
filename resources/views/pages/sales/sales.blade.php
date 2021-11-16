@@ -575,7 +575,6 @@
         let item_id=$('#tr'+index).data('item-id');
         let stock_number=$('#tr'+index).data('stock-no');
         $('#tr'+index).remove();
-        console.log(itemsInTable);
         let search=""+stock_number+" "+item_id;
         let i = itemsInTable.indexOf(search+"");
         console.log(i);
