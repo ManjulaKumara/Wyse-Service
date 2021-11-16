@@ -103,7 +103,14 @@
                                         <label for="amount" class="required form-label">Total(LKR):</label>
                                         <input type="text" class="form-control" disabled name="amount" id="amount"/>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-2">
+                                        <label for="amount" class="required form-label">Return Item?:</label>
+                                        <select name="is_return" class="required form-control" id="is_return">
+                                            <option value="no">No</option>
+                                            <option value="yes">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-1">
                                         <button type="button" style="margin-top:25px;" id="btn-add" class="btn btn-success">ADD</button>
                                     </div>
                                 </div>
@@ -361,6 +368,7 @@
                                         <input type="hidden" name="details[${count}][item]" value="${entry.id}" />
                                         <input type="hidden" name="details[${count}][stock_no]" value="${entry.stock_no}" />
                                         <input type="hidden" name="details[${count}][item_type]" value="item" />
+                                        <input type="hidden" name="details[${count}][is_return]" value="no" />
                                     </td>
                                     <td>
                                         <input type="text" class="form-control text-end" name="details[${count}][unit_price]" readonly placeholder="0.00" value="${entry.unit_price}" />
@@ -472,6 +480,7 @@
             let item_name=$('#item').find(":selected").data('name');
             let item_type=$('#item').find(":selected").data('type');
             let quantity=$('#quantity').val();
+            let is_returned=$('#is_return').val();
 
             if(itemsInTable.includes(stock_no+" "+item_id)){
                 alert('Item Already Inserted');
@@ -484,6 +493,7 @@
                             <input type="hidden" name="details[${count}][item]" value="${item_id}" />
                             <input type="hidden" name="details[${count}][stock_no]" value="${stock_no}" />
                             <input type="hidden" name="details[${count}][item_type]" value="${item_type}" />
+                            <input type="hidden" name="details[${count}][is_return]" value="${is_returned}" />
                         </td>
                         <td>
                             <input type="text" class="form-control text-end" name="details[${count}][unit_price]" readonly placeholder="0.00" value="${Number(unit_price).toFixed(2)}" />
@@ -575,7 +585,6 @@
         let item_id=$('#tr'+index).data('item-id');
         let stock_number=$('#tr'+index).data('stock-no');
         $('#tr'+index).remove();
-        console.log(itemsInTable);
         let search=""+stock_number+" "+item_id;
         let i = itemsInTable.indexOf(search+"");
         console.log(i);
