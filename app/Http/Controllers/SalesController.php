@@ -312,6 +312,7 @@ class SalesController extends Controller
             ];
             $header=new InvoiceHeader($header_data);
             $header->save();
+            $returned_items=[];
             if(isset($request->details)){
                 foreach($request->details as $element){
                     if($element['item_type']=='service'){
@@ -325,6 +326,17 @@ class SalesController extends Controller
                         ];
                         $service_record=new InvoiceService($service_data);
                         $service_record->save();
+                        if($element['is_return']=='yes'){
+                            $return_data=[
+                                'item'=>$element['item'],
+                                'qty'=>$element['qty'],
+                                'unit_price'=>$element['unit_price'],
+                                'amount'=>$element['amount'],
+                                'stock_no'=>$element['stock_no'],
+                            ];
+                            array_push($returned_items,$return_data);
+                        }
+
                     }
                     if($element['item_type']=='item'){
                         $stock_issue=StockIssue::where('vehicle_number',$request->vehicle_no)->where('item',$element['item'])->where('is_invoiced',0)->first();
@@ -347,61 +359,38 @@ class SalesController extends Controller
                             $item_stock=null;
                             $item_stock=ItemStock::where('item',$element['item'])->where('qty_in_hand','>=',$element['qty'])->orderBy('id')->first();
                             if($item_stock){
-                                $issue_data=[
-                                    'vehicle_number'=>$request->vehicle_no,
-                                    'item'=>$element['item'],
-                                    'qty'=>$element['qty'],
-                                    'stock_no'=>$item_stock->id,
-                                    'is_invoiced'=>1,
-                                    'invoice'=>$header->id,
-                                ];
-                                $issue=new StockIssue($issue_data);
-                                $issue->save();
-                                $item_stock->qty_in_hand=$item_stock->qty_in_hand-$element['qty'];
-                                $item_stock->save();
-                                $item_qtys=ItemStock::where('item',$element['item'])->sum('qty_in_hand');
-                                $transaction_data=[
-                                    'stock_id'=>$item_stock->id,
-                                    'item'=>$element['item'],
-                                    'transaction_type'=>'sales/stock-issue',
-                                    'tran_status'=>'out',
-                                    'qih_before'=>$item_stock->qty_in_hand+$element['qty'],
-                                    'qih_after'=>$item_stock->qty_in_hand,
-                                    'transfer_qty'=>$element['qty'],
-                                    'reference_id'=>$issue->id,
-                                    'total_qih_before'=>$item_qtys+$element['qty'],
-                                    'total_qih_after'=>$item_qtys,
-                                ];
-                                $transaction=new ItemTransaction($transaction_data);
-                                $transaction->save();
-                                $item_data=[
-                                    'invoice'=>$header->id,
-                                    'item'=>$element['item'],
-                                    'qty'=>$element['qty'],
-                                    'unit_price'=>$element['unit_price'],
-                                    'discount'=>$element['discount'],
-                                    'amount'=>$element['amount'],
-                                    'stock_no'=>$item_stock->id,
-                                ];
-                                $item_record=new InvoiceItem($item_data);
-                                $item_record->save();
-                            }else{
-                                $qty=0;
-                                while($qty<=$element['qty']){
-                                    $item_stock=ItemStock::where('item',$element['item'])->where('qty_in_hand','>',0)->orderBy('id')->first();
+                                if($element['is_return']=='yes'){
+                                    $return_data=[
+                                        'item'=>$element['item'],
+                                        'qty'=>$element['qty'],
+                                        'unit_price'=>$element['unit_price'],
+                                        'amount'=>$element['amount'],
+                                        'stock_no'=>$element['stock_no'],
+                                    ];
+                                    array_push($returned_items,$return_data);
+                                    $item_data=[
+                                        'invoice'=>$header->id,
+                                        'item'=>$element['item'],
+                                        'qty'=>$element['qty'],
+                                        'unit_price'=>$element['unit_price'],
+                                        'discount'=>$element['discount'],
+                                        'amount'=>$element['amount'],
+                                        'stock_no'=>$element['stock_no'],
+                                    ];
+                                    $item_record=new InvoiceItem($item_data);
+                                    $item_record->save();
+                                }else{
                                     $issue_data=[
                                         'vehicle_number'=>$request->vehicle_no,
                                         'item'=>$element['item'],
-                                        'qty'=>$item_stock->qty_in_hand,
+                                        'qty'=>$element['qty'],
                                         'stock_no'=>$item_stock->id,
                                         'is_invoiced'=>1,
                                         'invoice'=>$header->id,
                                     ];
                                     $issue=new StockIssue($issue_data);
                                     $issue->save();
-                                    $before=$item_stock->qty_in_hand;
-                                    $qty=$qty+$item_stock->qty_in_hand;
-                                    $item_stock->qty_in_hand=$item_stock->qty_in_hand-$item_stock->qty_in_hand;
+                                    $item_stock->qty_in_hand=$item_stock->qty_in_hand-$element['qty'];
                                     $item_stock->save();
                                     $item_qtys=ItemStock::where('item',$element['item'])->sum('qty_in_hand');
                                     $transaction_data=[
@@ -409,11 +398,11 @@ class SalesController extends Controller
                                         'item'=>$element['item'],
                                         'transaction_type'=>'sales/stock-issue',
                                         'tran_status'=>'out',
-                                        'qih_before'=>$before,
+                                        'qih_before'=>$item_stock->qty_in_hand+$element['qty'],
                                         'qih_after'=>$item_stock->qty_in_hand,
-                                        'transfer_qty'=>$before,
+                                        'transfer_qty'=>$element['qty'],
                                         'reference_id'=>$issue->id,
-                                        'total_qih_before'=>$item_qtys+$before,
+                                        'total_qih_before'=>$item_qtys+$element['qty'],
                                         'total_qih_after'=>$item_qtys,
                                     ];
                                     $transaction=new ItemTransaction($transaction_data);
@@ -430,6 +419,74 @@ class SalesController extends Controller
                                     $item_record=new InvoiceItem($item_data);
                                     $item_record->save();
                                 }
+                            }else{
+                                if($element['is_return']=='yes'){
+                                    $return_data=[
+                                        'item'=>$element['item'],
+                                        'qty'=>$element['qty'],
+                                        'unit_price'=>$element['unit_price'],
+                                        'amount'=>$element['amount'],
+                                        'stock_no'=>$element['stock_no'],
+                                    ];
+                                    array_push($returned_items,$return_data);
+                                    $item_data=[
+                                        'invoice'=>$header->id,
+                                        'item'=>$element['item'],
+                                        'qty'=>$element['qty'],
+                                        'unit_price'=>$element['unit_price'],
+                                        'discount'=>$element['discount'],
+                                        'amount'=>$element['amount'],
+                                        'stock_no'=>$element['stock_no'],
+                                    ];
+                                    $item_record=new InvoiceItem($item_data);
+                                    $item_record->save();
+                                }else{
+                                    $qty=0;
+                                    while($qty<=$element['qty']){
+                                        $item_stock=ItemStock::where('item',$element['item'])->where('qty_in_hand','>',0)->orderBy('id')->first();
+                                        $issue_data=[
+                                            'vehicle_number'=>$request->vehicle_no,
+                                            'item'=>$element['item'],
+                                            'qty'=>$item_stock->qty_in_hand,
+                                            'stock_no'=>$item_stock->id,
+                                            'is_invoiced'=>1,
+                                            'invoice'=>$header->id,
+                                        ];
+                                        $issue=new StockIssue($issue_data);
+                                        $issue->save();
+                                        $before=$item_stock->qty_in_hand;
+                                        $qty=$qty+$item_stock->qty_in_hand;
+                                        $item_stock->qty_in_hand=$item_stock->qty_in_hand-$item_stock->qty_in_hand;
+                                        $item_stock->save();
+                                        $item_qtys=ItemStock::where('item',$element['item'])->sum('qty_in_hand');
+                                        $transaction_data=[
+                                            'stock_id'=>$item_stock->id,
+                                            'item'=>$element['item'],
+                                            'transaction_type'=>'sales/stock-issue',
+                                            'tran_status'=>'out',
+                                            'qih_before'=>$before,
+                                            'qih_after'=>$item_stock->qty_in_hand,
+                                            'transfer_qty'=>$before,
+                                            'reference_id'=>$issue->id,
+                                            'total_qih_before'=>$item_qtys+$before,
+                                            'total_qih_after'=>$item_qtys,
+                                        ];
+                                        $transaction=new ItemTransaction($transaction_data);
+                                        $transaction->save();
+                                        $item_data=[
+                                            'invoice'=>$header->id,
+                                            'item'=>$element['item'],
+                                            'qty'=>$element['qty'],
+                                            'unit_price'=>$element['unit_price'],
+                                            'discount'=>$element['discount'],
+                                            'amount'=>$element['amount'],
+                                            'stock_no'=>$item_stock->id,
+                                        ];
+                                        $item_record=new InvoiceItem($item_data);
+                                        $item_record->save();
+                                    }
+                                }
+
                             }
                         }
                     }
