@@ -3,7 +3,7 @@
 <link href="{{url('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css"/>
 @endsection
 @section('content')
-<form action="{{url('/item-relationship/store')}}" method="POST">
+<form @if (Request::segment(2)=='edit') action="{{url('/item-relationship/update/'.$relation->id)}}" @else action="{{url('/item-relationship/store')}}" @endif method="POST">
     @csrf
     <div class="container">
         <div class="row">
@@ -28,7 +28,7 @@
                                                 <select class="form-select" required name="parent_item" id="parent_item" data-control="select2" data-placeholder="Select an option">
                                                     <option value="">Please select an Item</option>
                                                     @foreach ($items as $item)
-                                                        <option value="{{$item->id}}">{{$item->item_name}}</option>
+                                                        <option value="{{$item->id}}" @if (Request::segment(2)=='edit') @if ($item->id==$relation->parent_item) selected disabled @endif @endif>{{$item->item_name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -77,12 +77,16 @@
                                                 <select class="form-select" required name="child_item" id="child_item" data-control="select2" data-placeholder="Select an option">
                                                     <option value="">Please select an Item</option>
                                                     @foreach ($items as $item)
-                                                        <option value="{{$item->id}}">{{$item->item_name}}</option>
+                                                        <option value="{{$item->id}}" @if (Request::segment(2)=='edit') @if ($item->id==$relation->child_item) selected disabled @endif @endif>{{$item->item_name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <br>
+                                        @if (Request::segment(2)=='edit')
+                                        <input type="hidden" name="parent_item" value="{{$relation->parent_item}}">
+                                        <input type="hidden" name="child_item" value="{{$relation->child_item}}">
+                                        @endif
                                         <div class="row gx-10 mb-5">
 
                                             <!--begin::Col-->
