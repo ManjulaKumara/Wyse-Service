@@ -368,6 +368,7 @@
                                         <input type="hidden" name="details[${count}][item]" value="${entry.id}" />
                                         <input type="hidden" name="details[${count}][stock_no]" value="${entry.stock_no}" />
                                         <input type="hidden" name="details[${count}][item_type]" value="item" />
+                                        <input type="hidden" name="details[${count}][is_return]" value="no" />
                                     </td>
                                     <td>
                                         <input type="text" class="form-control text-end" name="details[${count}][unit_price]" readonly placeholder="0.00" value="${entry.unit_price}" />
