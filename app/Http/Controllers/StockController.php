@@ -30,26 +30,36 @@ class StockController extends Controller
         $dir = $request->input('order.0.dir');
 
         if( empty($request->input('search.value')) ) {
-            $item_stocks = ItemStock::offset($start)
+            $item_stocks = ItemStock::join('items','item_stocks.item','=','items.id')
+                    ->select('item_stocks.*','items.item_name as item_name','items.barcode as barcode', 'items.item_code as item_code')
+                    ->offset($start)
                     ->limit($limit)
                     ->orderBy($order,$dir)
                     ->get();
         } else {
             $search = $request->input('search.value');
 
-            $item_stocks =  ItemStock::where('item','LIKE',"%{$search}%")
-                        ->orWhere('purchase_qty', 'LIKE',"%{$search}%")
-                        ->orWhere('cost_price', 'LIKE',"%{$search}%")
-                        ->orWhere('sales_price', 'LIKE',"%{$search}%")
+            $item_stocks =  ItemStock::join('items','item_stocks.item','=','items.id')
+                        ->select('item_stocks.*','items.item_name as item_name','items.barcode as barcode', 'items.item_code as item_code')
+                        ->where('items.item_name','LIKE',"%{$search}%")
+                        ->orWhere('item_stocks.purchase_qty', 'LIKE',"%{$search}%")
+                        ->orWhere('item_stocks.cost_price', 'LIKE',"%{$search}%")
+                        ->orWhere('item_stocks.sales_price', 'LIKE',"%{$search}%")
+                        ->orWhere('items.barcode', 'LIKE',"%{$search}%")
+                        ->orWhere('items.item_code', 'LIKE',"%{$search}%")
                         ->offset($start)
                         ->limit($limit)
                         ->orderBy($order,$dir)
                         ->get();
 
-            $totalFiltered = ItemStock::where('item','LIKE',"%{$search}%")
-                        ->orWhere('purchase_qty', 'LIKE',"%{$search}%")
-                        ->orWhere('cost_price', 'LIKE',"%{$search}%")
-                        ->orWhere('sales_price', 'LIKE',"%{$search}%")
+            $totalFiltered = ItemStock::join('items','item_stocks.item','=','items.id')
+                        ->select('item_stocks.*','items.item_name as item_name','items.barcode as barcode', 'items.item_code as item_code')
+                        ->where('items.item_name','LIKE',"%{$search}%")
+                        ->orWhere('item_stocks.purchase_qty', 'LIKE',"%{$search}%")
+                        ->orWhere('item_stocks.cost_price', 'LIKE',"%{$search}%")
+                        ->orWhere('item_stocks.sales_price', 'LIKE',"%{$search}%")
+                        ->orWhere('items.barcode', 'LIKE',"%{$search}%")
+                        ->orWhere('items.item_code', 'LIKE',"%{$search}%")
                         ->count();
         }
 
@@ -57,9 +67,8 @@ class StockController extends Controller
         if( !empty($item_stocks) ) {
             foreach ($item_stocks as $item)
                 {
-                    $value = Item::find($item->item);
                     $item_stock['id'] = $item->id;
-                    $item_stock['item'] = $value->item_name;
+                    $item_stock['item'] = $item->item_name;
                     $item_stock['purchase_qty'] = $item->purchase_qty;
                     $item_stock['cost_price'] = $item->cost_price;
                     $item_stock['sales_price'] = $item->sales_price;
