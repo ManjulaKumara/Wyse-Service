@@ -69,6 +69,10 @@ Route::group(['middleware'=>['auth']],function(){
             Route::get('/customer-receipts/get-all',[CustomerReceiptController::class,'customer_receipt_get_all']);
             Route::get('/item-damages/all',[DamageController::class,'damage_index']);
             Route::get('/item-damages/get-all',[DamageController::class,'damage_get_all']);
+            Route::get('/expense/all',[ExpenseController::class,'expense_index']);
+            Route::get('/expense/get-all',[ExpenseController::class,'expense_get_all']);
+            Route::get('/item-relationship/all',[ItemRelationshipController::class,'relation_index']);
+            Route::get('/item-relationship/get-all',[ItemRelationshipController::class,'relation_get_all']);
             Route::group(['prefix'=>'reports'],function(){
                 Route::get('/',[ReportController::class,'index']);
                 Route::get('/x-report',[ReportController::class,'daily_summary']);
@@ -134,6 +138,8 @@ Route::group(['middleware'=>['auth']],function(){
             Route::post('/item-category/update/{id}',[ ItemCategoryController::class, 'item_category_update' ]);
             Route::get('/services/edit/{id}',[ ServiceController::class, 'service_edit' ]);
             Route::post('/services/update/{id}',[ ServiceController::class, 'service_update' ]);
+            Route::get('/item-relationship/edit/{id}',[ ItemRelationshipController::class, 'relation_edit' ]);
+            Route::post('/item-relationship/update/{id}',[ ItemRelationshipController::class, 'relation_update' ]);
         });
     });
     Route::get('/users/get-all',[ UserController::class, 'users_get_all' ]);
