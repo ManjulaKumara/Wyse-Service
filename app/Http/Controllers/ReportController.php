@@ -14,6 +14,7 @@ use App\Models\GrnHeader;
 use App\Models\StockIssue;
 use App\Models\ItemStock;
 use App\Models\MaterialIssue;
+use App\Models\SalesReturn;
 use DateTime;
 use DB;
 
@@ -34,6 +35,7 @@ class ReportController extends Controller
         $total_credit=CashTransaction::where('transaction_type','sales-credit')->where('created_at','like',$date.'%')->sum('credit_amount');
         $total_cash_receipts=CustomerRecept::where('payment_type','cash')->where('created_at','like',$date.'%')->sum('recept_amount');
         $total_cheque_receipts=CustomerRecept::where('payment_type','cash')->where('created_at','like',$date.'%')->sum('recept_amount');
+        $total_returns=SalesReturn::where('created_at','like',$date.'%')->sum('return_amount');
 
         $total_expenses=Expense::where('created_at','like',$date.'%')->sum('expense_amount');
         $total_voucher_cash=SupplierVoucher::where('pay_type','cash')->where('created_at','like',$date.'%')->sum('total_amount');
@@ -48,6 +50,7 @@ class ReportController extends Controller
             'total_expenses'=>$total_expenses,
             'total_voucher_cash'=>$total_voucher_cash,
             'total_voucher_cheque'=>$total_voucher_cheque,
+            'total_returns'=>$total_returns,
         ];
         view()->share('date',$date);
         view()->share('data',$data);

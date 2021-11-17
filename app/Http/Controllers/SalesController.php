@@ -18,7 +18,7 @@ use App\Models\CustomerRecept;
 use App\Models\CustomerReceptDetail;
 use App\Models\CustomerCheque;
 use App\Models\SalesReturn;
-use App\Mpdels\SalesReturnDetail;
+use App\Models\SalesReturnDetail;
 use Illuminate\Support\Facades\DB;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
@@ -498,7 +498,9 @@ class SalesController extends Controller
                     }
                 }
             }
+
             if(sizeof($returned_items)>0){
+
                 $sales_ret_data=[
                     'return_number'=>$this->return_code_create(),
                     'return_amount'=>$return_amount,
@@ -716,10 +718,9 @@ class SalesController extends Controller
                     $invoice['paid_amount'] = $item->paid_amount;
                     $invoice['balance'] = $item->balance;
                     $invoice['action'] = '<div class="btn-group">
-                    <a href="#'.$item->id.'" class="btn btn-xs  btn-success " title="View"><i class="fa fa-eye"></i>
+                    <a href="'.url('/sales/invoice/'.$item->id).'" class="btn btn-xs  btn-success " title="View"><i class="fa fa-eye"></i>
                     </a>
-                    <a href="#'.$item->id.'" class="btn btn-xs  btn-danger " title="Return"><i class="fa fa-undo"></i>
-                    </a>
+
                     </div>';
                     $data[] = $invoice;
 
