@@ -499,7 +499,6 @@ class SalesController extends Controller
                 }
             }
             if(sizeof($returned_items)>0){
-
                 $sales_ret_data=[
                     'return_number'=>$this->return_code_create(),
                     'return_amount'=>$return_amount,
