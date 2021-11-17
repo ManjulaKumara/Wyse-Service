@@ -32,7 +32,7 @@ class ItemConversionController extends Controller
         $child_items=[];
         foreach($relationships as $element){
             $item=Item::find($element->child_item);
-            array_push($child_items,(object)['item_name'=>$item->item_name,'id'=>$item->id,'units_per_parent'=>$element->units_per_parent,'code'=>$item->item_code,]);
+            array_push($child_items,(object)['item_name'=>$item->item_name,'id'=>$item->id,'units_per_parent'=>$element->units_per_parent,'code'=>$item->item_code,'barcode'=>$item->barcode]);
         }
         return response()->json($child_items,200);
     }

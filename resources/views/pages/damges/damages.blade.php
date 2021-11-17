@@ -37,7 +37,7 @@
                                             <select required class="form-select" name="item" id="item" data-control="select2" data-placeholder="Select an option">
                                                 <option value="">Select an Item</option>
                                                 @foreach($item_list as $item)
-                                                <option data-qih="{{$item->qih}}" value="{{$item->id}}">{{$item->name}} || {{$item->code}}</option>
+                                                <option data-qih="{{$item->qih}}" value="{{$item->id}}">{{$item->name}} || {{$item->code}} || {{$item->barcode}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

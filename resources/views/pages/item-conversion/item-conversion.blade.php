@@ -36,7 +36,7 @@
                                             <select required class="form-select" name="from_item" id="from_item" data-control="select2" data-placeholder="Select an option">
                                                 <option value="">Select an Item</option>
                                                 @foreach ($parent_items as $item)
-                                                <option value="{{$item->id}}">{{$item->item_name}} || {{$item->item_code}}</option>
+                                                <option value="{{$item->id}}">{{$item->item_name}} || {{$item->item_code}} || {{$item->barcode}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -104,7 +104,7 @@
             let _dop_url=APP_URL+'/ajax/child-items/'+$('#from_item').val();
             $.getJSON( _dop_url, function ( data ) {
                 $.each(data, function ( key, entry ) {
-                    dropdown.append($('<option></option>').attr('value', entry.id).attr('data-upp',entry.units_per_parent).text(entry.item_name+' || '+entry.item_code));
+                    dropdown.append($('<option></option>').attr('value', entry.id).attr('data-upp',entry.units_per_parent).text(entry.item_name+' || '+entry.item_code+' || '+entry.barcode));
                 })
             });
         }

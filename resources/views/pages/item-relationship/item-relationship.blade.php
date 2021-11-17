@@ -28,7 +28,7 @@
                                                 <select class="form-select" required name="parent_item" id="parent_item" data-control="select2" data-placeholder="Select an option">
                                                     <option value="">Please select an Item</option>
                                                     @foreach ($items as $item)
-                                                        <option value="{{$item->id}}" @if (Request::segment(2)=='edit') @if ($item->id==$relation->parent_item) selected disabled @endif @endif>{{$item->item_name}}</option>
+                                                        <option value="{{$item->id}}" @if (Request::segment(2)=='edit') @if ($item->id==$relation->parent_item) selected disabled @endif @endif>{{$item->item_name}} || {{$item->item_code}} || {{$item->barcode}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -77,7 +77,7 @@
                                                 <select class="form-select" required name="child_item" id="child_item" data-control="select2" data-placeholder="Select an option">
                                                     <option value="">Please select an Item</option>
                                                     @foreach ($items as $item)
-                                                        <option value="{{$item->id}}" @if (Request::segment(2)=='edit') @if ($item->id==$relation->child_item) selected disabled @endif @endif>{{$item->item_name}}</option>
+                                                        <option value="{{$item->id}}" @if (Request::segment(2)=='edit') @if ($item->id==$relation->child_item) selected disabled @endif @endif>{{$item->item_name}} || {{$item->item_code}} || {{$item->barcode}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
