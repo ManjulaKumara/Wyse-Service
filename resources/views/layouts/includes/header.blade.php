@@ -199,12 +199,12 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="{{url('/')}}">
+                                    <a class="menu-link py-3" href="{{url('/customer-cheque/all')}}">
                                         <span class="menu-title">Cheques to be deposited</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="{{url('/')}}">
+                                    <a class="menu-link py-3" href="{{url('/supplier-cheque/all')}}">
                                         <span class="menu-title">Cheques Issued</span>
                                     </a>
                                 </div>

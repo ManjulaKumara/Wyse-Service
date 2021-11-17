@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\ChequeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
@@ -73,6 +75,10 @@ Route::group(['middleware'=>['auth']],function(){
             Route::get('/expense/get-all',[ExpenseController::class,'expense_get_all']);
             Route::get('/item-relationship/all',[ItemRelationshipController::class,'relation_index']);
             Route::get('/item-relationship/get-all',[ItemRelationshipController::class,'relation_get_all']);
+            Route::get('/customer-cheque/all',[ChequeController::class,'customer_cheque_index']);
+            Route::get('/customer-cheque/get-all',[ChequeController::class,'customer_cheque_get_all']);
+            Route::get('/supplier-cheque/all',[ChequeController::class,'supplier_cheque_index']);
+            Route::get('/supplier-cheque/get-all',[ChequeController::class,'supplier_cheque_get_all']);
             Route::group(['prefix'=>'reports'],function(){
                 Route::get('/',[ReportController::class,'index']);
                 Route::get('/x-report',[ReportController::class,'daily_summary']);
