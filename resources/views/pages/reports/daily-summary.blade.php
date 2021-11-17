@@ -128,11 +128,11 @@
                                                                     {{number_format($data['total_cash_receipts'], 2)}}
                                                                 </td>
 
-                                                                <td width="30%" >
-
+                                                                <td width="30%" style="border-bottom:1px solid grey;">
+                                                                    <h5>Sales Returns:</h5>
                                                                 </td>
-                                                                <td width="20%">
-
+                                                                <td width="20%" style="text-align: right;border-bottom:1px solid grey;">
+                                                                    {{number_format($data['total_returns'], 2)}}
                                                                 </td>
                                                             </tr>
 
@@ -163,7 +163,7 @@
                                                                     <h5>Total Debit Amount: </h5>
                                                                 </td>
                                                                 <td width="20%" style="text-align: right;border-bottom:1px solid grey;">
-                                                                    {{number_format($data['total_expenses']+$data['total_voucher_cheque']+$data['total_voucher_cash'], 2)}}
+                                                                    {{number_format($data['total_expenses']+$data['total_voucher_cheque']+$data['total_voucher_cash']+$data['total_returns'], 2)}}
                                                                 </td>
                                                             </tr>
 
@@ -172,7 +172,7 @@
                                                                     <h5>Total Balance Amount: </h5>
                                                                 </td>
                                                                 <td width="20%" style="text-align: right;border-right:1px dashed grey;border-bottom:1px solid grey;">
-                                                                    {{number_format(($data['total_cheque_receipts']+$data['total_cash_receipts']+$data['total_credit']+$data['total_cheque']+$data['total_cash'])-($data['total_expenses']+$data['total_voucher_cheque']+$data['total_voucher_cash']), 2)}}
+                                                                    {{number_format(($data['total_cheque_receipts']+$data['total_cash_receipts']+$data['total_credit']+$data['total_cheque']+$data['total_cash'])-($data['total_expenses']+$data['total_voucher_cheque']+$data['total_voucher_cash']+$data['total_returns']), 2)}}
                                                                 </td>
 
                                                                 <td width="30%">
