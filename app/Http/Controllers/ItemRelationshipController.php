@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\ItemRelationship;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class ItemRelationshipController extends Controller
 {

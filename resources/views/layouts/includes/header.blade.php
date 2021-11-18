@@ -161,7 +161,7 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="{{url('item-relationship/create')}}">
+                                    <a class="menu-link py-3" href="{{url('item-relationship/all')}}">
                                         <span class="menu-title">Item Relationships</span>
                                     </a>
                                 </div>
