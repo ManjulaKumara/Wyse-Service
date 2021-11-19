@@ -173,12 +173,15 @@ class StockIssueController extends Controller
                     $invoice_no="";
                     if ($item->is_invoiced==0) {
                         $status='Not Invoiced';
-                        $invoice=InvoiceHeader::find($item->invoice);
-                        $invoice_no=$invoice->invoice_number;
+                        $invoice_no = 'N/A';
                     } else if($item->is_invoiced==1){
                         $status='Invoiced';
+                        $invoice=InvoiceHeader::find($item->invoice);
+                        $invoice_no=$invoice->invoice_number;
                     } else{
                         $status='Returned';
+                        $invoice=InvoiceHeader::find($item->invoice);
+                        $invoice_no=$invoice->invoice_number;
                     }
 
                     $issue['vehicle_number'] = $item->vehicle_number;

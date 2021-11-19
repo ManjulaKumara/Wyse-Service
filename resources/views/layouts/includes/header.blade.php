@@ -95,7 +95,7 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="{{url('/sales-returns/create')}}">
+                                    <a class="menu-link py-3" href="{{url('sales-return/all')}}">
                                         <span class="menu-title">Sales Return</span>
                                     </a>
                                 </div>
@@ -156,7 +156,7 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="{{url('stock-issues/create')}}">
+                                    <a class="menu-link py-3" href="{{url('stock-issues/all')}}">
                                         <span class="menu-title">Stock Issue List</span>
                                     </a>
                                 </div>
@@ -176,7 +176,7 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="{{url('material-issues/create')}}">
+                                    <a class="menu-link py-3" href="{{url('material-issues/all')}}">
                                         <span class="menu-title">Material Issues</span>
                                     </a>
                                 </div>
@@ -189,7 +189,7 @@
                             </a>
                             <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">
                                 <div class="menu-item">
-                                    <a class="menu-link py-3" href="{{url('expense/create')}}">
+                                    <a class="menu-link py-3" href="{{url('expense/all')}}">
                                         <span class="menu-title">Other Expenses</span>
                                     </a>
                                 </div>
