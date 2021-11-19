@@ -127,6 +127,25 @@
                                                                 </td>
                                                             </tr>
                                                             @endforeach
+                                                            @foreach($materials as $material)
+                                                            @php
+                                                                $element=App\Models\Item::find($material->item);
+                                                            @endphp
+                                                            <tr>
+                                                                <td width="60%" valign="top" style="font-size: 17px;">
+                                                                    <b>{{$element->item_name}}</b>
+                                                                </td>
+                                                                <td width="15%" style="text-align: right;font-size: 15px;border-right:1px dashed grey;">
+                                                                    <b>{{number_format($material->unit_price,2,'.','')}}</b>
+                                                                </td>
+                                                                <td width="10%" style="text-align: right;font-size: 17px;border-right:1px dashed grey;">
+                                                                    <b>{{$material->qty}}</b>
+                                                                </td>
+                                                                <td width="15%" style="text-align: right;font-size: 17px;">
+                                                                    <b>{{number_format($material->amount,2,'.','')}}</b>
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
                                                             @foreach($services as $service)
                                                             @php
                                                                 $element=App\Models\ServiceMaster::find($service->service);

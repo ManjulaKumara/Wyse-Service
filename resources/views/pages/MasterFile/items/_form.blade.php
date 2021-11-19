@@ -64,6 +64,7 @@
                     <select class="form-control js-example-basic-single compulsory" id="item_type" name="item_type" required>
                         <option value="Label Price" @if (Request::segment(2)=='view') disabled @if ($item->item_type=='Label Price') selected @endif @elseif (Request::segment(2)=='edit') @if ($item->item_type=='Label Price') selected @endif @endif>Label Price</option>
                         <option value="Discount Price" @if (Request::segment(2)=='view') disabled @if ($item->item_type=='Discount Price') selected @endif @elseif (Request::segment(2)=='edit') @if ($item->item_type=='Discount Price') selected @endif @endif>Discount Price</option>
+                        <option value="Material" @if (Request::segment(2)=='view') disabled @if ($item->item_type=='Material') selected @endif @elseif (Request::segment(2)=='edit') @if ($item->item_type=='Material') selected @endif @endif>Material</option>
                     </select>
                 </div>
             </div><br>

@@ -67,7 +67,7 @@ class GrnController extends Controller
                         'item'=>$element['item'],
                         'purchase_price'=>$element['label_price'],
                         'discount'=>$element['discount'],
-                        'cost_price'=>$element['label_price']-$element['discount'],
+                        'cost_price'=>$element['cost_price'],
                         'purchase_qty'=>$element['quantity'],
                         'amount'=>$element['amount'],
                         'grn_header'=>$header->id,
@@ -103,8 +103,8 @@ class GrnController extends Controller
                     $transaction->save();
                     $stocks=ItemStock::where('item',$element['item'])->get();
                     foreach($stocks as $var){
-                        $var->sales_price=$element['label_price'];
-                        $var->sales_rate=($element['label_price']-$var->cost_price)/$var->cost_price;
+                        $var->sales_price=$element['new_price'];
+                        $var->sales_rate=($element['new_price']-$var->cost_price)/$var->cost_price;
                         $var->save();
                     }
                 }

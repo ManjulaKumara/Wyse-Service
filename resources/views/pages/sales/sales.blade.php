@@ -447,7 +447,19 @@
                 $('#quantity').trigger('keyup');
                 $('#btn-add').focus();
             }
+            if(type=='material'){
+                $('#quantity').val('1');
+                $('#quantity').trigger('keyup');
+                $('#unit_price').prop('disabled',false);
+                $('#unit_price').focus();
+            }else{
+                $('#unit_price').prop('disabled',true);
+            }
         }
+    });
+    $('#unit_price').keyup(function(){
+        let total=$('#unit_price').val()*$('#quantity').val();
+        $('#amount').val(Number(total).toFixed(2));
     });
     $('#quantity').keyup(function(){
         if($('#item').val()!="" && $('#item').val()!=null){
@@ -473,7 +485,7 @@
             alert('Please provide item quantity..');
             $('#quantity').focus();
         }else{
-            let unit_price=$('#item').find(":selected").data('uprice');
+            let unit_price=$('#unit_price').val();
             let discount=$('#item').find(":selected").data('discount');
             let stock_no=$('#item').find(":selected").data('stock');
             let item_id=$('#item').val();

@@ -291,7 +291,7 @@
                     <tr class="border-bottom border-bottom-dashed item-row" data-kt-element="item">
                         <td class="pe-7">
                             <p>${entry.grn_code}</p>
-                            <input type="hidden" name="details[${count}][grn]" value="${$entry.id}" />
+                            <input type="hidden" name="details[${count}][grn]" value="${entry.id}" />
                         </td>
                         <td>
                             <input type="text" readonly class="form-control form-control-solid text-end" name="details[${count}][total]" placeholder="0.00" value="${Number(entry.amount).toFixed(2)}" />
