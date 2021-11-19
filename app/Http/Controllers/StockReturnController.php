@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\StockIssue;
 use App\Models\ItemStock;
+use App\Models\ItemTransaction;
 use DateTime;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class StockReturnController extends Controller

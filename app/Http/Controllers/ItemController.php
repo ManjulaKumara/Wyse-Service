@@ -7,7 +7,7 @@ use App\Models\ItemCategorie;
 use App\Models\ItemStock;
 use Illuminate\Http\Request;
 use Exception;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
@@ -34,6 +34,7 @@ class ItemController extends Controller
         if( empty($request->input('search.value')) ) {
             $items = Item::join('item_categories','items.category','=','item_categories.id')
                     ->select('items.*','item_categories.category_name as category_name')
+                    ->where('items.category','=','1')
                     ->offset($start)
                     ->limit($limit)
                     ->orderBy($order,$dir)
@@ -189,10 +190,5 @@ class ItemController extends Controller
             dd($e);
             return redirect()->back()->with('error', 'Something went wrong!!');;
         }
-    }
-
-    public function getItem($id){
-        $items=Item::where('item_name','like','%'.$key.'%')->orWhere('item_code','like','%'.$key.'%')->orWhere('barcode','like','%'.$key.'%')->get();
-
     }
 }

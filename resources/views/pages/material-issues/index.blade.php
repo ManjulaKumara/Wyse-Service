@@ -36,7 +36,7 @@
                     <th class="min-w-125px">Issue No</th>
                     <th class="min-w-125px">item name</th>
                     <th class="min-w-125px">quantity</th>
-                    <th class="min-w-70px">Actions</th>
+                    <th class="min-w-80px">Issue Date</th>
                 </tr>
                 <!--end::Table row-->
             </thead>
@@ -54,7 +54,7 @@
 
 @endsection
 @section('opyional_js')
-{{-- <script src="{{ url('js/form/customer.js')}}"></script> --}}
+<script src="{{ url('js/form/material_issue.js')}}"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 @endsection

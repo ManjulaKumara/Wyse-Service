@@ -15,6 +15,77 @@ use App\Models\MaterialIssue;
 
 class MaterialIssueController extends Controller
 {
+
+    public function material_issues_index(){
+        return view('pages.material-issues.index');
+    }
+
+    public function material_issues_get_all(Request $request){
+        $columns = [
+            0 =>'issue_no',
+            1 =>'item',
+            2=> 'quantity',
+            3=> 'date',
+        ];
+        $totalData = MaterialIssue::count();
+        $totalFiltered = $totalData;
+
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if( empty($request->input('search.value')) ) {
+            $issues = MaterialIssue::join('items','material_issues.item','=','items.id')
+                    ->select('material_issues.*','items.item_name as item_name')
+                    ->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order,$dir)
+                    ->get();
+        } else {
+            $search = $request->input('search.value');
+
+            $issues =  MaterialIssue::join('items','material_issues.item','=','items.id')
+                        ->select('material_issues.*','items.item_name as item_name')
+                        ->where('material_issues.issue_no','LIKE',"%{$search}%")
+                        ->orWhere('items.item_name', 'LIKE',"%{$search}%")
+                        ->orWhere('material_issues.quantity', 'LIKE',"%{$search}%")
+                        ->offset($start)
+                        ->limit($limit)
+                        ->orderBy($order,$dir)
+                        ->get();
+
+            $totalFiltered = MaterialIssue::join('items','material_issues.item','=','items.id')
+                        ->select('material_issues.*','items.item_name as item_name')
+                        ->where('material_issues.issue_no','LIKE',"%{$search}%")
+                        ->orWhere('items.item_name', 'LIKE',"%{$search}%")
+                        ->orWhere('material_issues.quantity', 'LIKE',"%{$search}%")
+                        ->count();
+        }
+
+        $data = array();
+        if( !empty($issues) ) {
+            foreach ($issues as $item)
+                {
+                    $issue['issue_no'] = $item->issue_no;
+                    $issue['item'] = $item->item_name;
+                    $issue['quantity'] = $item->quantity;
+                    $issue['date'] = $item->created_at->format('Y-m-d');
+                    $data[] = $issue;
+
+                }
+        }
+
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),
+            "recordsTotal"    => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data"            => $data
+            );
+
+        echo json_encode($json_data);
+    }
+
     public function create(){
         $issue_number=$this->code_Create();
         view()->share('issue_number',$issue_number);

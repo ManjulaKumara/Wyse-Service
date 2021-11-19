@@ -23,6 +23,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\DamageController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\MaterialIssueCOntroller;
+use App\Http\Controllers\SalesReturnController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,9 @@ Route::group(['middleware'=>['auth']],function(){
             Route::get('/customer-cheque/get-all',[ChequeController::class,'customer_cheque_get_all']);
             Route::get('/supplier-cheque/all',[ChequeController::class,'supplier_cheque_index']);
             Route::get('/supplier-cheque/get-all',[ChequeController::class,'supplier_cheque_get_all']);
+            Route::get('/sales-return/all',[SalesReturnController::class,'sales_return_index']);
+            Route::get('/sales-return/get-all',[SalesReturnController::class,'sales_return_get_all']);
+            Route::get('/sales-return/view/{id}',[SalesReturnController::class,'sales_return_view']);
             Route::group(['prefix'=>'reports'],function(){
                 Route::get('/',[ReportController::class,'index']);
                 Route::get('/x-report',[ReportController::class,'daily_summary']);
@@ -175,6 +179,8 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get('/search-services',[[SalesController::class,'searchService']]);
         Route::get('/search-items-n-services',[[SalesController::class,'searchItemsnServices']]);
     });
+    Route::get('/material-issues/all',[MaterialIssueController::class,'material_issues_index']);
+    Route::get('/material-issues/get-all',[MaterialIssueController::class,'material_issues_get_all']);
     Route::get('/material-issues/create',[MaterialIssueController::class,'create']);
     Route::post('/material-issues/store',[MaterialIssueController::class,'store']);
 
