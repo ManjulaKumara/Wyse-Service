@@ -122,11 +122,11 @@
                                         <span class="menu-title">Create GRN</span>
                                     </a>
                                 </div>
-                                <div class="menu-item">
+                                {{-- <div class="menu-item">
                                     <a class="menu-link py-3" href=".{{url('/')}}">
                                         <span class="menu-title">Purchase Return</span>
                                     </a>
-                                </div>
+                                </div> --}}
                                 <div class="menu-item">
                                     <a class="menu-link py-3" href="{{url('/grns/all')}}">
                                         <span class="menu-title">Purchase List</span>

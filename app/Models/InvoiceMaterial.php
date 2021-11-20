@@ -5,18 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Expense extends Model
+class InvoiceMaterial extends Model
 {
     use HasFactory;
-    protected $table = 'expenses';
+    protected $table = 'invoice_materials';
     protected $fillable = [
-        'expense_name',
-        'expense_remark	',
-        'expense_amount',
-        'cashier',
+        'invoice',
+        'item',
+        'qty',
+        'unit_price',
+        'amount',
         'created_at',
         'updated_at',
-        'expense_date',
+        'billing_type'
     ];
     public $timestamps = true;
 }

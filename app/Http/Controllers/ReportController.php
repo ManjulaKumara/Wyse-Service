@@ -37,7 +37,7 @@ class ReportController extends Controller
         $total_cheque_receipts=CustomerRecept::where('payment_type','cash')->where('created_at','like',$date.'%')->sum('recept_amount');
         $total_returns=SalesReturn::where('created_at','like',$date.'%')->sum('return_amount');
 
-        $total_expenses=Expense::where('created_at','like',$date.'%')->sum('expense_amount');
+        $total_expenses=Expense::where('expense_date','like',$date.'%')->sum('expense_amount');
         $total_voucher_cash=SupplierVoucher::where('pay_type','cash')->where('created_at','like',$date.'%')->sum('total_amount');
         $total_voucher_cheque=SupplierVoucher::where('pay_type','cheque')->where('created_at','like',$date.'%')->sum('total_amount');
         $data=[

@@ -51,7 +51,7 @@ class SupplierVoucherController extends Controller
                     $details->save();
                     $grn=GrnHeader::find($element['grn']);
                     $grn->balance=$grn->balance-$element['pay_amount'];
-                    $grn->balance=$grn->paid_amount+$element['pay_amount'];
+                    $grn->paid_amount=$grn->paid_amount+$element['pay_amount'];
                     $grn->save();
                 }
             }

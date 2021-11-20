@@ -83,21 +83,26 @@
                                 </div>
                                 <div class="row gx-10 mb-5">
                                     <div class="col-lg-3">
-                                        <label for="label_price" class="required form-label">Label Price(LKR):</label>
+                                        <label for="label_price" class="required form-label">purchase Price(LKR):</label>
                                         <input type="text" class="form-control" name="label_price" id="label_price"/>
                                     </div>
                                     <div class="col-lg-3">
-                                        <label for="discount" class="required form-label">Discount(LKR):</label>
-                                        <input type="text" class="form-control"  name="discount" id="discount"/>
+                                        <label for="cost_price" class="required form-label">Cost Price(LKR):</label>
+                                        <input type="text" class="form-control" name="cost_price" id="cost_price"/>
                                     </div>
                                     <div class="col-lg-3">
                                         <label for="amount" class="required form-label">Total(LKR):</label>
                                         <input type="text" disabled class="form-control" readonly name="amount" id="amount"/>
                                     </div>
                                     <div class="col-lg-3">
+                                        <label for="updated_price" class="required form-label">New Selling(LKR):</label>
+                                        <input type="text" class="form-control"  name="updated_price" id="updated_price"/>
+                                    </div>
+
+                                    <div class="col-lg-12">
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <button type="button" style="margin-top:25px;" id="btn-add" class="btn btn-success">ADD</button>
+                                            <div class="col-md-12">
+                                                <button type="button" style="margin-top:25px;width:100%;" id="btn-add" class="btn btn-success">ADD</button>
                                             </div>
                                         </div>
 
@@ -167,11 +172,12 @@
                         <!--begin::Table head-->
                         <thead>
                             <tr class="border-bottom fs-7 fw-bolder text-gray-700 text-uppercase">
-                                <th class="min-w-300px w-475px">Item</th>
+                                <th class="min-w-300px w-425px">Item</th>
                                 <th class="min-w-150px w-150px">Label Price</th>
                                 <th class="min-w-150px w-150px">Discount</th>
-                                <th class="min-w-100px w-100px">QTY</th>
+                                <th class="min-w-100px w-75px">QTY</th>
                                 <th class="min-w-100px w-150px text-end">Total</th>
+                                <th class="min-w-100px w-150px">New Price</th>
                                 <th class="min-w-75px w-75px text-end">Action</th>
                             </tr>
                         </thead>
@@ -272,21 +278,13 @@
             $('#quantity').focus();
         }
     });
-    $('#label_price').keyup(function(){
+    $('#cost_price').keyup(function(){
         if(($('#item').val()!="" && $('#item').val()!=null) && ($('#quantity').val()!="" && $('#quantity').val()!=null)){
-            let amount=($('#label_price').val()-$('#discount').val())*$('#quantity').val();
+            let amount=($('#cost_price').val())*$('#quantity').val();
             $('#amount').val(Number(amount).toFixed(2));
         }
     });
-    $('#discount').keyup(function(){
-        if(($('#item').val()!="" && $('#item').val()!=null) && ($('#quantity').val()!="" && $('#quantity').val()!=null) && ($('#discount').val()!="" && $('#discount').val()!=null)){
-            let amount=($('#label_price').val()-$('#discount').val())*$('#quantity').val();
-            $('#amount').val(Number(amount).toFixed(2));
-        }
-    });
-    $('#discount').focusout(function(){
-        $('#have_free').focus();
-    });
+
     $('#btn-add').click(function(){
         if($('#item').val()=="" || $('#item').val()==null){
             alert('Please select an Item to continue');
@@ -295,17 +293,22 @@
             alert('Please input the quantity');
             $('#quantity').focus();
         }else if($('#label_price').val()=="" || $('#label_price').val()==null){
-            alert('Label price can not be empty');
+            alert('Purchase price can not be empty');
             $('#label_price').focus();
-        }else if($('#discount').val()=="" || $('#discount').val()==null){
-            alert('Enter the discount for one unit..');
-            $('#discount').focus();
+        }else if($('#cost_price').val()=="" || $('#cost_price').val()==null){
+            alert('Enter the Cost Price for one unit..');
+            $('#cost_price').focus();
+        }else if($('#updated_price').val()=="" || $('#updated_price').val()==null){
+            alert('Enter New Price for one unit..');
+            $('#updated_price').focus();
         }else{
             let item_id=$('#item').val();
             let item_name=$('#item').find(":selected").data('name');
             let label_price=$('#label_price').val();
             let quantity=$('#quantity').val();
-            let discount=$('#discount').val();
+            let cost_price=$('#cost_price').val();
+            let new_price=$('#updated_price').val();
+            let discount=label_price-cost_price;
             let amount=$('#amount').val();
             if(itemsInTable.includes(item_id+"")){
                 alert('Item Already Inserted');
@@ -316,6 +319,7 @@
                     <td class="pe-7">
                         <p>${item_name}</p>
                         <input type="hidden" name="details[${count}][item]" value="${item_id}"/>
+                        <input type="hidden" class="cost_price" name="details[${count}][cost_price]" value="${cost_price}"/>
                     </td>
 
                     <td>
@@ -329,6 +333,9 @@
                     </td>
                     <td>
                         <input type="text" class="form-control form-control-solid text-end amount" readonly name="details[${count}][amount]" value="${Number(amount).toFixed(2)}" placeholder="0.00" value="0.00" />
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-solid text-end new-price" readonly name="details[${count}][new_price]" value="${Number(new_price).toFixed(2)}" placeholder="0.00" value="0.00" />
                     </td>
                     <td class="pt-5 text-end">
                         <button type="button" class="btn btn-sm btn-icon btn-active-color-primary" onclick="deleteItem(${count})">
@@ -352,6 +359,7 @@
                 $('#item').trigger('change');
                 $('#quantity').val("");
                 $('#label_price').val("");
+                $('#cost_price').val("");
                 $('#discount').val("");
                 $('#amount').val("");
                 $('#item').focus();

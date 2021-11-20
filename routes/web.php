@@ -44,6 +44,7 @@ Route::group(['middleware'=>['auth']],function(){
             Route::get('/sales/all',[SalesController::class,'sales_index']);
             Route::get('/sales/get-all',[SalesController::class,'sales_get_all']);
             Route::get('/sales/invoice/{id}',[SalesController::class,'invoice']);
+            Route::get('/sales/print/{id}',[SalesController::class,'print']);
             Route::get('/suppliers/all',[ SupplierController::class, 'supplier_index' ]);
             Route::get('/suppliers/get-all',[ SupplierController::class, 'supplier_get_all' ]);
             Route::get('/suppliers/view/{id}',[ SupplierController::class, 'supplier_view' ]);

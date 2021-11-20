@@ -25,6 +25,7 @@ class ExpenseController extends Controller
                 'expense_name'=>$request->expense_name,
                 'expense_amount'=>$request->expense_amount,
                 'cashier'=>Auth::user()->id,
+                'expense_date'=>$request->expense_date,
             ];
             $expense=new Expense($expense_data);
             $expense->save();
@@ -100,7 +101,7 @@ class ExpenseController extends Controller
                 {
                     $expense['expense_name'] = $item->expense_name;
                     $expense['expense_amount'] = $item->expense_amount;
-                    $expense['created_at'] = $item->created_at->format('Y-m-d');
+                    $expense['created_at'] = $item->expense_date;
                     $expense['cashier'] = $item->name;
                     $data[] = $expense;
 

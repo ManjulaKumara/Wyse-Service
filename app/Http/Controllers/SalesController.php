@@ -12,6 +12,7 @@ use App\Models\StockIssue;
 use App\Models\InvoiceHeader;
 use App\Models\InvoiceItem;
 use App\Models\InvoiceService;
+use App\Models\InvoiceMaterial;
 use App\Models\ItemTransaction;
 use App\Models\CashTransaction;
 use App\Models\CustomerRecept;
@@ -141,6 +142,21 @@ class SalesController extends Controller
                 array_push($item_list,(object)$data);
             }
         }
+        $materials=Item::where('is_active',1)->where('item_type','Material')->get();
+        foreach($materials as $material){
+            $data=[
+                'id'=>$material->id,
+                'name'=>$material->item_name,
+                'category'=>$material->category_name,
+                'barcode'=>$material->barcode,
+                'item_code'=>$material->item_code,
+                'unit_price'=>0,
+                'discount'=>0,
+                'qih'=>null,
+                'type'=>'material',
+            ];
+            array_push($item_list,(object)$data);
+        }
         $services=ServiceMaster::get();
         foreach($services as $service){
             $data=[
@@ -187,6 +203,21 @@ class SalesController extends Controller
                 array_push($item_list,(object)$data);
             }
         }
+        $materials=Item::where('is_active',1)->where('item_type','Material')->get();
+        foreach($materials as $material){
+            $data=[
+                'id'=>$material->id,
+                'name'=>$material->item_name,
+                'category'=>$material->category_name,
+                'barcode'=>$material->barcode,
+                'item_code'=>$material->item_code,
+                'unit_price'=>0,
+                'discount'=>0,
+                'qih'=>null,
+                'type'=>'material',
+            ];
+            array_push($item_list,(object)$data);
+        }
         $services=ServiceMaster::get();
         foreach($services as $service){
             $data=[
@@ -228,6 +259,21 @@ class SalesController extends Controller
                 ];
                 array_push($item_list,(object)$data);
             }
+        }
+        $materials=Item::where('is_active',1)->where('item_type','Material')->get();
+        foreach($materials as $material){
+            $data=[
+                'id'=>$material->id,
+                'name'=>$material->item_name,
+                'category'=>$material->category_name,
+                'barcode'=>$material->barcode,
+                'item_code'=>$material->item_code,
+                'unit_price'=>0,
+                'discount'=>0,
+                'qih'=>null,
+                'type'=>'material',
+            ];
+            array_push($item_list,(object)$data);
         }
         return response()->json($item_list,200);
     }
@@ -326,9 +372,34 @@ class SalesController extends Controller
                             'unit_price'=>$element['unit_price'],
                             'discount'=>$element['discount'],
                             'amount'=>$element['amount'],
+                            'billing_type'=>$element['is_return'],
                         ];
                         $service_record=new InvoiceService($service_data);
                         $service_record->save();
+                        if($element['is_return']=='yes'){
+                            $return_data=[
+                                'item'=>$element['item'],
+                                'qty'=>$element['qty'],
+                                'unit_price'=>$element['unit_price'],
+                                'amount'=>$element['amount'],
+                                'stock_no'=>$element['stock_no'],
+                            ];
+                            array_push($returned_items,$return_data);
+                            $return_amount=$return_amount+$element['amount'];
+                        }
+
+                    }
+                    if($element['item_type']=='material'){
+                        $material_data=[
+                            'invoice'=>$header->id,
+                            'item'=>$element['item'],
+                            'qty'=>$element['qty'],
+                            'unit_price'=>$element['unit_price'],
+                            'amount'=>$element['amount'],
+                            'billing_type'=>$element['is_return'],
+                        ];
+                        $material_record=new InvoiceMaterial($material_data);
+                        $material_record->save();
                         if($element['is_return']=='yes'){
                             $return_data=[
                                 'item'=>$element['item'],
@@ -356,6 +427,7 @@ class SalesController extends Controller
                                 'discount'=>$element['discount'],
                                 'amount'=>$element['amount'],
                                 'stock_no'=>$stock_issue->id,
+                                'billing_type'=>$element['is_return']
                             ];
                             $item_record=new InvoiceItem($item_data);
                             $item_record->save();
@@ -381,6 +453,20 @@ class SalesController extends Controller
                                         'discount'=>$element['discount'],
                                         'amount'=>$element['amount'],
                                         'stock_no'=>$element['stock_no'],
+                                        'billing_type'=>$element['is_return']
+                                    ];
+                                    $item_record=new InvoiceItem($item_data);
+                                    $item_record->save();
+                                }elseif($element['is_return']=='display'){
+                                    $item_data=[
+                                        'invoice'=>$header->id,
+                                        'item'=>$element['item'],
+                                        'qty'=>$element['qty'],
+                                        'unit_price'=>$element['unit_price'],
+                                        'discount'=>$element['discount'],
+                                        'amount'=>$element['amount'],
+                                        'stock_no'=>$element['stock_no'],
+                                        'billing_type'=>$element['is_return']
                                     ];
                                     $item_record=new InvoiceItem($item_data);
                                     $item_record->save();
@@ -420,6 +506,7 @@ class SalesController extends Controller
                                         'discount'=>$element['discount'],
                                         'amount'=>$element['amount'],
                                         'stock_no'=>$item_stock->id,
+                                        'billing_type'=>$element['is_return']
                                     ];
                                     $item_record=new InvoiceItem($item_data);
                                     $item_record->save();
@@ -443,6 +530,20 @@ class SalesController extends Controller
                                         'discount'=>$element['discount'],
                                         'amount'=>$element['amount'],
                                         'stock_no'=>$element['stock_no'],
+                                        'billing_type'=>$element['is_return']
+                                    ];
+                                    $item_record=new InvoiceItem($item_data);
+                                    $item_record->save();
+                                }elseif($element['is_return']=='display'){
+                                    $item_data=[
+                                        'invoice'=>$header->id,
+                                        'item'=>$element['item'],
+                                        'qty'=>$element['qty'],
+                                        'unit_price'=>$element['unit_price'],
+                                        'discount'=>$element['discount'],
+                                        'amount'=>$element['amount'],
+                                        'stock_no'=>$element['stock_no'],
+                                        'billing_type'=>$element['is_return']
                                     ];
                                     $item_record=new InvoiceItem($item_data);
                                     $item_record->save();
@@ -487,6 +588,7 @@ class SalesController extends Controller
                                             'discount'=>$element['discount'],
                                             'amount'=>$element['amount'],
                                             'stock_no'=>$item_stock->id,
+                                            'billing_type'=>$element['is_return']
                                         ];
                                         $item_record=new InvoiceItem($item_data);
                                         $item_record->save();
@@ -609,7 +711,7 @@ class SalesController extends Controller
                 }
             }
             DB::commit();
-            return redirect(url('/sales/invoice/'.$header->id))->with('success','Item Sales Stored Successfully!!!');
+            return redirect(url('/sales/print/'.$header->id))->with('success','Item Sales Stored Successfully!!!');
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
@@ -647,6 +749,7 @@ class SalesController extends Controller
         $header=InvoiceHeader::find($id);
         $invoice_items=InvoiceItem::where('invoice',$header->id)->get();
         $invoice_services=InvoiceService::where('invoice',$header->id)->get();
+        $invoice_materials=InvoiceMaterial::where('invoice',$header->id)->get();
         $customer=null;
         if(isset($header->customer)){
             $customer=Customer::find($header->customer);
@@ -655,6 +758,24 @@ class SalesController extends Controller
         view()->share('header',$header);
         view()->share('items',$invoice_items);
         view()->share('services',$invoice_services);
+        view()->share('materials',$invoice_materials);
+        return view('pages.sales.print');
+    }
+
+    public function print($id){
+        $header=InvoiceHeader::find($id);
+        $invoice_items=InvoiceItem::where('invoice',$header->id)->where('billing_type','!=','hide-stock')->get();
+        $invoice_services=InvoiceService::where('invoice',$header->id)->where('billing_type','!=','hide-stock')->get();
+        $invoice_materials=InvoiceMaterial::where('invoice',$header->id)->where('billing_type','!=','hide-stock')->get();
+        $customer=null;
+        if(isset($header->customer)){
+            $customer=Customer::find($header->customer);
+        }
+        view()->share('customer',$customer);
+        view()->share('header',$header);
+        view()->share('items',$invoice_items);
+        view()->share('services',$invoice_services);
+        view()->share('materials',$invoice_materials);
         return view('pages.sales.print');
     }
 

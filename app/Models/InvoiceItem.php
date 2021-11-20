@@ -18,7 +18,8 @@ class InvoiceItem extends Model
         'stock_no',
         'unit_price',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'billing_type'
     ];
     public $timestamps = true;
 }

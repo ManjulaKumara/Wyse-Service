@@ -95,7 +95,7 @@
                                         <label for="unit_price" class="required form-label">Unit Price(LKR):</label>
                                         <input type="text" class="form-control" disabled name="unit_price" id="unit_price"/>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-2">
                                         <label for="discount" class="required form-label">Discount(LKR):</label>
                                         <input type="text" disabled class="form-control"  name="discount" id="discount"/>
                                     </div>
@@ -103,11 +103,13 @@
                                         <label for="amount" class="required form-label">Total(LKR):</label>
                                         <input type="text" class="form-control" disabled name="amount" id="amount"/>
                                     </div>
-                                    <div class="col-lg-2">
-                                        <label for="amount" class="required form-label">Return Item?:</label>
+                                    <div class="col-lg-3">
+                                        <label for="amount" class="required form-label">Item Type?:</label>
                                         <select name="is_return" class="required form-control" id="is_return">
-                                            <option value="no">No</option>
-                                            <option value="yes">Yes</option>
+                                            <option value="display-stock">Display and Stock</option>
+                                            <option value="hide-stock">Hide and Stock</option>
+                                            <option value="display">Display Only</option>
+                                            <option value="yes">Return Item</option>
                                         </select>
                                     </div>
                                     <div class="col-lg-1">
@@ -368,7 +370,7 @@
                                         <input type="hidden" name="details[${count}][item]" value="${entry.id}" />
                                         <input type="hidden" name="details[${count}][stock_no]" value="${entry.stock_no}" />
                                         <input type="hidden" name="details[${count}][item_type]" value="item" />
-                                        <input type="hidden" name="details[${count}][is_return]" value="no" />
+                                        <input type="hidden" name="details[${count}][is_return]" value="display-stock" />
                                     </td>
                                     <td>
                                         <input type="text" class="form-control text-end" name="details[${count}][unit_price]" readonly placeholder="0.00" value="${entry.unit_price}" />
@@ -447,7 +449,19 @@
                 $('#quantity').trigger('keyup');
                 $('#btn-add').focus();
             }
+            if(type=='material'){
+                $('#quantity').val('1');
+                $('#quantity').trigger('keyup');
+                $('#unit_price').prop('disabled',false);
+                $('#unit_price').focus();
+            }else{
+                $('#unit_price').prop('disabled',true);
+            }
         }
+    });
+    $('#unit_price').keyup(function(){
+        let total=$('#unit_price').val()*$('#quantity').val();
+        $('#amount').val(Number(total).toFixed(2));
     });
     $('#quantity').keyup(function(){
         if($('#item').val()!="" && $('#item').val()!=null){
@@ -473,7 +487,7 @@
             alert('Please provide item quantity..');
             $('#quantity').focus();
         }else{
-            let unit_price=$('#item').find(":selected").data('uprice');
+            let unit_price=$('#unit_price').val();
             let discount=$('#item').find(":selected").data('discount');
             let stock_no=$('#item').find(":selected").data('stock');
             let item_id=$('#item').val();
@@ -486,14 +500,15 @@
                 alert('Item Already Inserted');
             }else{
                 itemsInTable.push(stock_no+" "+item_id);
+                let background_color="background-color:yellow;"
                 let markup=`
-                    <tr class="border-bottom border-bottom-dashed item-row" id="tr${count}" data-item-id="${item_id}" data-stock-no="${stock_no}" data-kt-element="item">
+                    <tr style="${(is_returned=='hide-stock')?background_color:''}" class="border-bottom border-bottom-dashed item-row" id="tr${count}" data-item-id="${item_id}" data-stock-no="${stock_no}" data-kt-element="item">
                         <td class="pe-7">
                             <p>${item_name}</p>
                             <input type="hidden" name="details[${count}][item]" value="${item_id}" />
                             <input type="hidden" name="details[${count}][stock_no]" value="${stock_no}" />
                             <input type="hidden" name="details[${count}][item_type]" value="${item_type}" />
-                            <input type="hidden" name="details[${count}][is_return]" value="${is_returned}" />
+                            <input type="hidden" class="bill_type" name="details[${count}][is_return]" value="${is_returned}" />
                         </td>
                         <td>
                             <input type="text" class="form-control text-end" name="details[${count}][unit_price]" readonly placeholder="0.00" value="${Number(unit_price).toFixed(2)}" />
@@ -539,7 +554,10 @@
     function calInvoiceTotal(){
         total=0;
         $("#tbl-items .item-row").each(function(){
-            total=total+$(this).find('.amount').val()*1;
+            let billing_type=$(this).find('.bill_type').val();
+            if(billing_type!='hide-stock'){
+                total=total+$(this).find('.amount').val()*1;
+            }
         });
         $('#total').val(Number(total).toFixed(2));
     }
