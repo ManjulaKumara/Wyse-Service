@@ -16,7 +16,8 @@ class InvoiceMaterial extends Model
         'unit_price',
         'amount',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'billing_type'
     ];
     public $timestamps = true;
 }

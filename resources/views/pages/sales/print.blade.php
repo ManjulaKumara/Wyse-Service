@@ -112,7 +112,7 @@
                                                             @php
                                                                 $element=App\Models\Item::find($item->item);
                                                             @endphp
-                                                            <tr style="padding-bottom: 15px;">
+                                                            <tr style="padding-bottom: 15px;@if($item->billing_type=='hide-stock')background-color:yellow;@endif">
                                                                 <td width="60%" valign="top" style="font-size: 17px;">
                                                                     <b>{{$element->item_name}}</b>
                                                                 </td>
@@ -131,7 +131,7 @@
                                                             @php
                                                                 $element=App\Models\Item::find($material->item);
                                                             @endphp
-                                                            <tr>
+                                                            <tr style="@if($material->billing_type=='hide-stock')background-color:yellow;@endif">
                                                                 <td width="60%" valign="top" style="font-size: 17px;">
                                                                     <b>{{$element->item_name}}</b>
                                                                 </td>
@@ -150,7 +150,7 @@
                                                             @php
                                                                 $element=App\Models\ServiceMaster::find($service->service);
                                                             @endphp
-                                                            <tr>
+                                                            <tr style="@if($service->billing_type=='hide-stock')background-color:yellow;@endif">
                                                                 <td width="60%" valign="top" style="font-size: 17px;">
                                                                     <b>{{$element->service_name}}</b>
                                                                 </td>
