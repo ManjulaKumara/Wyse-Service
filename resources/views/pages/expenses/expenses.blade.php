@@ -47,11 +47,18 @@
                                 <div class="row gx-10 mb-5">
 
                                     <!--begin::Col-->
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-3">
                                         <label class="form-label fs-6 fw-bolder text-gray-700 mb-3">Expense Name</label>
                                         <!--begin::Input group-->
                                         <div class="mb-5">
                                             <input type="text" id="expense_name" name="expense_name" required class="form-control form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="form-label fs-6 fw-bolder text-gray-700 mb-3">Expense Date</label>
+                                        <!--begin::Input group-->
+                                        <div class="mb-5">
+                                            <input type="date" id="expense_date" name="expense_date" required class="form-control form-control" />
                                         </div>
                                     </div>
                                     <!--end::Col-->

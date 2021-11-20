@@ -15,7 +15,8 @@ class Expense extends Model
         'expense_amount',
         'cashier',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'expense_date',
     ];
     public $timestamps = true;
 }
