@@ -29,8 +29,8 @@
                     <input type="text"  id="supplier_name" name="supplier_name" class="form-control" required @if (Request::segment(2)=='view') value="{{$supplier->supplier_name}}" readonly @elseif (Request::segment(2)=='edit') value="{{$supplier->supplier_name}}" @else value="" @endif/>
                 </div>
                 <div class="col-lg-6">
-                    <label class="required">Email</label>
-                    <input type="email" id="email" name="email" required class="form-control" @if (Request::segment(2)=='view') value="{{$supplier->email}}" readonly @elseif (Request::segment(2)=='edit') value="{{$supplier->email}}" @else value="" @endif/>
+                    <label >Email</label>
+                    <input type="email" id="email" name="email" class="form-control" @if (Request::segment(2)=='view') value="{{$supplier->email}}" readonly @elseif (Request::segment(2)=='edit') value="{{$supplier->email}}" @else value="" @endif/>
                     {{-- <input type="hidden" id="cust_id" name="id" class="cus_lead_id form-control"/> --}}
                 </div>
             </div><br>
@@ -42,8 +42,8 @@
             </div><br>
             <div class="form-group row">
                 <div class="col-lg-6">
-                    <label class="required">Telephone</label>
-                    <input type="tel"  id="telephone" name="telephone" class="form-control" pattern="0[1,2,3,4,5,6,7,8,9][0,1,2,5,6,7,8][0-9]{7}"  maxlength="10" required @if (Request::segment(2)=='view') value="{{$supplier->telephone}}" readonly @elseif (Request::segment(2)=='edit') value="{{$supplier->telephone}}" @else value="" @endif/>
+                    <label>Telephone</label>
+                    <input type="tel"  id="telephone" name="telephone" class="form-control" pattern="0[1,2,3,4,5,6,7,8,9][0,1,2,5,6,7,8][0-9]{7}"  maxlength="10" @if (Request::segment(2)=='view') value="{{$supplier->telephone}}" readonly @elseif (Request::segment(2)=='edit') value="{{$supplier->telephone}}" @else value="" @endif/>
                 </div>
                 <div class="col-lg-6">
                     <label>Mobile</label>

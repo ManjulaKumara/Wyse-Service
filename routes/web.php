@@ -22,7 +22,7 @@ use App\Http\Controllers\ItemConversionController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\DamageController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\MaterialIssueCOntroller;
+use App\Http\Controllers\MaterialIssueController;
 use App\Http\Controllers\SalesReturnController;
 
 /*
